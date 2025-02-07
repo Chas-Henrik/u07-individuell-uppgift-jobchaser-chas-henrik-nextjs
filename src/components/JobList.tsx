@@ -7,8 +7,8 @@ type JobListProps = {
 };
 
 function JobList({jobsArr}: JobListProps): JSX.Element {
-    const jobs: JSX.Element[] = jobsArr.map((job: JobProps) => <li key={job.id}><Job {...job}/></li>);
-    const jobList = jobs.length > 0 ? jobs : <li key={uuidv4()}><p className={styles.jobListError}>No Jobs</p></li>;
+    const jobs: JSX.Element[] = jobsArr.map((job: JobProps) => <li className={styles.jobListItem} key={job.id}><Job {...job}/></li>);
+    const jobList = jobs.length > 0 ? jobs : <li className={styles.jobListItem} key={uuidv4()}><p className={styles.jobListError}>No Jobs</p></li>;
 
     return (
         <ul className={styles.jobList}>

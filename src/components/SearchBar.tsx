@@ -13,8 +13,8 @@ function SearchBar({searchTerm, searchContext, handleChange}: SearchBarProps): J
     const title = `Enter your ${searchContext ?? ''} search string here`;
     return (
         <div className={styles.searchBar}>
-            <img src="/search.svg" alt="Search Glass"/>
-            <input type="text" placeholder={placeHolder} title={title} value={searchTerm} onChange={handleChange}/>
+            <img className={styles.searchImg} src="/search.svg" alt="Search Glass"/>
+            <input className={styles.searchInput} type="text" placeholder={placeHolder} title={title} value={searchTerm} onChange={handleChange}/>
         </div>
     )
 }

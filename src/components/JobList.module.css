@@ -7,7 +7,7 @@
     align-items: flex-start;
     row-gap: 1rem;
     list-style: none;
-    > li {
+    > .jobListItem {
         width: 100%;
     }
 }
