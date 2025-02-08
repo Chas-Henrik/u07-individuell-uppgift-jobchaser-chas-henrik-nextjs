@@ -24,6 +24,38 @@ async function fetchJobs(url: string) {
   }
 }
 
+type JobData = {
+  id: string;
+  logo_url: string;
+  employer: { name: string };
+  headline: string;
+  occupation_group: { label: string };
+  occupation: { label: string };
+  publication_date: string;
+  employment_type: { label: string };
+  workplace_address: { city: string; region: string; country: string };
+  webpage_url: string;
+}
+
+function ParseData(data: JobData): JobProps {
+  const job: JobProps = {
+    id: data.id,
+    logo_url:  data.logo_url ?? '',
+    employer:  data.employer.name ?? '',
+    headline:  data.headline ?? '',
+    position: data.occupation_group.label ?? '',
+    role: data.occupation.label ?? '',
+    posted: data.publication_date ?? '',
+    contract: data.employment_type.label ?? '',
+    city: data.workplace_address.city ?? '',
+    region: data.workplace_address.region ?? '',
+    country: data.workplace_address.country ?? '',
+    url: data.webpage_url ?? ''
+  };
+
+  return job;
+}
+
 export default function Home() {
   const filterAll = 'alla';
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -32,8 +64,8 @@ export default function Home() {
   const [selectedPosition, setSelectedPosition] = useState<string>('');
   const [filterRole, setFilterRole] = useState<string[]>([]);
   const [selectedRole, setSelectedRole] = useState<string>('');
-  const [filterContractTerms, setFilterContractTerms] = useState<string[]>([]);
-  const [selectedContractTerm, setSelectedContractTerm] = useState<string>('');
+  const [filterContract, setFilterContract] = useState<string[]>([]);
+  const [selectedContract, setSelectedContract] = useState<string>('');
   const [filterCity, setFilterCity] = useState<string[]>([]);
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [filterRegion, setFilterRegion] = useState<string[]>([]);
@@ -45,7 +77,7 @@ export default function Home() {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
   const handleFilterPositionSelect = (value: string) => setSelectedPosition(value);
   const handleFilterRoleSelect = (value: string) => setSelectedRole(value);
-  const handleFilterContractSelect = (value: string) => setSelectedContractTerm(value);
+  const handleFilterContractSelect = (value: string) => setSelectedContract(value);
   const handleFilterCitySelect = (value: string) => setSelectedCity(value);
   const handleFilterRegionSelect = (value: string) => setSelectedRegion(value);
   const handleFilterCountrySelect = (value: string) => setSelectedCountry(value);
@@ -56,27 +88,26 @@ export default function Home() {
       let pageNum = 0;
       const pageSize = 100;
       let totCount = 0;
-      const dataArr: JobProps[] = [];
+      let jobsArr: JobProps[] = [];
 
       try {
         setIsLoading(true);
         do {
             const dataObj = await fetchJobs(`https://jobsearch.api.jobtechdev.se/search?offset=${pageNum*pageSize}&limit=${pageSize}&remote=true`);
-            const data:JobProps[] = dataObj?.hits;
-            totCount = dataObj?.total.value;
-            dataArr.push(...data);
-            setAllJobs( [...dataArr] );
+            totCount = dataObj?.total.value ?? 0;
+            jobsArr = jobsArr.concat(dataObj?.hits.map((job:JobData) => ParseData(job)) ?? []);
+            setAllJobs( jobsArr );
             pageNum++;
         } while (pageNum*pageSize < totCount);
       } catch (error) {
         console.error(error);
       } finally {
-        setFilterPosition([filterAll, ...Array.from(new Set(dataArr.map(job => job.occupation_group.label && job.occupation_group.label.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-        setFilterRole([filterAll, ...Array.from(new Set(dataArr.map(job => job.occupation.label && job.occupation.label.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-        setFilterContractTerms([filterAll, ...Array.from(new Set(dataArr.map(job => job.employment_type.label && job.employment_type.label.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-        setFilterCity([filterAll, ...Array.from(new Set(dataArr.map(job => job.workplace_address.city && job.workplace_address.city.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-        setFilterRegion([filterAll, ...Array.from(new Set(dataArr.map(job => job.workplace_address.region && job.workplace_address.region.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-        setFilterCountry([filterAll, ...Array.from(new Set(dataArr.map(job => job.workplace_address.country && job.workplace_address.country.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+        setFilterPosition([filterAll, ...Array.from(new Set(jobsArr.map(job => job.position.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+        setFilterRole([filterAll, ...Array.from(new Set(jobsArr.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+        setFilterContract([filterAll, ...Array.from(new Set(jobsArr.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+        setFilterCity([filterAll, ...Array.from(new Set(jobsArr.map(job => job.city.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+        setFilterRegion([filterAll, ...Array.from(new Set(jobsArr.map(job => job.region.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+        setFilterCountry([filterAll, ...Array.from(new Set(jobsArr.map(job => job.country.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
         setIsLoading(false);
       }
     }
@@ -84,12 +115,12 @@ export default function Home() {
     fetchData();
   }, []);
 
-  let filteredJobs = (!selectedPosition || selectedPosition === filterAll) ? allJobs: allJobs.filter((job) => job.occupation_group.label?.toLowerCase().includes(selectedPosition.toLowerCase()));
-  filteredJobs = (!selectedRole || selectedRole === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.occupation.label?.toLowerCase().includes(selectedRole.toLowerCase()));
-  filteredJobs = (!selectedContractTerm || selectedContractTerm === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.employment_type.label?.toLowerCase().includes(selectedContractTerm.toLowerCase()));
-  filteredJobs = (!selectedCity || selectedCity === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.workplace_address.city?.toLowerCase().includes(selectedCity.toLowerCase()));
-  filteredJobs = (!selectedRegion || selectedRegion === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.workplace_address.region?.toLowerCase().includes(selectedRegion.toLowerCase()));
-  filteredJobs = (!selectedCountry || selectedCountry === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.workplace_address.country?.toLowerCase().includes(selectedCountry.toLowerCase()));
+  let filteredJobs = (!selectedPosition || selectedPosition === filterAll) ? allJobs: allJobs.filter((job) => job.position.toLowerCase().includes(selectedPosition.toLowerCase()));
+  filteredJobs = (!selectedRole || selectedRole === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.role.toLowerCase().includes(selectedRole.toLowerCase()));
+  filteredJobs = (!selectedContract || selectedContract === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.contract.toLowerCase().includes(selectedContract.toLowerCase()));
+  filteredJobs = (!selectedCity || selectedCity === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.city.toLowerCase().includes(selectedCity.toLowerCase()));
+  filteredJobs = (!selectedRegion || selectedRegion === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.region.toLowerCase().includes(selectedRegion.toLowerCase()));
+  filteredJobs = (!selectedCountry || selectedCountry === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.country.toLowerCase().includes(selectedCountry.toLowerCase()));
 
   const searchedJobs = filteredJobs.filter(job => job.headline?.toLowerCase().includes(searchTerm.toLowerCase()));
 
@@ -100,7 +131,7 @@ export default function Home() {
           <article className="filtersContainer">
             <ComboBox filterTitle="Position" filterTerms={filterPosition} handleSelect={handleFilterPositionSelect}/>
             <ComboBox filterTitle="Role" filterTerms={filterRole} handleSelect={handleFilterRoleSelect}/>
-            <ComboBox filterTitle="Contract Type" filterTerms={filterContractTerms} handleSelect={handleFilterContractSelect}/>
+            <ComboBox filterTitle="Contract Type" filterTerms={filterContract} handleSelect={handleFilterContractSelect}/>
             <ComboBox filterTitle="City" filterTerms={filterCity} handleSelect={handleFilterCitySelect}/>
             <ComboBox filterTitle="Region" filterTerms={filterRegion} handleSelect={handleFilterRegionSelect}/>
             <ComboBox filterTitle="Country" filterTerms={filterCountry} handleSelect={handleFilterCountrySelect}/>
