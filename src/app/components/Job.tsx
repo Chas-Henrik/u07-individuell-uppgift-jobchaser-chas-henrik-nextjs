@@ -20,11 +20,11 @@ export type JobProps = {
 
 export function Job(data: JobProps): JSX.Element {
     const logotype = data.logo_url ? data.logo_url : "/not-available.svg";
-    const darkTheme = useContext(ThemeContext);
+    const {darkTheme} = useContext(ThemeContext);
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
         color: darkTheme ? '#fff' : '#333',
-        boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)',
+        boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
     };
 
     return (

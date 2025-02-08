@@ -19,7 +19,7 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .filtersContainer {
@@ -28,7 +28,7 @@ main {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   justify-items: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .spinner-circular {

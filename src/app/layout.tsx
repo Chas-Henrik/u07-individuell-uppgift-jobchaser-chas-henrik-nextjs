@@ -5,8 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import React, { useState, createContext } from 'react';
 import "./globals.css";
 
-export const ThemeContext = createContext(false);
-export const ThemeUpdateContext = createContext<() => void>(() => {});
+export const ThemeContext = createContext<{ darkTheme: boolean; toggleTheme: () => void }>({ darkTheme: false, toggleTheme: () => {} });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,20 +36,18 @@ export default function RootLayout({
 
   const themeStyles = {
     backgroundColor: darkTheme ? '#333' : '#fff',
-    color: darkTheme ? '#fff' : '#333',
+    color: darkTheme ? '#fff' : '#333'
   };
 
   return (
     <html lang="en">
-      <ThemeContext.Provider value={darkTheme}>
-        <ThemeUpdateContext.Provider value={toggleTheme}>
+      <ThemeContext.Provider value={{darkTheme, toggleTheme}}>
           <body
             style={themeStyles}
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
             {children}
           </body>
-        </ThemeUpdateContext.Provider>
       </ThemeContext.Provider>
     </html>
   );

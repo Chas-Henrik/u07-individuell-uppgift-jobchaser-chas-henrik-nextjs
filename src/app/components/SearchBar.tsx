@@ -11,10 +11,10 @@ type SearchBarProps = {
 function SearchBar({searchTerm, searchContext, handleChange}: SearchBarProps): JSX.Element {
     const placeHolder = `Freetext ${searchContext ?? ''} search...`;
     const title = `Enter your ${searchContext ?? ''} search string here`;
-    const darkTheme = useContext(ThemeContext);
+    const {darkTheme} = useContext(ThemeContext);
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
-        color: darkTheme ? '#fff' : '#333',
+        color: darkTheme ? '#fff' : '#333'
     };
 
     return (

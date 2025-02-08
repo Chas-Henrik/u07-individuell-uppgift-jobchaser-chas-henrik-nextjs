@@ -37,7 +37,7 @@ export function ComboBox({filterTitle, filterTerms, handleSelect}: ComboBoxProps
 const [open, setOpen] = React.useState(false);
 const [value, setValue] = React.useState("");
 const comboBoxItems: ComboBoxItem[] = filterTerms.map((item) => { return {value: item, label: item} });
-const darkTheme = useContext(ThemeContext);
+const {darkTheme} = useContext(ThemeContext);
 const themeStyles = darkTheme ? 'bg-stone-800 text-gray-200 ' : 'bg-white text-gray-700 ';
 const themeStylesDropDown = darkTheme ? 'bg-stone-800 text-gray-200 ' : 'bg-white text-gray-800 ';
 

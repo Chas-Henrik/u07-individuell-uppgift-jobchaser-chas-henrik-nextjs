@@ -7,10 +7,10 @@ type SwitchBoxProps = {
 };
 
 function Nav({children}: SwitchBoxProps): JSX.Element {
-    const darkTheme = useContext(ThemeContext);
+    const {darkTheme} = useContext(ThemeContext);
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
-        color: darkTheme ? '#fff' : '#333',
+        color: darkTheme ? '#fff' : '#333'
     };
 
     return (

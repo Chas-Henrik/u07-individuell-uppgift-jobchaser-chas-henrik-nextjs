@@ -85,12 +85,12 @@ export default function Home() {
   const handleFilterCitySelect = (value: string) => setSelectedCity(value);
   const handleFilterRegionSelect = (value: string) => setSelectedRegion(value);
   const handleFilterCountrySelect = (value: string) => setSelectedCountry(value);
-  const darkTheme = useContext(ThemeContext);
+  const {darkTheme} = useContext(ThemeContext);
 
   const themeStyles = {
     backgroundColor: darkTheme ? '#333' : '#fff',
     color: darkTheme ? '#fff' : '#333',
-    boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)',
+    boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
   };
 
   useEffect(() => {
