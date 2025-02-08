@@ -32,6 +32,7 @@ type JobData = {
   occupation_group: { label: string };
   occupation: { label: string };
   publication_date: string;
+  application_deadline: string;
   employment_type: { label: string };
   workplace_address: { city: string; region: string; country: string };
   webpage_url: string;
@@ -46,6 +47,7 @@ function ParseData(data: JobData): JobProps {
     position: data.occupation_group.label ?? '',
     role: data.occupation.label ?? '',
     posted: data.publication_date ?? '',
+    expires: data.application_deadline ?? '',
     contract: data.employment_type.label ?? '',
     city: data.workplace_address.city ?? '',
     region: data.workplace_address.region ?? '',
