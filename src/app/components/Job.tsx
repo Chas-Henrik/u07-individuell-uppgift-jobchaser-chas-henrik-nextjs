@@ -1,4 +1,6 @@
 import styles from './Job.module.css'
+import { useContext } from "react";
+import { ThemeContext } from "@/page";
 
 export type JobProps = {
     id: string;
@@ -18,11 +20,17 @@ export type JobProps = {
 
 export function Job(data: JobProps): JSX.Element {
     const logotype = data.logo_url ? data.logo_url : "/not-available.svg";
+    const darkTheme = useContext(ThemeContext);
+    const themeStyles = {
+        backgroundColor: darkTheme ? '#333' : '#f5f5f5',
+        color: darkTheme ? '#f5f5f5' : '#333',
+    };
+
     return (
-        <article id={data.id} className={styles.jobContainer}>
+        <article style={themeStyles} id={data.id} className={styles.jobContainer}>
             <img className={styles.jobImage} src={logotype} alt={`${data.employer} logo`}/>
             <h2 className={styles.jobHeader}>{data.employer}</h2>
-            <div></div>
+            <div />
             <article className={styles.jobInfo}>
                 <h3 className={styles.jobInfoHeader}>Headline</h3><p className={styles.jobInfoParagraph}>:</p><p className={styles.jobInfoParagraph}>{data.headline}</p>
                 <h3 className={styles.jobInfoHeader}>Position</h3><p className={styles.jobInfoParagraph}>:</p><p className={styles.jobInfoParagraph}>{data.position}</p>

@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { useContext } from "react";
+import { ThemeContext } from "@/page";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -35,6 +37,8 @@ export function ComboBox({filterTitle, filterTerms, handleSelect}: ComboBoxProps
 const [open, setOpen] = React.useState(false);
 const [value, setValue] = React.useState("");
 const comboBoxItems: ComboBoxItem[] = filterTerms.map((item) => { return {value: item, label: item} });
+const darkTheme = useContext(ThemeContext);
+const themeStyles = darkTheme ? 'bg-stone-800 text-gray-200 ' : 'bg-stone-100 text-gray-700 ';
 
 return (
 <Popover open={open} onOpenChange={setOpen}>
@@ -44,7 +48,7 @@ return (
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        className="shadow-lg overflow-hidden text-wrap text-ellipsis w-[250px] justify-between"
+        className={themeStyles + "shadow-lg overflow-hidden text-wrap text-ellipsis w-[250px] justify-between"}
     >
         {value
         ? comboBoxItems.find((item) => item.value === value)?.label
@@ -52,7 +56,7 @@ return (
         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Button>
     </PopoverTrigger>
-    <PopoverContent className="w-[200px] p-0">
+    <PopoverContent className="w-[250px] p-0">
     <Command>
         <CommandInput placeholder="Search item..." />
         <CommandList>

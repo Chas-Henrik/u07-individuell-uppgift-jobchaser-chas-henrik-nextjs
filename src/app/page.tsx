@@ -2,12 +2,17 @@
 
 import './Home.css'
 import { SpinnerCircular } from 'spinners-react';
-import { useState, useEffect } from 'react';
-import {JobProps} from '../components/Job'
-import JobList from '../components/JobList'
-import SearchBar from '../components/SearchBar'
-import { ComboBox } from '../components/ComboBox'
+import React, { useState, useEffect, createContext } from 'react';
+import {JobProps} from './components/Job'
+import JobList from './components/JobList'
+import SearchBar from './components/SearchBar'
+import { ComboBox } from './components/ComboBox'
 import SwitchBox from "@/components/SwitchBox"
+
+// import { ThemeProvider, useTheme, useThemeUpdate } from './context/ThemeContext';
+
+export const ThemeContext = createContext(false);
+export const ThemeUpdateContext = createContext<() => void>(() => {});
 
 async function fetchJobs(url: string) {
   try {
@@ -60,7 +65,7 @@ function ParseData(data: JobData): JobProps {
 
 export default function Home() {
   const filterAll = 'alla';
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [switchChecked, setSwitchChecked] = useState<boolean>(false);
   const [allJobs, setAllJobs] = useState<JobProps[]>([]);
   const [filterPosition, setFilterPosition] = useState<string[]>([]);
   const [selectedPosition, setSelectedPosition] = useState<string>('');
@@ -83,7 +88,22 @@ export default function Home() {
   const handleFilterCitySelect = (value: string) => setSelectedCity(value);
   const handleFilterRegionSelect = (value: string) => setSelectedRegion(value);
   const handleFilterCountrySelect = (value: string) => setSelectedCountry(value);
-  const handleCheckedChange = (value: boolean) => setDarkMode(value);
+
+  const handleCheckedChange = (value: boolean) => {
+    setSwitchChecked(value);
+    toggleTheme();
+  };
+  const [darkTheme, setDarkTheme] = useState(false);
+
+  function toggleTheme() {
+      console.log('toggleTheme');
+      setDarkTheme(prevDarkTheme => !prevDarkTheme);
+  }
+
+  const themeStyles = {
+    backgroundColor: darkTheme ? '#333' : '#f5f5f5',
+    color: darkTheme ? '#f5f5f5' : '#333',
+  };
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
@@ -127,25 +147,27 @@ export default function Home() {
   const searchedJobs = filteredJobs.filter(job => job.headline?.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <>
-      <header>
-        <article className="searchContainer">
-          <article className="filtersContainer">
-            <ComboBox filterTitle="Position" filterTerms={filterPosition} handleSelect={handleFilterPositionSelect}/>
-            <ComboBox filterTitle="Role" filterTerms={filterRole} handleSelect={handleFilterRoleSelect}/>
-            <ComboBox filterTitle="Contract Type" filterTerms={filterContract} handleSelect={handleFilterContractSelect}/>
-            <ComboBox filterTitle="City" filterTerms={filterCity} handleSelect={handleFilterCitySelect}/>
-            <ComboBox filterTitle="Region" filterTerms={filterRegion} handleSelect={handleFilterRegionSelect}/>
-            <ComboBox filterTitle="Country" filterTerms={filterCountry} handleSelect={handleFilterCountrySelect}/>
+    <ThemeContext.Provider value={darkTheme}>
+      <ThemeUpdateContext.Provider value={toggleTheme}>
+        <header style={themeStyles}>
+          <article className="searchContainer">
+            <article className="filtersContainer">
+              <ComboBox filterTitle="Position" filterTerms={filterPosition} handleSelect={handleFilterPositionSelect}/>
+              <ComboBox filterTitle="Role" filterTerms={filterRole} handleSelect={handleFilterRoleSelect}/>
+              <ComboBox filterTitle="Contract Type" filterTerms={filterContract} handleSelect={handleFilterContractSelect}/>
+              <ComboBox filterTitle="City" filterTerms={filterCity} handleSelect={handleFilterCitySelect}/>
+              <ComboBox filterTitle="Region" filterTerms={filterRegion} handleSelect={handleFilterRegionSelect}/>
+              <ComboBox filterTitle="Country" filterTerms={filterCountry} handleSelect={handleFilterCountrySelect}/>
+            </article>
+            <SearchBar searchTerm={searchTerm} searchContext={"'Headline'"} handleChange={handleSearch}/>
           </article>
-          <SearchBar searchTerm={searchTerm} searchContext={"'Headline'"} handleChange={handleSearch}/>
-        </article>
-        <SwitchBox status={["Dark/light-mode", "Dark/light-mode"]} checked={darkMode} onCheckedChange={handleCheckedChange} />
-      </header>
-      <main>
-        <JobList jobsArr={searchedJobs}/>
-        {isLoading && <div className="spinner-circular"><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p>Loading...</p></div>}
-      </main>
-    </>
+          <SwitchBox status={["Dark/light-mode", "Dark/light-mode"]} checked={switchChecked} onCheckedChange={handleCheckedChange} />
+        </header>
+        <main style={themeStyles}>
+          <JobList jobsArr={searchedJobs}/>
+          {isLoading && <div className="spinner-circular"><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p>Loading...</p></div>}
+        </main>
+      </ThemeUpdateContext.Provider>
+    </ThemeContext.Provider>
   )
 }
