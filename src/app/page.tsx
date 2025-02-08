@@ -60,7 +60,7 @@ function ParseData(data: JobData): JobProps {
 
 export default function Home() {
   const filterAll = 'alla';
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   const [allJobs, setAllJobs] = useState<JobProps[]>([]);
   const [filterPosition, setFilterPosition] = useState<string[]>([]);
   const [selectedPosition, setSelectedPosition] = useState<string>('');
@@ -83,7 +83,7 @@ export default function Home() {
   const handleFilterCitySelect = (value: string) => setSelectedCity(value);
   const handleFilterRegionSelect = (value: string) => setSelectedRegion(value);
   const handleFilterCountrySelect = (value: string) => setSelectedCountry(value);
-  const handleCheckedChange = (value: boolean) => setLoggedIn(value);
+  const handleCheckedChange = (value: boolean) => setDarkMode(value);
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
@@ -140,7 +140,7 @@ export default function Home() {
           </article>
           <SearchBar searchTerm={searchTerm} searchContext={"'Headline'"} handleChange={handleSearch}/>
         </article>
-        <SwitchBox status={["Logged Out", "Logged In"]} checked={loggedIn} onCheckedChange={handleCheckedChange} />
+        <SwitchBox status={["Dark/light-mode", "Dark/light-mode"]} checked={darkMode} onCheckedChange={handleCheckedChange} />
       </header>
       <main>
         <JobList jobsArr={searchedJobs}/>
