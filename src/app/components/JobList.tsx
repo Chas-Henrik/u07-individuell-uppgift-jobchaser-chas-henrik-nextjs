@@ -1,8 +1,8 @@
 import styles from './JobList.module.css'
-import {Job, JobProps} from './Job'
-import { v4 as uuidv4 } from 'uuid';
 import { useContext } from "react";
 import { ThemeContext } from "@/layout";
+import {Job, JobProps} from './Job'
+import { v4 as uuidv4 } from 'uuid';
 
 type JobListProps = {
     jobsArr: JobProps[];

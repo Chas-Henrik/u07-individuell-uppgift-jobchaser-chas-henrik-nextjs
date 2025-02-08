@@ -1,7 +1,7 @@
-import { Switch } from "@/components/ui/switch"
 import styles from './SwitchBox.module.css'
 import { useContext } from 'react'
 import { ThemeContext } from "@/layout";
+import { Switch } from "@/components/ui/switch"
 
 type SwitchBoxProps = {
     status: string[];

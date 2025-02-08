@@ -1,7 +1,7 @@
 import styles from './Header.module.css'
 import { useState, useContext } from "react";
-import SwitchBox from "@/components/SwitchBox"
 import { ThemeContext } from "@/layout";
+import SwitchBox from "@/components/SwitchBox"
 
 type SwitchBoxProps = {
     children: React.ReactNode;
