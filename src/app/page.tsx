@@ -88,8 +88,9 @@ export default function Home() {
   const darkTheme = useContext(ThemeContext);
 
   const themeStyles = {
-    backgroundColor: darkTheme ? '#333' : '#f5f5f5',
-    color: darkTheme ? '#f5f5f5' : '#333',
+    backgroundColor: darkTheme ? '#333' : '#fff',
+    color: darkTheme ? '#fff' : '#333',
+    boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)',
   };
 
   useEffect(() => {
@@ -152,7 +153,7 @@ export default function Home() {
         <JobList jobsArr={searchedJobs}/>
         {isLoading && <div className="spinner-circular"><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p>Loading...</p></div>}
       </main>
-      <Footer>Test</Footer>
+      <Footer>Footer</Footer>
     </>
   )
 }

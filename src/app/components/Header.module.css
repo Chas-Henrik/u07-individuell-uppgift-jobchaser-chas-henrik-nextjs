@@ -6,7 +6,7 @@
     justify-content: space-between;
     align-items: flex-start;
     padding: 1rem;
-    border-bottom: var(--primary-border);
+    /* border-bottom: var(--primary-border); */
     box-shadow: var(--primary-box-shadow);
     background-color: var(--primary-background);
 }

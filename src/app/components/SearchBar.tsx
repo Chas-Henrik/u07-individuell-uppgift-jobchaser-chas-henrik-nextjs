@@ -13,8 +13,8 @@ function SearchBar({searchTerm, searchContext, handleChange}: SearchBarProps): J
     const title = `Enter your ${searchContext ?? ''} search string here`;
     const darkTheme = useContext(ThemeContext);
     const themeStyles = {
-        backgroundColor: darkTheme ? '#333' : '#f5f5f5',
-        color: darkTheme ? '#f5f5f5' : '#333',
+        backgroundColor: darkTheme ? '#333' : '#fff',
+        color: darkTheme ? '#fff' : '#333',
     };
 
     return (

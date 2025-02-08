@@ -22,13 +22,14 @@ export function Job(data: JobProps): JSX.Element {
     const logotype = data.logo_url ? data.logo_url : "/not-available.svg";
     const darkTheme = useContext(ThemeContext);
     const themeStyles = {
-        backgroundColor: darkTheme ? '#333' : '#f5f5f5',
-        color: darkTheme ? '#f5f5f5' : '#333',
+        backgroundColor: darkTheme ? '#333' : '#fff',
+        color: darkTheme ? '#fff' : '#333',
+        boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)',
     };
 
     return (
         <article style={themeStyles} id={data.id} className={styles.jobContainer}>
-            <img className={styles.jobImage} src={logotype} alt={`${data.employer} logo`}/>
+            <img style={themeStyles} className={styles.jobImage} src={logotype} alt={`${data.employer} logo`}/>
             <h2 className={styles.jobHeader}>{data.employer}</h2>
             <div />
             <article className={styles.jobInfo}>

@@ -38,7 +38,8 @@ const [open, setOpen] = React.useState(false);
 const [value, setValue] = React.useState("");
 const comboBoxItems: ComboBoxItem[] = filterTerms.map((item) => { return {value: item, label: item} });
 const darkTheme = useContext(ThemeContext);
-const themeStyles = darkTheme ? 'bg-stone-800 text-gray-200 ' : 'bg-stone-100 text-gray-700 ';
+const themeStyles = darkTheme ? 'bg-stone-800 text-gray-200 ' : 'bg-white text-gray-700 ';
+const themeStylesDropDown = darkTheme ? 'bg-stone-800 text-gray-200 ' : 'bg-white text-gray-800 ';
 
 return (
 <Popover open={open} onOpenChange={setOpen}>
@@ -57,7 +58,7 @@ return (
     </Button>
     </PopoverTrigger>
     <PopoverContent className="w-[250px] p-0">
-    <Command>
+    <Command className={themeStylesDropDown}>
         <CommandInput placeholder="Search item..." />
         <CommandList>
         <CommandEmpty>{`No '${filterTitle}' found.`}</CommandEmpty>
@@ -66,6 +67,7 @@ return (
             <CommandItem
                 key={item.value}
                 value={item.value}
+                className={themeStylesDropDown}
                 onSelect={(currentValue) => {
                 setValue(currentValue === value ? "" : currentValue);
                 setOpen(false);

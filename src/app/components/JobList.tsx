@@ -13,8 +13,8 @@ function JobList({jobsArr}: JobListProps): JSX.Element {
     const jobList = jobs.length > 0 ? jobs : <li className={styles.jobListItem} key={uuidv4()}><p className={styles.jobListError}>No Jobs</p></li>;
     const darkTheme = useContext(ThemeContext);
     const themeStyles = {
-        backgroundColor: darkTheme ? '#333' : '#f5f5f5',
-        color: darkTheme ? '#f5f5f5' : '#333',
+        backgroundColor: darkTheme ? '#333' : '#fff',
+        color: darkTheme ? '#fff' : '#333',
     };
 
     return (

@@ -7,6 +7,6 @@
     font-weight: 600;
     line-height: 1.5;
     background-color: #f8f9fa;
-    box-shadow: var(--primary-box-shadow);
+    /* border-top: var(--primary-border); */
 }
 
