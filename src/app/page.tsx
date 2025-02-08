@@ -7,12 +7,10 @@ import JobList from './components/JobList'
 import SearchBar from './components/SearchBar'
 import { ComboBox } from './components/ComboBox'
 import SwitchBox from "@/components/SwitchBox"
+import Footer from './components/Footer';
+import { useEffect, useState, useContext } from 'react';
 import { ThemeContext } from "@/layout";
 import { ThemeUpdateContext } from "@/layout";
-import { useEffect, useState, useContext } from 'react';
-
-// import { ThemeProvider, useTheme, useThemeUpdate } from './context/ThemeContext';
-
 
 async function fetchJobs(url: string) {
   try {
@@ -163,6 +161,7 @@ export default function Home() {
         <JobList jobsArr={searchedJobs}/>
         {isLoading && <div className="spinner-circular"><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p>Loading...</p></div>}
       </main>
+      <Footer>Test</Footer>
     </>
   )
 }

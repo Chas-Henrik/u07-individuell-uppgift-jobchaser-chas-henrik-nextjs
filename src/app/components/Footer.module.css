@@ -1,0 +1,12 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.5;
+    background-color: #f8f9fa;
+    box-shadow: var(--primary-box-shadow);
+}
+
