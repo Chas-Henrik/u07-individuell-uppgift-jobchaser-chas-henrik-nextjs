@@ -1,6 +1,6 @@
 import styles from './Job.module.css'
 import { useContext } from "react";
-import { ThemeContext } from "@/page";
+import { ThemeContext } from "@/layout";
 
 export type JobProps = {
     id: string;

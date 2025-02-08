@@ -1,6 +1,6 @@
-import { ChangeEventHandler, useContext } from 'react'
 import styles from './SearchBar.module.css'
-import { ThemeContext } from "@/page";
+import { ChangeEventHandler, useContext } from 'react'
+import { ThemeContext } from "@/layout";
 
 type SearchBarProps = {
     searchTerm: string;
