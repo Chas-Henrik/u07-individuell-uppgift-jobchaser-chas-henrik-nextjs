@@ -1,0 +1,13 @@
+.header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+    border-bottom: var(--primary-border);
+    box-shadow: var(--primary-box-shadow);
+    background-color: var(--primary-background);
+}
+

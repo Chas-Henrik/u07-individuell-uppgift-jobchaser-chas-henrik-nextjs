@@ -4,13 +4,13 @@ import './Home.css'
 import { SpinnerCircular } from 'spinners-react';
 import {JobProps} from './components/Job'
 import JobList from './components/JobList'
+import Header from './components/Header'
 import SearchBar from './components/SearchBar'
 import { ComboBox } from './components/ComboBox'
-import SwitchBox from "@/components/SwitchBox"
+
 import Footer from './components/Footer';
 import { useEffect, useState, useContext } from 'react';
 import { ThemeContext } from "@/layout";
-import { ThemeUpdateContext } from "@/layout";
 
 async function fetchJobs(url: string) {
   try {
@@ -63,7 +63,6 @@ function ParseData(data: JobData): JobProps {
 
 export default function Home() {
   const filterAll = 'alla';
-  const [switchChecked, setSwitchChecked] = useState<boolean>(false);
   const [allJobs, setAllJobs] = useState<JobProps[]>([]);
   const [filterPosition, setFilterPosition] = useState<string[]>([]);
   const [selectedPosition, setSelectedPosition] = useState<string>('');
@@ -87,18 +86,11 @@ export default function Home() {
   const handleFilterRegionSelect = (value: string) => setSelectedRegion(value);
   const handleFilterCountrySelect = (value: string) => setSelectedCountry(value);
   const darkTheme = useContext(ThemeContext);
-  const toggleTheme = useContext(ThemeUpdateContext);
 
   const themeStyles = {
     backgroundColor: darkTheme ? '#333' : '#f5f5f5',
     color: darkTheme ? '#f5f5f5' : '#333',
   };
-
-  const handleCheckedChange = (value: boolean) => {
-    setSwitchChecked(value);
-    toggleTheme();
-  };
-
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
@@ -143,7 +135,7 @@ export default function Home() {
 
   return (
     <>
-      <header style={themeStyles}>
+      <Header>
         <article className="searchContainer">
           <article className="filtersContainer">
             <ComboBox filterTitle="Position" filterTerms={filterPosition} handleSelect={handleFilterPositionSelect}/>
@@ -155,8 +147,7 @@ export default function Home() {
           </article>
           <SearchBar searchTerm={searchTerm} searchContext={"'Headline'"} handleChange={handleSearch}/>
         </article>
-        <SwitchBox status={["Dark/light-mode", "Dark/light-mode"]} checked={switchChecked} onCheckedChange={handleCheckedChange} />
-      </header>
+      </Header>
       <main style={themeStyles}>
         <JobList jobsArr={searchedJobs}/>
         {isLoading && <div className="spinner-circular"><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p>Loading...</p></div>}
