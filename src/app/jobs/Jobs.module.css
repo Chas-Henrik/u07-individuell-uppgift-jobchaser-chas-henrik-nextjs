@@ -12,14 +12,15 @@
     border: var(--primary-border);
     border-radius: 1em;
 }
+
 .searchContainer {
-    position: sticky;
-    top: 0;
+    position: fixed;
     width: 100%;
     padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    justify-items: center;
     align-items: center;
     gap: 0.5rem;
     box-shadow: var(--primary-box-shadow);
@@ -29,20 +30,19 @@
         font-size: 0.7rem;
         font-weight: 600;
     }
-    > SearchBar {
-        width: 100%;
-        background-color: green;
+    > .filtersContainer {
+        display: grid;
+        width: 100vw;
+        padding: 0.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        justify-content: space-around;
+        justify-items: center;
+        align-items: center;
+        gap: 1rem;
     }
 }
 
-.filtersContainer {
-    width: 100vw;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    justify-items: center;
-    align-items: center;
-    gap: 1rem;
-}
+
 
 .spinnerCircular {
     width: fit-content;

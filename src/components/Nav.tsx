@@ -21,8 +21,8 @@ function Nav(): JSX.Element {
                 </Link>
             </li>
             <li style={buttonThemeStyles}>
-                <Link href="/jobs">
-                <p>Jobs</p>
+                <Link href="/signup">
+                <p>Sign Up</p>
                 </Link>
             </li>
             <li style={buttonThemeStyles}>
@@ -31,8 +31,8 @@ function Nav(): JSX.Element {
                 </Link>
             </li>
             <li style={buttonThemeStyles}>
-                <Link href="/signup">
-                <p>Sign Up</p>
+                <Link href="/jobs">
+                <p>Jobs</p>
                 </Link>
             </li>
         </ul>
