@@ -4,12 +4,12 @@ import './Home.css'
 import { useEffect, useState, useContext } from 'react';
 import { ThemeContext } from "@/layout";
 import { SpinnerCircular } from 'spinners-react';
-import {JobProps} from './components/Job'
-import JobList from './components/JobList'
-import Header from './components/Header'
-import SearchBar from './components/SearchBar'
-import { ComboBox } from './components/ComboBox'
-import Footer from './components/Footer';
+import {JobProps} from '@/components/Job'
+import Header from '@/components/Header'
+import JobList from '@/components/JobList'
+import SearchBar from '@/components/SearchBar'
+import { ComboBox } from '@/components/ComboBox'
+import Footer from '@/components/Footer';
 
 async function fetchJobs(url: string) {
   try {
