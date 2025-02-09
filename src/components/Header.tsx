@@ -1,13 +1,11 @@
 import styles from './Header.module.css'
 import { useState, useContext } from "react";
 import { ThemeContext } from "@/layout";
+import Nav from "@/components/Nav";
 import SwitchBox from "@/components/SwitchBox"
 
-type SwitchBoxProps = {
-    children: React.ReactNode;
-};
 
-function Header({children}: SwitchBoxProps): JSX.Element {
+function Header(): JSX.Element {
     const [switchChecked, setSwitchChecked] = useState<boolean>(false);
     const {darkTheme, toggleTheme} = useContext(ThemeContext);
 
@@ -24,7 +22,8 @@ function Header({children}: SwitchBoxProps): JSX.Element {
 
     return (
         <header style={themeStyles} className={styles.header}>
-            {children}
+            <div></div>
+            <Nav/>
             <SwitchBox status={["Dark/light-mode", "Dark/light-mode"]} checked={switchChecked} onCheckedChange={handleCheckedChange} />
         </header>
     )

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import React, { useState, createContext } from 'react';
 import "./globals.css";
+import Header from '@/components/Header'
 import Footer from '@/components/Footer';
 
 export const ThemeContext = createContext<{ darkTheme: boolean; toggleTheme: () => void }>({ darkTheme: false, toggleTheme: () => {} });
@@ -47,6 +48,7 @@ export default function RootLayout({
             style={themeStyles}
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
+            <Header/>
             {children}
             <Footer>Footer</Footer>
           </body>

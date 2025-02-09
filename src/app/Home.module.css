@@ -1,0 +1,11 @@
+
+.article {
+  height: 100vh;
+  text-align: center;
+  > h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 1rem;
+  }
+}
+
