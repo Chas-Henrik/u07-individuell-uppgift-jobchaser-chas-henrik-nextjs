@@ -97,6 +97,8 @@ Att om-rendera om dependencyn ändras.
 ### Vad menas med Reacts ekosystem? Nämn några viktiga bibliotek i Reacts ekosystem?
 
 ### Vad är syftet med useContext? Vilket problem med props löser den?
+Att tillhandahålla globala variabler inom ett specifikt kontext. 
+Man slipper propagera dessa variabler m.h.a. props parametrar genom komponent trädet.
 
 ### Vecka 4
 
