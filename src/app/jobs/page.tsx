@@ -133,7 +133,8 @@ export default function Home() {
 
   return (
     <div style={themeStyles}>
-      <article className={styles.searchContainer}>
+      <details style={themeStyles} className={styles.searchContainer}>
+        <summary className={styles.summary}>Filters</summary>
         <article className={styles.filtersContainer}>
           <ComboBox filterTitle="Position" filterTerms={filterPosition} handleSelect={handleFilterPositionSelect}/>
           <ComboBox filterTitle="Role" filterTerms={filterRole} handleSelect={handleFilterRoleSelect}/>
@@ -143,7 +144,7 @@ export default function Home() {
           <ComboBox filterTitle="Country" filterTerms={filterCountry} handleSelect={handleFilterCountrySelect}/>
         </article>
         <SearchBar searchTerm={searchTerm} searchContext={"'Headline'"} handleChange={handleSearch}/>
-      </article>
+      </details>
       <main className={styles.main} style={themeStyles}>
         <JobList jobsArr={searchedJobs}/>
         {isLoading && <div className={styles.spinnerCircular}><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p>Loading...</p></div>}

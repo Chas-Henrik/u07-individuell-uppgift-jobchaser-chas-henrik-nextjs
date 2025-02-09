@@ -11,24 +11,37 @@
     align-items: center;
     border: var(--primary-border);
     border-radius: 1em;
-    box-shadow: var(--primary-box-shadow-light-theme);
 }
 .searchContainer {
+    position: sticky;
+    top: 0;
     width: 100%;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
+    box-shadow: var(--primary-box-shadow);
+    > summary {
+        width: 100%;
+        text-align: left;
+        font-size: 0.7rem;
+        font-weight: 600;
+    }
+    > SearchBar {
+        width: 100%;
+        background-color: green;
+    }
 }
 
 .filtersContainer {
-    width: 100%;
+    width: 100vw;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     justify-items: center;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .spinnerCircular {
@@ -43,7 +56,6 @@
     border: 2px solid #ccc;
     padding: 1rem;
     border-radius: 1em;
-    box-shadow: var(--primary-box-shadow-light-theme);
     > p {
         margin: 0.5rem;
         text-align: center;
