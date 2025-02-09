@@ -68,7 +68,7 @@ return (
                 key={item.value}
                 value={item.value}
                 className={themeStylesDropDown}
-                onSelect={(currentValue) => {
+                onSelect={(currentValue: string) => {
                 setValue(currentValue === value ? "" : currentValue);
                 setOpen(false);
                 handleSelect(currentValue);
