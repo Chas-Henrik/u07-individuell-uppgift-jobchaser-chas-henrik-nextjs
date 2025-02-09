@@ -132,7 +132,7 @@ export default function Home() {
   const searchedJobs = filteredJobs.filter(job => job.headline?.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div style={themeStyles}>
+    <>
       <details style={themeStyles} className={styles.searchContainer}>
         <summary className={styles.summary}>Filters</summary>
         <article className={styles.filtersContainer}>
@@ -149,6 +149,6 @@ export default function Home() {
         <JobList jobsArr={searchedJobs}/>
         {isLoading && <div className={styles.spinnerCircular}><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p>Loading...</p></div>}
       </main>
-    </div>
+    </>
   )
 }

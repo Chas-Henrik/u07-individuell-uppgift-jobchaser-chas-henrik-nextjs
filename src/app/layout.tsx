@@ -38,7 +38,8 @@ export default function RootLayout({
 
   const themeStyles = {
     backgroundColor: darkTheme ? '#333' : '#fff',
-    color: darkTheme ? '#fff' : '#333'
+    color: darkTheme ? '#fff' : '#333',
+    paddingBottom: '13rem', /* Get darkTheme for the main margin (13rem) too */
   };
 
   return (
