@@ -9,7 +9,6 @@ import Header from '@/components/Header'
 import JobList from '@/components/JobList'
 import SearchBar from '@/components/SearchBar'
 import { ComboBox } from '@/components/ComboBox'
-import Footer from '@/components/Footer';
 
 async function fetchJobs(url: string) {
   try {
@@ -152,7 +151,6 @@ export default function Home() {
         <JobList jobsArr={searchedJobs}/>
         {isLoading && <div className="spinner-circular"><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p>Loading...</p></div>}
       </main>
-      <Footer>Footer</Footer>
     </>
   )
 }
