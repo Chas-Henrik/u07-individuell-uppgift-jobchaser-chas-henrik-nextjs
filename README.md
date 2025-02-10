@@ -91,10 +91,29 @@ Att om-rendera om dependencyn ändras.
 ### Vecka 3
 
 ### Vilka fördelar finns det med att använda NextJS? Nackdelar?
+Fördelar:
+Innehåller många bra funktioner och verktyg för att underlätta utveckling av webbplatser/applikationer som t.ex.
+1. Underlättar Routing (med App-router).
+2. Man kan ha front-end och back-end i samma mapp.
+3. Enkelt att publicera med Vercel
+4. Optimering av bilder & typsnitt
+
+Nackdelar:
+1. Dependency problem mellan olika versioner av mjukvaror.
 
 ### Vad menas med Routing? På vilket sätt löser NextJS Routing v.s "vanliga React"?
+En URL består av ett protokoll (t.ex. `https://`), en domän (t.ex. `chasacademy.se`) och en route (t.ex. `/studera-hos-oss`) och routing är navigeringen mellan olika routes.
+
+Den klassiska lösningen att skapa routes i React är med React router som kräver en del kod.
+NextJS erbjuder en enklare lösning med mappbaserad routing (med App-router).
 
 ### Vad menas med Reacts ekosystem? Nämn några viktiga bibliotek i Reacts ekosystem?
+Reacts ekosystem består av de verktyg och bibliotek som byggts kring React för att underlätta utveckling.
+
+Viktiga bibliotek i Reacts ekosystem:
+1. React Router  för routing
+2. Redux eller React Query för state-hantering
+3. Next.js för server side rendering
 
 ### Vad är syftet med useContext? Vilket problem med props löser den?
 Att tillhandahålla globala variabler inom ett specifikt kontext. 
