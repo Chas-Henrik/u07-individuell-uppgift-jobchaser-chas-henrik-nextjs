@@ -1,6 +1,6 @@
 'use client'
 
-import styles from './Footer.module.css'
+import styles from './Footer.module.css';
 import { useContext } from "react";
 import { ThemeContext } from "@/themeContext";
 

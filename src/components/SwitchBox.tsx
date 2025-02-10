@@ -1,8 +1,8 @@
 'use client'
 
-import styles from './SwitchBox.module.css'
-import { useContext } from 'react'
-import { Switch } from "@/components/ui/switch"
+import styles from './SwitchBox.module.css';
+import { useContext } from 'react';
+import { Switch } from "@/components/ui/switch";
 import { ThemeContext } from "@/themeContext";
 
 type SwitchBoxProps = {

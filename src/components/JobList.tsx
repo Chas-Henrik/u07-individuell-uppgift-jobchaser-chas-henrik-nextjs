@@ -1,8 +1,8 @@
 'use client'
 
-import styles from './JobList.module.css'
+import styles from './JobList.module.css';
 import { useContext } from "react";
-import {Job, JobProps} from './Job'
+import {Job, JobProps} from './Job';
 import { v4 as uuidv4 } from 'uuid';
 import { ThemeContext } from "@/themeContext";
 

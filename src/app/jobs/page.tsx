@@ -1,11 +1,11 @@
 'use client'
 
-import styles from './Jobs.module.css'
+import styles from './Jobs.module.css';
 import { useEffect, useState, useContext } from 'react';
 import { SpinnerCircular } from 'spinners-react';
 import { JobProps } from '@/components/Job';
 import { readLocalStorage, writeLocalStorage } from '@/localStorage';
-import { ComboBox } from '@/components/ComboBox'
+import { ComboBox } from '@/components/ComboBox';
 import JobList from '@/components/JobList';
 import SearchBar from '@/components/SearchBar';
 import { ThemeContext } from "@/themeContext";

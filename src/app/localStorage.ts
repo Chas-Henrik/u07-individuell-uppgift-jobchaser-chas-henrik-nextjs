@@ -1,4 +1,4 @@
-import {JobProps} from '@/components/Job'
+import {JobProps} from '@/components/Job';
 
 export function readLocalStorage(name: string): JobProps[] {
     const lsData = localStorage.getItem(name);

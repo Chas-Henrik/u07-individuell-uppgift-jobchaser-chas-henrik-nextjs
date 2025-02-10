@@ -1,9 +1,9 @@
 'use client'
 
-import styles from './Header.module.css'
+import styles from './Header.module.css';
 import { useState, useContext } from "react";
 import Nav from "@/components/Nav";
-import SwitchBox from "@/components/SwitchBox"
+import SwitchBox from "@/components/SwitchBox";
 import { ThemeContext } from "@/themeContext";
 
 

@@ -1,7 +1,7 @@
 'use client'
 
-import styles from './SearchBar.module.css'
-import { ChangeEventHandler, useContext } from 'react'
+import styles from './SearchBar.module.css';
+import { ChangeEventHandler, useContext } from 'react';
 import { ThemeContext } from "@/themeContext";
 
 type SearchBarProps = {

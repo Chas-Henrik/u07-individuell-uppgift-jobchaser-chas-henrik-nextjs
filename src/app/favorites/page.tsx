@@ -1,10 +1,10 @@
 'use client'
 
-import styles from './Favorites.module.css'
+import styles from './Favorites.module.css';
 import { useState, useEffect, useContext } from "react";
-import { JobProps } from '@/components/Job'
-import { readLocalStorage, writeLocalStorage } from '@/localStorage'
-import JobList from '@/components/JobList'
+import { JobProps } from '@/components/Job';
+import { readLocalStorage, writeLocalStorage } from '@/localStorage';
+import JobList from '@/components/JobList';
 import { ThemeContext } from "@/themeContext";
 
 type FavoriteProps = {
