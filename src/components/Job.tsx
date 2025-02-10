@@ -7,6 +7,7 @@ import { ThemeContext } from "@/themeContext";
 
 export type JobProps = {
     id: string;
+    favorite: boolean;
     logo_url: string;
     employer:  string;
     headline: string;
@@ -19,10 +20,13 @@ export type JobProps = {
     region: string;
     country: string;
     url: string;
+    SetFavoriteClickedEvent: (id: string, favorite: boolean) => void;
 };
 
 export function Job(data: JobProps): React.JSX.Element {
     const logotype = data.logo_url ? data.logo_url : "/not-available.svg";
+    const favoriteIcon = data.favorite ? "/favorite-filled.svg" : "/favorite.svg";
+    const favoriteTitle = data.favorite ? "Remove from Favorite" : "Add to Favorite";
     const {darkTheme} = useContext(ThemeContext);
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
@@ -30,10 +34,17 @@ export function Job(data: JobProps): React.JSX.Element {
         boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
     };
 
+    const ClickEventHandler: React.MouseEventHandler<HTMLImageElement> = () => { 
+        data.SetFavoriteClickedEvent(data.id, !data.favorite);
+    };
+
     return (
         <article style={themeStyles} id={data.id} className={styles.jobContainer}>
-            <img style={themeStyles} className={styles.jobImage} src={logotype} alt={`${data.employer} logo`}/>
-            <h2 className={styles.jobHeader}>{data.employer}</h2>
+            <img style={themeStyles} className={styles.jobImg} src={logotype} alt={`${data.employer} logo`}/>
+            <article className={styles.jobHeaderInfo}>
+                <h2 className={styles.jobHeader}>{data.employer}</h2>
+                <img className={styles.favoriteImg} src={favoriteIcon} onClick={ClickEventHandler} title={favoriteTitle} alt='favorite icon'/>
+            </article>
             <div />
             <article className={styles.jobInfo}>
                 <h3 className={styles.jobInfoHeader}>Headline</h3><p className={styles.jobInfoParagraph}>:</p><p className={styles.jobInfoParagraph}>{data.headline}</p>

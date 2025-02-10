@@ -38,25 +38,6 @@ type JobData = {
   webpage_url: string;
 }
 
-function ParseData(data: JobData): JobProps {
-  const job: JobProps = {
-    id: data.id,
-    logo_url:  data.logo_url ?? '',
-    employer:  data.employer.name ?? '',
-    headline:  data.headline ?? '',
-    position: data.occupation_group.label ?? '',
-    role: data.occupation.label ?? '',
-    posted: data.publication_date ?? '',
-    expires: data.application_deadline ?? '',
-    contract: data.employment_type.label ?? '',
-    city: data.workplace_address.city ?? '',
-    region: data.workplace_address.region ?? '',
-    country: data.workplace_address.country ?? '',
-    url: data.webpage_url ?? ''
-  };
-
-  return job;
-}
 
 export default function Home() {
   const filterAll = 'alla';
@@ -89,6 +70,38 @@ export default function Home() {
     color: darkTheme ? '#fff' : '#333',
     boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
   };
+
+  const SetFavoriteEvent = (id: string, favorite: boolean) => {
+    setAllJobs((prevJobs) => {
+      const job: (JobProps | undefined) = prevJobs.find(job => job.id === id);
+      if (job) {
+        job.favorite = favorite;
+      }
+      return [...prevJobs];
+    });
+  }
+
+  function ParseData(data: JobData): JobProps {
+    const job: JobProps = {
+      id: data.id,
+      SetFavoriteClickedEvent: SetFavoriteEvent,
+      favorite: false,
+      logo_url:  data.logo_url ?? '',
+      employer:  data.employer.name ?? '',
+      headline:  data.headline ?? '',
+      position: data.occupation_group.label ?? '',
+      role: data.occupation.label ?? '',
+      posted: data.publication_date ?? '',
+      expires: data.application_deadline ?? '',
+      contract: data.employment_type.label ?? '',
+      city: data.workplace_address.city ?? '',
+      region: data.workplace_address.region ?? '',
+      country: data.workplace_address.country ?? '',
+      url: data.webpage_url ?? ''
+    };
+  
+    return job;
+  }
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
