@@ -9,6 +9,7 @@
     align-items: center;
     gap: 0.5rem;
     box-shadow: var(--primary-box-shadow);
+    overflow: hidden;
     > .summary {
         text-align: left;
         font-size: 0.7rem;

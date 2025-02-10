@@ -3,7 +3,6 @@ import styles from './Home.module.css'
 import { useContext } from "react";
 import { ThemeContext } from "@/themeContext";
 
-
 export default function LandingPage() {
     const {darkTheme} = useContext(ThemeContext);
     const themeStyles = {

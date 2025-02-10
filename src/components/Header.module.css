@@ -8,5 +8,6 @@
     gap: 1rem;
     box-shadow: var(--primary-box-shadow);
     background-color: var(--primary-background);
+    overflow: hidden;
 }
 
