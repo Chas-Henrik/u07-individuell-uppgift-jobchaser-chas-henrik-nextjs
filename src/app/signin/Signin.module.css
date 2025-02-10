@@ -12,12 +12,11 @@
     font-size: 1.5rem;
     font-weight: 600;
     > .header {
-        grid-column: 1 / -1;
         font-size: 2rem;
         font-weight: 600;
         padding: 1rem;
     }
-    .form {
+    > .form {
         display: flex;
         flex-direction: column;
         justify-content: center;

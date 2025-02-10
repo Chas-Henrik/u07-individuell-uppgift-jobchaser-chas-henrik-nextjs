@@ -6,8 +6,8 @@ import { useContext } from "react";
 import { ThemeContext } from "@/themeContext";
 
 type SignInProps = {
-    emailRequired: string
-    passwordRequired: string
+    emailRequired: string;
+    passwordRequired: string;
 }
 
 export default function App() {
@@ -28,7 +28,7 @@ export default function App() {
         <h1 className={styles.header}>Login</h1>
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                 <input className={styles.formInput} type="email" placeholder="E-mail" {...register("emailRequired", { required: true })} />
-                <input className={styles.formInput} type="password" placeholder="Password" minLength={8} {...register("passwordRequired", { required: true })} />
+                <input className={styles.formInput} type="password" placeholder="Password" minLength={6} {...register("passwordRequired", { required: true })} />
                 <button className={styles.formSubmitButton} type="submit">Submit</button>
                 <div></div>
             </form>
