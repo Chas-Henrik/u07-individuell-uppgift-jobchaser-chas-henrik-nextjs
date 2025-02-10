@@ -1,7 +1,7 @@
 import styles from './SwitchBox.module.css'
 import { useContext } from 'react'
-import { ThemeContext } from "@/layout";
 import { Switch } from "@/components/ui/switch"
+import { ThemeContext } from "@/themeContext";
 
 type SwitchBoxProps = {
     status: string[];
@@ -9,7 +9,7 @@ type SwitchBoxProps = {
     onCheckedChange: (value: boolean) => void;
 };
 
-function SwitchBox({status, checked, onCheckedChange}: SwitchBoxProps): JSX.Element {
+function SwitchBox({status, checked, onCheckedChange}: SwitchBoxProps): React.JSX.Element {
     const {darkTheme} = useContext(ThemeContext);
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',

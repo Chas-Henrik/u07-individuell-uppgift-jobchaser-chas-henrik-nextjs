@@ -2,12 +2,12 @@
 
 import styles from './Jobs.module.css'
 import { useEffect, useState, useContext } from 'react';
-import { ThemeContext } from "@/layout";
 import { SpinnerCircular } from 'spinners-react';
 import {JobProps} from '@/components/Job'
 import { ComboBox } from '@/components/ComboBox'
 import JobList from '@/components/JobList'
 import SearchBar from '@/components/SearchBar'
+import { ThemeContext } from "@/themeContext";
 
 async function fetchJobs(url: string) {
   try {
@@ -147,7 +147,7 @@ export default function Home() {
       </details>
       <main className={styles.main} style={themeStyles}>
         <JobList jobsArr={searchedJobs}/>
-        {isLoading && <div className={styles.spinnerCircular}><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p>Loading...</p></div>}
+        {isLoading && <div className={styles.spinnerCircular}><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p className={styles.spinnerLabel}>Loading...</p></div>}
       </main>
     </>
   )

@@ -1,12 +1,12 @@
 import styles from './Footer.module.css'
 import { useContext } from "react";
-import { ThemeContext } from "@/layout";
+import { ThemeContext } from "@/themeContext";
 
 type SwitchBoxProps = {
     children: React.ReactNode;
 };
 
-function Footer({children}: SwitchBoxProps): JSX.Element {
+function Footer({children}: SwitchBoxProps): React.JSX.Element {
     const {darkTheme} = useContext(ThemeContext);
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',

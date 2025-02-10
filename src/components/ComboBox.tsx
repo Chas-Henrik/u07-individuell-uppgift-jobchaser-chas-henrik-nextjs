@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { useContext } from "react";
-import { ThemeContext } from "@/layout";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { ThemeContext } from "@/themeContext";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,7 @@ type ComboBoxProps = {
     handleSelect: (value: string) => void;
 }
 
-export function ComboBox({filterTitle, filterTerms, handleSelect}: ComboBoxProps): JSX.Element {
+export function ComboBox({filterTitle, filterTerms, handleSelect}: ComboBoxProps): React.JSX.Element {
 const [open, setOpen] = React.useState(false);
 const [value, setValue] = React.useState("");
 const comboBoxItems: ComboBoxItem[] = filterTerms.map((item) => { return {value: item, label: item} });

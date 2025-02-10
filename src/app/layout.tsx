@@ -1,13 +1,12 @@
 'use client'
 
-import type { Metadata } from "next";
+// import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import React, { useState, createContext } from 'react';
+import React, { useState } from 'react';
 import "./globals.css";
 import Header from '@/components/Header'
 import Footer from '@/components/Footer';
-
-export const ThemeContext = createContext<{ darkTheme: boolean; toggleTheme: () => void }>({ darkTheme: false, toggleTheme: () => {} });
+import { ThemeContext } from "@/themeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,22 +28,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [darkTheme, setDarkTheme] = useState(false);
+  const [theme, setTheme] = useState({ darkTheme: false, toggleTheme: toggleTheme});
 
-  function toggleTheme() {
+  function toggleTheme():void {
       console.log('toggleTheme');
-      setDarkTheme(prevDarkTheme => !prevDarkTheme);
+      setTheme(prevTheme => ({ ...prevTheme, darkTheme: !prevTheme.darkTheme }));
   }
 
   const themeStyles = {
-    backgroundColor: darkTheme ? '#333' : '#fff',
-    color: darkTheme ? '#fff' : '#333',
+    backgroundColor: theme.darkTheme ? '#333' : '#fff',
+    color: theme.darkTheme ? '#fff' : '#333',
     paddingBottom: '13rem', /* Get darkTheme for the main margin (13rem) too */
   };
 
   return (
     <html lang="en">
-      <ThemeContext.Provider value={{darkTheme, toggleTheme}}>
+      <ThemeContext.Provider value={theme}>
           <body
             style={themeStyles}
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}

@@ -1,6 +1,6 @@
 import styles from './SearchBar.module.css'
 import { ChangeEventHandler, useContext } from 'react'
-import { ThemeContext } from "@/layout";
+import { ThemeContext } from "@/themeContext";
 
 type SearchBarProps = {
     searchTerm: string;
@@ -8,7 +8,7 @@ type SearchBarProps = {
     handleChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-function SearchBar({searchTerm, searchContext, handleChange}: SearchBarProps): JSX.Element {
+function SearchBar({searchTerm, searchContext, handleChange}: SearchBarProps): React.JSX.Element {
     const placeHolder = `Freetext ${searchContext ?? ''} search...`;
     const title = `Enter your ${searchContext ?? ''} search string here`;
     const {darkTheme} = useContext(ThemeContext);

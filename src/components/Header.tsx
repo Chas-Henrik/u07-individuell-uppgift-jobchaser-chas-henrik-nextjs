@@ -1,11 +1,11 @@
 import styles from './Header.module.css'
 import { useState, useContext } from "react";
-import { ThemeContext } from "@/layout";
 import Nav from "@/components/Nav";
 import SwitchBox from "@/components/SwitchBox"
+import { ThemeContext } from "@/themeContext";
 
 
-function Header(): JSX.Element {
+function Header(): React.JSX.Element {
     const [switchChecked, setSwitchChecked] = useState<boolean>(false);
     const {darkTheme, toggleTheme} = useContext(ThemeContext);
 

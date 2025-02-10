@@ -1,6 +1,7 @@
 import styles from './Job.module.css'
 import { useContext } from "react";
-import { ThemeContext } from "@/layout";
+import { ThemeContext } from "@/themeContext";
+
 
 export type JobProps = {
     id: string;
@@ -18,7 +19,7 @@ export type JobProps = {
     url: string;
 };
 
-export function Job(data: JobProps): JSX.Element {
+export function Job(data: JobProps): React.JSX.Element {
     const logotype = data.logo_url ? data.logo_url : "/not-available.svg";
     const {darkTheme} = useContext(ThemeContext);
     const themeStyles = {

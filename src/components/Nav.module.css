@@ -5,7 +5,7 @@
     flex-wrap: wrap;
     gap: 1rem;
     padding: 1rem;
-    > li {
+    > .liItem {
         list-style: none;
         width: 5rem;
         height: fit-content;

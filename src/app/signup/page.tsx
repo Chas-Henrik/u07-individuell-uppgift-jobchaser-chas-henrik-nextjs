@@ -1,12 +1,6 @@
 import styles from './Signup.module.css'
-import { useForm, SubmitHandler } from "react-hook-form"
 import { useContext } from "react";
-import { ThemeContext } from "@/layout";
-
-type SignUpProps = {
-    emailRequired: string
-    passwordRequired: string
-}
+import { ThemeContext } from "@/themeContext";
 
 export default function SignUp() {
     // const {
@@ -16,35 +10,17 @@ export default function SignUp() {
     //     formState: { errors },
     // } = useForm<SignInProps>()
     // const onSubmit: SubmitHandler<SignInProps> = (data: SignInProps) => console.log(data)
-    // const {darkTheme} = useContext(ThemeContext);
-    // const themeStyles = {
-    //     backgroundColor: darkTheme ? '#333' : '#fff',
-    //     color: darkTheme ? '#fff' : '#333',
-    //     boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
-    // };
-
-    // console.log(watch()) // watch everything
-    // console.log(watch("emailRequired")) // watch input value by passing the name of it
+    const {darkTheme} = useContext(ThemeContext);
+    const themeStyles = {
+        backgroundColor: darkTheme ? '#333' : '#fff',
+        color: darkTheme ? '#fff' : '#333',
+        boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
+    };
 
     return (
         // "handleSubmit" will validate your inputs before invoking "onSubmit"
-        <article className={styles.signup}>
+        <article style={themeStyles} className={styles.signup}>
         <h1>Create Account</h1>
-        {
-            // <form className={styles.login} onSubmit={handleSubmit(onSubmit)}>
-            //     // {/x register your input into the hook by invoking the "register" function x/}
-            //     <input type="email" placeholder="E-mail" {...register("emailRequired", { required: true })} />
-            //     // {/x errors will return when field validation fails  x/}
-            //     {errors.emailRequired && <span>This field is required</span>}
-
-            //     {/x include validation with required or other standard HTML validation rules x/}
-            //     <input {...register("passwordRequired", { required: true })} />
-            //     {/x errors will return when field validation fails  x/}
-            //     {errors.passwordRequired && <span>This field is required</span>}
-
-            //     <input type="submit" />
-            // </form>
-        }
         </article>
 
     )

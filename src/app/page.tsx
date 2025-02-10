@@ -1,7 +1,7 @@
 'use client'
 import styles from './Home.module.css'
 import { useContext } from "react";
-import { ThemeContext } from "@/layout";
+import { ThemeContext } from "@/themeContext";
 
 
 export default function LandingPage() {
@@ -14,7 +14,7 @@ export default function LandingPage() {
 
     return (
         <article style={themeStyles} className={styles.article} >
-            <h1>Landing Page</h1>
+            <h1 className={styles.h1}>Landing Page</h1>
         </article>
     )
 }
