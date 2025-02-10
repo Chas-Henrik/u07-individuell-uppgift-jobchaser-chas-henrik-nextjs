@@ -1,15 +1,22 @@
 # Job Chaser
 
-This is a single-page, 'Job Chaser App' built with React & Typescript.
-  
+This is a single-page, 'Job Chaser App' built with Typescript, React & NextJS.
+
 The design is a 'Mobile First' responsive design that also support Tablet's and Desktop's. Breakpoints have been set at 650px for Tablet's & Small Desktop's, and 1024px for Medium & Large Desktop's.  
 
-The 'Job Chaser App' fetches job postings from the JSJOBBS API (see [https://jsjobbs.com/api/](https://jsjobbs.com/api/)), and displays the fetched job postings in a Job List below. The app also supports free text search on the Role property, and filters the Job List accordingly to only list the matched jobs.
+The 'Job Chaser App' fetches job postings from the 'JobTechDev API' (see [https://jobsearch.api.jobtechdev.se/](https://jobsearch.api.jobtechdev.se/)), and displays the fetched job postings in a Job List. 
+
+The app supports the following features:
+1. Dark/light-mode
+2. Filter jobs on: Position, Role, Contract Type, City Region & Country
+3. Free text search on the Headline property.
+4. Mark/Un-mark job as favorite & favorite job list.
+
 
 ***
 *Known problems:*
   
-1. The Job list is only read once (at Page Load/Re-load), and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or old jobs are removed). However, it is assumed that the database is not updated very frequently, so this should not impose any major issues for the user.
+1. The Job list is only read once (at Page Load/Re-load), and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or expired jobs are removed). However, it is assumed that the job list from the 'JobTechDev API' is not updated very frequently, so this should not be any major issues and one can always reload to fetch the latest data.
 
 *Notes:*
   
