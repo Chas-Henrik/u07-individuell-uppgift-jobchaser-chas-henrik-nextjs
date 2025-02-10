@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './Signup.module.css'
 import { useContext } from "react";
 import { ThemeContext } from "@/themeContext";

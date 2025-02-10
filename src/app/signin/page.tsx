@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './Signin.module.css'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useContext } from "react";
