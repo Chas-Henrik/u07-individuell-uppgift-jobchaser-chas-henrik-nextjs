@@ -19,7 +19,7 @@ The 'Job Chaser App' fetches job postings from the JSJOBBS API (see [https://jsj
 
 ## Frågor:
 
-### Vecka 1
+## Vecka 1
 
 #### Allmänt om ramverket React: Hur/Varför uppkom det? 
 React utvecklades av några utvecklare på Facebook.
@@ -59,7 +59,7 @@ Med logisk AND operator `{(cond) && <p>Test</p>}` eller ternary operator `<p>{(c
 ### Vad menas med en återanvändbar komponent?
 En återanvändbar komponent är en komponent som man kan återanvända en eller flera gånger i samma app och/eller olika appar. En återanvändbar komponent bör vara så generisk som möjligt för att man ska kunna återanvända den i så hög grad som möjligt.
 
-### Vecka 2
+## Vecka 2
 
 ### Vad är state i React?
 State beskriver komponentens 'tillstånd', och används för att hålla reda på data i komponenten som förändras över tid.
@@ -88,7 +88,7 @@ Att hantera side-effects som fetchning, API-hämtning, timer, notifieringar.
 ### Vad är syftet kring den s.k dependency-arrayen i useEffect?
 Att om-rendera om dependencyn ändras.
 
-### Vecka 3
+## Vecka 3
 
 ### Vilka fördelar finns det med att använda NextJS? Nackdelar?
 Fördelar:
@@ -119,7 +119,7 @@ Viktiga bibliotek i Reacts ekosystem:
 Att tillhandahålla globala variabler inom ett specifikt kontext. 
 Man slipper propagera dessa variabler m.h.a. props parametrar genom komponent trädet.
 
-### Vecka 4
+## Vecka 4
 
 ### Vad är Redux Toolkit?
 
