@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './Nav.module.css'
 import React, { useContext }from "react";
 import Link from "next/link";

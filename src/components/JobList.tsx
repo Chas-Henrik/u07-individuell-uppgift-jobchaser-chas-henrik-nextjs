@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './JobList.module.css'
 import { useContext } from "react";
 import {Job, JobProps} from './Job'

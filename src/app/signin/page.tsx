@@ -24,17 +24,14 @@ export default function App() {
     };
 
     return (
-        <article style={themeStyles} className={styles.signin}>
-        <h1>Login</h1>
-        {
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label>E-mail</label>
-                <input type="email" placeholder="E-mail" {...register("emailRequired", { required: true })} />
-                <label>Last Name</label>
-                <input type="password" placeholder="Password" minLength={8} {...register("passwordRequired", { required: true })} />
-                <input type="submit" />
+        <article style={themeStyles} className={styles.signinForm}>
+        <h1 className={styles.header}>Login</h1>
+            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+                <input className={styles.formInput} type="email" placeholder="E-mail" {...register("emailRequired", { required: true })} />
+                <input className={styles.formInput} type="password" placeholder="Password" minLength={8} {...register("passwordRequired", { required: true })} />
+                <button className={styles.formSubmitButton} type="submit">Submit</button>
+                <div></div>
             </form>
-        }
         </article>
     )
 }

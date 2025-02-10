@@ -31,7 +31,6 @@ export default function RootLayout({
   const [theme, setTheme] = useState({ darkTheme: false, toggleTheme: toggleTheme});
 
   function toggleTheme():void {
-      console.log('toggleTheme');
       setTheme(prevTheme => ({ ...prevTheme, darkTheme: !prevTheme.darkTheme }));
   }
 

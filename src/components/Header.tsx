@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './Header.module.css'
 import { useState, useContext } from "react";
 import Nav from "@/components/Nav";

@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './SwitchBox.module.css'
 import { useContext } from 'react'
 import { Switch } from "@/components/ui/switch"
