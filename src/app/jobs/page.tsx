@@ -3,10 +3,11 @@
 import styles from './Jobs.module.css'
 import { useEffect, useState, useContext } from 'react';
 import { SpinnerCircular } from 'spinners-react';
-import {JobProps} from '@/components/Job'
+import { JobProps } from '@/components/Job';
+import { readLocalStorage, writeLocalStorage } from '@/localStorage';
 import { ComboBox } from '@/components/ComboBox'
-import JobList from '@/components/JobList'
-import SearchBar from '@/components/SearchBar'
+import JobList from '@/components/JobList';
+import SearchBar from '@/components/SearchBar';
 import { ThemeContext } from "@/themeContext";
 
 async function fetchJobs(url: string) {
@@ -77,6 +78,7 @@ export default function Home() {
       if (job) {
         job.favorite = favorite;
       }
+      writeLocalStorage("u07-jobchaser-chas-henrik-nextjs : favorites", prevJobs.filter(job => job.favorite));
       return [...prevJobs];
     });
   }
@@ -113,11 +115,13 @@ export default function Home() {
       try {
         setIsLoading(true);
         do {
-            const dataObj = await fetchJobs(`https://jobsearch.api.jobtechdev.se/search?offset=${pageNum*pageSize}&limit=${pageSize}&remote=true`);
-            totCount = dataObj?.total.value ?? 0;
-            jobsArr = jobsArr.concat(dataObj?.hits.map((job:JobData) => ParseData(job)) ?? []);
-            setAllJobs( jobsArr );
-            pageNum++;
+          const favoriteJobs = readLocalStorage("u07-jobchaser-chas-henrik-nextjs : favorites");
+          const dataObj = await fetchJobs(`https://jobsearch.api.jobtechdev.se/search?offset=${pageNum*pageSize}&limit=${pageSize}&remote=true`);
+          totCount = dataObj?.total.value ?? 0;
+          jobsArr = jobsArr.concat(dataObj?.hits.map((job:JobData) => ParseData(job)) ?? []);
+          jobsArr.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
+          setAllJobs( jobsArr );
+          pageNum++;
         } while (pageNum*pageSize < totCount);
       } catch (error) {
         console.error(error);

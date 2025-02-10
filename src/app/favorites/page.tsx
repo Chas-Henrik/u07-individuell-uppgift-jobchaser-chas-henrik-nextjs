@@ -2,7 +2,8 @@
 
 import styles from './Favorites.module.css'
 import { useState, useEffect, useContext } from "react";
-import {JobProps} from '@/components/Job'
+import { JobProps } from '@/components/Job'
+import { readLocalStorage, writeLocalStorage } from '@/localStorage'
 import JobList from '@/components/JobList'
 import { ThemeContext } from "@/themeContext";
 
@@ -19,13 +20,21 @@ export default function Favorites(props: FavoriteProps) {
         boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
     };
 
-    useEffect(() => {
-        function fetchDataLS(): JobProps[] {
-            const lsData = localStorage.getItem("u07-jobchaser-chas-henrik-nextjs : favorites");
-            return lsData ? JSON.parse(lsData) : [];
+    const SetFavoriteEvent = (id: string, favorite: boolean) => {
+        setFavoriteList((prevJobs) => {
+            const job: (JobProps | undefined) = prevJobs.find(job => job.id === id);
+            if (job) {
+                job.favorite = favorite;
+            }
+            writeLocalStorage("u07-jobchaser-chas-henrik-nextjs : favorites", prevJobs.filter(job => job.favorite));
+            return [...prevJobs];
+        });
+    }
 
-        }
-        setFavoriteList(fetchDataLS());
+    useEffect(() => {
+        const favoriteJobs = readLocalStorage("u07-jobchaser-chas-henrik-nextjs : favorites");
+        favoriteJobs.map(job => job.SetFavoriteClickedEvent = SetFavoriteEvent);
+        setFavoriteList(favoriteJobs);
     }, []);
 
     return (
