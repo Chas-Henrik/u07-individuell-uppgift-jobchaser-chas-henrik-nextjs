@@ -7,11 +7,7 @@ import { readLocalStorage, writeLocalStorage } from '@/localStorage';
 import JobList from '@/components/JobList';
 import { ThemeContext } from "@/themeContext";
 
-type FavoriteProps = {
-    favoriteList: JobProps[];
-}
-
-export default function Favorites(props: FavoriteProps) {
+export default function Favorites() {
     const [favoriteList, setFavoriteList] = useState<JobProps[]>([]);
     const {darkTheme} = useContext(ThemeContext);
     const themeStyles = {
@@ -32,7 +28,7 @@ export default function Favorites(props: FavoriteProps) {
     }
 
     useEffect(() => {
-        const favoriteJobs = readLocalStorage("u07-jobchaser-chas-henrik-nextjs : favorites");
+        const favoriteJobs: JobProps[] = readLocalStorage("u07-jobchaser-chas-henrik-nextjs : favorites");
         favoriteJobs.map(job => job.SetFavoriteClickedEvent = SetFavoriteEvent);
         setFavoriteList(favoriteJobs);
     }, []);
