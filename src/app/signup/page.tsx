@@ -21,6 +21,7 @@ type SignUpProps = {
 export default function App() {
     const {
         register,
+        formState: { errors },
         handleSubmit
     } = useForm<SignUpProps>()
     const onSubmit: SubmitHandler<SignUpProps> = (data: SignUpProps) => console.log(data)
@@ -35,16 +36,26 @@ export default function App() {
         <article style={themeStyles} className={styles.signUpForm}>
         <h1 className={styles.header}>Create Account</h1>
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-                <input className={`${styles.formInput}`} type="text" placeholder="First Name" {...register("firstNameRequired", { required: true })} />
-                <input className={`${styles.formInput}`} type="text" placeholder="Last Name" {...register("lastNameRequired", { required: true })} />
+                <div><input className={`${styles.formInput}`} type="text" placeholder="First Name" {...register("firstNameRequired", { required: true })}
+                aria-invalid={errors.firstNameRequired ? "true" : "false"} />
+                {errors.firstNameRequired?.type === "required" && (<p className={styles.error} role="alert">First name is required</p>)} </div>
+                <div><input className={`${styles.formInput}`} type="text" placeholder="Last Name" {...register("lastNameRequired", { required: true })} 
+                aria-invalid={errors.lastNameRequired ? "true" : "false"} />
+                {errors.lastNameRequired?.type === "required" && (<p className={styles.error} role="alert">Last name is required</p>)}</div>
                 <input className={`${styles.formInput} ${styles.formInputAddress}`} type="text" placeholder="Address" {...register("address", { required: false })} />
                 <input className={`${styles.formInput}`} type="text" placeholder="Postal Code" {...register("postalCode", { required: false })} />
                 <input className={`${styles.formInput} ${styles.formInputCity}`} type="text" placeholder="City" {...register("city", { required: false })} />
                 <input className={`${styles.formInput} ${styles.formInputCountry}`} type="text" placeholder="Country" {...register("country", { required: false })} />
-                <input className={`${styles.formInput} ${styles.formInputPhone}`} type="text" placeholder="Phone" {...register("phoneRequired", { required: true })} />
+                <div><input className={`${styles.formInput} ${styles.formInputPhone}`} type="tel" size={20} placeholder="Phone" {...register("phoneRequired", { required: true })}
+                aria-invalid={errors.passwordRequired ? "true" : "false"} />
+                {errors.phoneRequired?.type === "required" && (<p className={styles.error} role="alert">Phone number is required</p>)}</div>
                 <label className={`${styles.formLabel} ${styles.formLabelDateOfBirth}`} htmlFor="dob">Date of Birth: <input id="dob" className={`${styles.formInput} ${styles.formInputDateOfBirth}`} type="date" placeholder="Date of Birth (YYYY-MM-DD)" {...register("dateOfBirth", { required: false })} /></label>
-                <input className={`${styles.formInput} ${styles.formInputEmail}`} type="email" placeholder="E-mail" {...register("emailRequired", { required: true })} />
-                <input className={`${styles.formInput} ${styles.formInputPassword}`} type="password" placeholder="Password" minLength={6} {...register("passwordRequired", { required: true })} />
+                <div className={styles.formInputEmail}><input className={`${styles.formInput} ${styles.formInputEmail}`} type="email" placeholder="E-mail" {...register("emailRequired", { required: true })}
+                aria-invalid={errors.emailRequired ? "true" : "false"} />
+                {errors.emailRequired?.type === "required" && (<p className={styles.error} role="alert">E-mail is required</p>)}</div>
+                <div className={styles.formInputPassword} ><input className={`${styles.formInput} ${styles.formInputPassword}`} type="password" placeholder="Password" minLength={6} {...register("passwordRequired", { required: true })}
+                aria-invalid={errors.passwordRequired ? "true" : "false"}/>
+                {errors.passwordRequired?.type === "required" && (<p className={styles.error} role="alert">Password is required</p>)}</div>
                 <button className={styles.formSubmitButton} type="submit">Submit</button>
             </form>
         </article>

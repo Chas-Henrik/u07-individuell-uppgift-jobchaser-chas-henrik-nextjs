@@ -48,6 +48,7 @@
             }
         }
         > .formInputEmail {
+            width: 100%;
             grid-column: 1 / -1;
         }
         > .formInputPassword {
@@ -62,4 +63,13 @@
             justify-self: center;
         }
     }
+}
+
+.error {
+    display: block;
+    color: red;
+    font-size: 1rem;
+    line-height: 1rem;
+    font-weight: 600;
+    text-align: center;
 }

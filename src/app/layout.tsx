@@ -49,7 +49,6 @@ export default function RootLayout({
           >
             <Header/>
             {children}
-            <Footer>Footer</Footer>
           </body>
       </ThemeContext.Provider>
     </html>
