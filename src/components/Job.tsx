@@ -1,6 +1,7 @@
 'use client'
 
-import styles from './Job.module.css'
+import styles from './Job.module.css';
+import Image from 'next/image';
 import { useContext } from "react";
 import { ThemeContext } from "@/themeContext";
 
@@ -43,7 +44,7 @@ export function Job(data: JobProps): React.JSX.Element {
             <img style={themeStyles} className={styles.jobImg} src={logotype} alt={`${data.employer} logo`}/>
             <article className={styles.jobHeaderInfo}>
                 <h2 className={styles.jobHeader}>{data.employer}</h2>
-                <img className={styles.favoriteImg} src={favoriteIcon} onClick={ClickEventHandler} title={favoriteTitle} alt='favorite icon'/>
+                <Image className={styles.favoriteImg} src={favoriteIcon} width={24} height={24} onClick={ClickEventHandler} title={favoriteTitle} alt='favorite icon'/>
             </article>
             <div />
             <article className={styles.jobInfo}>
