@@ -26,14 +26,14 @@ export type JobProps = {
 
 export function Job(data: JobProps): React.JSX.Element {
     const logotype = data.logo_url ? data.logo_url : "/not-available.svg";
-    const favoriteIcon = data.favorite ? "/favorite-filled.svg" : "/favorite.svg";
-    const favoriteTitle = data.favorite ? "Remove from Favorite" : "Add to Favorite";
     const {darkTheme} = useContext(ThemeContext);
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
         color: darkTheme ? '#fff' : '#333',
         boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
     };
+    const favoriteIcon = (data.favorite) ? ((darkTheme) ? "/favorite-filled-dark.svg" : "/favorite-filled.svg") : ((darkTheme) ? "/favorite-dark.svg": "/favorite.svg");
+    const favoriteTitle = data.favorite ? "Remove from Favorite" : "Add to Favorite";
 
     const ClickEventHandler: React.MouseEventHandler<HTMLImageElement> = () => { 
         data.SetFavoriteClickedEvent(data.id, !data.favorite);
