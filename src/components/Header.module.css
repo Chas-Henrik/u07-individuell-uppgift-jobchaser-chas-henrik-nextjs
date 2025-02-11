@@ -1,0 +1,13 @@
+.header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0px, 12rem) 10fr 12rem;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--primary-box-shadow);
+    background-color: var(--primary-background);
+    overflow: hidden;
+}
+

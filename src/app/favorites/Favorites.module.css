@@ -1,0 +1,13 @@
+.favoritesContainer {
+    padding: 1.5rem;
+    max-width: 80rem;
+    min-width: 30rem;
+    margin: 2rem auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: var(--primary-border);
+    border-radius: 1em;
+}

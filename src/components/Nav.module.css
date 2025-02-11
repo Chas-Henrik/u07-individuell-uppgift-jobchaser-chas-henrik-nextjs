@@ -1,0 +1,18 @@
+.nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    > .liItem {
+        list-style: none;
+        width: 5rem;
+        height: fit-content;
+        padding: 0.5em 1em;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 0.5rem;
+        font-size: 0.8rem;
+    }
+}
