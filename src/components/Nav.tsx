@@ -18,27 +18,27 @@ function Nav(): React.JSX.Element {
     return (
         <ul style={themeStyles} className={styles.nav}>
             <li style={buttonThemeStyles} className={styles.liItem}>
-                <Link href="/">
+                <Link href="/" scroll={false}>
                     <p>Home</p>
                 </Link>
             </li>
             <li style={buttonThemeStyles} className={styles.liItem}>
-                <Link href="/signup">
+                <Link href="/signup" scroll={false}>
                     <p>Sign Up</p>
                 </Link>
             </li>
             <li style={buttonThemeStyles} className={styles.liItem}>
-                <Link href="/signin">
+                <Link href="/signin" scroll={false}>
                     <p>Sign In</p>
                 </Link>
             </li>
             <li style={buttonThemeStyles} className={styles.liItem}>
-                <Link href="/jobs">
+                <Link href="/jobs" scroll={false}>
                     <p>Jobs</p>
                 </Link>
             </li>
             <li style={buttonThemeStyles} className={styles.liItem}>
-                <Link href="/favorites">
+                <Link href="/favorites" scroll={false}>
                     <p>Favorites</p>
                 </Link>
             </li>
