@@ -83,28 +83,6 @@ export default function Home() {
     });
   }
 
-  function ParseData(data: JobData): JobProps {
-    const job: JobProps = {
-      id: data.id,
-      SetFavoriteClickedEvent: SetFavoriteEvent,
-      favorite: false,
-      logo_url:  data.logo_url ?? '',
-      employer:  data.employer.name ?? '',
-      headline:  data.headline ?? '',
-      position: data.occupation_group.label ?? '',
-      role: data.occupation.label ?? '',
-      posted: data.publication_date ?? '',
-      expires: data.application_deadline ?? '',
-      contract: data.employment_type.label ?? '',
-      city: data.workplace_address.city ?? '',
-      region: data.workplace_address.region ?? '',
-      country: data.workplace_address.country ?? '',
-      url: data.webpage_url ?? ''
-    };
-  
-    return job;
-  }
-
   useEffect(() => {
     async function fetchData(): Promise<void> {
       let pageNum = 0;
@@ -112,6 +90,28 @@ export default function Home() {
       let totCount = 0;
       let jobsArr: JobProps[] = [];
 
+      function ParseData(data: JobData): JobProps {
+        const job: JobProps = {
+          id: data.id,
+          SetFavoriteClickedEvent: SetFavoriteEvent,
+          favorite: false,
+          logo_url:  data.logo_url ?? '',
+          employer:  data.employer.name ?? '',
+          headline:  data.headline ?? '',
+          position: data.occupation_group.label ?? '',
+          role: data.occupation.label ?? '',
+          posted: data.publication_date ?? '',
+          expires: data.application_deadline ?? '',
+          contract: data.employment_type.label ?? '',
+          city: data.workplace_address.city ?? '',
+          region: data.workplace_address.region ?? '',
+          country: data.workplace_address.country ?? '',
+          url: data.webpage_url ?? ''
+        };
+      
+        return job;
+      }
+      
       try {
         setIsLoading(true);
         do {

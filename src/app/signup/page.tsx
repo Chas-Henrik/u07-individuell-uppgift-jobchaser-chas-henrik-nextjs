@@ -38,10 +38,10 @@ export default function SignUp() {
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                 <div><input className={`${styles.formInput}`} type="text" placeholder="First Name" {...register("firstNameRequired", { required: true })}
                 aria-invalid={errors.firstNameRequired ? "true" : "false"} />
-                {errors.firstNameRequired?.type === "required" && (<p className={styles.error} role="alert">First name is required</p>)} </div>
+                {errors.firstNameRequired?.type === "required" && (<p className={styles.error} role="alert">First Name is required</p>)} </div>
                 <div><input className={`${styles.formInput}`} type="text" placeholder="Last Name" {...register("lastNameRequired", { required: true })} 
                 aria-invalid={errors.lastNameRequired ? "true" : "false"} />
-                {errors.lastNameRequired?.type === "required" && (<p className={styles.error} role="alert">Last name is required</p>)}</div>
+                {errors.lastNameRequired?.type === "required" && (<p className={styles.error} role="alert">Last Name is required</p>)}</div>
                 <input className={`${styles.formInput} ${styles.formInputAddress}`} type="text" placeholder="Address" {...register("address", { required: false })} />
                 <input className={`${styles.formInput}`} type="text" placeholder="Postal Code" {...register("postalCode", { required: false })} />
                 <input className={`${styles.formInput} ${styles.formInputCity}`} type="text" placeholder="City" {...register("city", { required: false })} />

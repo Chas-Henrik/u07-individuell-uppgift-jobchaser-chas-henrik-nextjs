@@ -1,6 +1,7 @@
 'use client'
 
 import styles from './SearchBar.module.css';
+import Image from 'next/image';
 import { ChangeEventHandler, useContext } from 'react';
 import { ThemeContext } from "@/themeContext";
 
@@ -21,7 +22,7 @@ function SearchBar({searchTerm, searchContext, handleChange}: SearchBarProps): R
 
     return (
         <div style={themeStyles} className={styles.searchBar}>
-            <img className={styles.searchImg} src="/search.svg" alt="Search Glass"/>
+            <Image className={styles.searchImg} src="/search.svg" width={24} height={24} alt="Search Glass"/>
             <input style={themeStyles} className={styles.searchInput} type="text" placeholder={placeHolder} title={title} value={searchTerm} onChange={handleChange}/>
         </div>
     )
