@@ -37,6 +37,13 @@
             border: var(--primary-border);
         }
     }
+    .signupLink {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--primary-link-color);
+        text-decoration: underline;
+        font-style: italic;
+    }
 }
 
 .error {

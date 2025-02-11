@@ -1,6 +1,7 @@
 'use client'
 
 import styles from './Signin.module.css'
+import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useContext } from "react";
 import { ThemeContext } from "@/themeContext";
@@ -26,7 +27,7 @@ export default function SignIn() {
 
     return (
         <article style={themeStyles} className={styles.signinForm}>
-        <h1 className={styles.header}>Login</h1>
+            <h1 className={styles.header}>Login</h1>
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                 <input className={styles.formInput} type="email" placeholder="E-mail" {...register("emailRequired", { required: true })}
                 aria-invalid={errors.emailRequired ? "true" : "false"} />
@@ -37,6 +38,9 @@ export default function SignIn() {
                 <button className={styles.formSubmitButton} type="submit">Submit</button>
                 <div></div>
             </form>
+            <Link href="/signup" scroll={false}>
+                <p className={styles.signupLink}>Register here to Sign Up</p>
+            </Link>
         </article>
     )
 }
