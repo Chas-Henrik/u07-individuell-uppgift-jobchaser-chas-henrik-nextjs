@@ -12,6 +12,8 @@ The app supports the following features:
 3. Free text search on the Headline property.
 4. Mark/Un-mark job as favorite & favorite job list.
 
+The site has been published on Vercel:  
+[https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs-yunn.vercel.app/](https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs-yunn.vercel.app/)
 
 ***
 *Known problems:*
@@ -100,10 +102,12 @@ Att om-rendera om dependencyn ändras.
 ### Vilka fördelar finns det med att använda NextJS? Nackdelar?
 Fördelar:
 Innehåller många bra funktioner och verktyg för att underlätta utveckling av webbplatser/applikationer som t.ex.
-1. Underlättar Routing (med App-router).
-2. Man kan ha front-end och back-end i samma mapp.
-3. Enkelt att publicera med Vercel
-4. Optimering av bilder & typsnitt
+1. Underlättar vid utveckling av fullstack appar.
+2. Stödjer 'Server Side Rendering'.
+3. Underlättar Routing (med App-router).
+4. Man kan ha front-end och back-end i samma mapp.
+5. Enkelt att publicera med Vercel.
+6. Optimering av bilder & typsnitt.
 
 Nackdelar:
 1. Dependency problem mellan olika versioner av mjukvaror.
