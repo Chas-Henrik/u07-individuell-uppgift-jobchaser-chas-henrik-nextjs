@@ -3,7 +3,7 @@
 import styles from './Job.module.css';
 import Image from 'next/image';
 import { useContext } from "react";
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 
 export type JobProps = {

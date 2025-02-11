@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useContext } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";

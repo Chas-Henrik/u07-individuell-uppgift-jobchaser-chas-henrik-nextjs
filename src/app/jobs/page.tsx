@@ -8,7 +8,7 @@ import { readLocalStorage, writeLocalStorage } from '@/localStorage';
 import { ComboBox } from '@/components/ComboBox';
 import JobList from '@/components/JobList';
 import SearchBar from '@/components/SearchBar';
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 async function fetchJobs(url: string) {
   try {

@@ -4,7 +4,7 @@ import styles from './JobList.module.css';
 import { useContext } from "react";
 import {Job, JobProps} from './Job';
 import { v4 as uuidv4 } from 'uuid';
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 type JobListProps = {
     jobsArr: JobProps[];

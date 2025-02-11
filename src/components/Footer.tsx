@@ -2,7 +2,7 @@
 
 import styles from './Footer.module.css';
 import { useContext } from "react";
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 type SwitchBoxProps = {
     children: React.ReactNode;

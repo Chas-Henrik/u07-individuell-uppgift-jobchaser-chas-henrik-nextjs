@@ -4,7 +4,7 @@ import styles from './Signin.module.css'
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useContext } from "react";
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 type SignInProps = {
     emailRequired: string;

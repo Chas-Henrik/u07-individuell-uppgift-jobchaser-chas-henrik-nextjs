@@ -5,7 +5,7 @@ import { useState, useEffect, useContext } from "react";
 import { JobProps } from '@/components/Job';
 import { readLocalStorage, writeLocalStorage } from '@/localStorage';
 import JobList from '@/components/JobList';
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 export default function Favorites() {
     const [favoriteList, setFavoriteList] = useState<JobProps[]>([]);

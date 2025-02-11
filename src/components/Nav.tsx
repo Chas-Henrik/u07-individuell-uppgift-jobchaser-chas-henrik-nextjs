@@ -3,7 +3,7 @@
 import styles from './Nav.module.css';
 import React, { useContext }from "react";
 import Link from "next/link";
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 function Nav(): React.JSX.Element {
     const {darkTheme} = useContext(ThemeContext);

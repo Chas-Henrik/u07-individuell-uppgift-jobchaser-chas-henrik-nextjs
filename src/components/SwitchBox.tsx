@@ -3,7 +3,7 @@
 import styles from './SwitchBox.module.css';
 import { useContext } from 'react';
 import { Switch } from "@/components/ui/switch";
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 type SwitchBoxProps = {
     status: string[];
