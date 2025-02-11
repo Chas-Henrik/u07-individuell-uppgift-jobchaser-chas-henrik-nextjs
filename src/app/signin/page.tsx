@@ -10,7 +10,7 @@ type SignInProps = {
     passwordRequired: string;
 }
 
-export default function App() {
+export default function SignIn() {
     const {
         register,
         formState: { errors },

@@ -18,7 +18,7 @@ type SignUpProps = {
     passwordRequired: string;
 }
 
-export default function App() {
+export default function SignUp() {
     const {
         register,
         formState: { errors },
