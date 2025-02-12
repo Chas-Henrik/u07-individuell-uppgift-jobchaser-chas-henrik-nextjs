@@ -12,7 +12,7 @@ export default function SignUp() {
         firstname: z.string().min(2).max(15),
         lastname: z.string().min(2).max(15),
         address: z.string().min(2).max(50).optional().or(z.literal('')),
-        postalCode: z.string().min(2).max(50).optional().or(z.literal('')),
+        postalCode: z.string().min(1).max(6).regex(/^[\d|\s|-]+$/, "Invalid postal code").optional().or(z.literal('')),
         city: z.string().min(2).max(50).optional().or(z.literal('')),
         country: z.string().min(2).max(50).optional().or(z.literal('')),
         phone: z.string().regex(/^[+]{1}(?:[0-9\-\\(\\)\\/.]\s?){6,15}[0-9]{1}$/, "Invalid phone number"),
