@@ -118,12 +118,12 @@ export default function Home() {
     }
 
     function InitFilters() {
-      setFilterPosition([filterAll, ...Array.from(new Set(jobsArr.map(job => job.position.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-      setFilterRole([filterAll, ...Array.from(new Set(jobsArr.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-      setFilterContract([filterAll, ...Array.from(new Set(jobsArr.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-      setFilterCity([filterAll, ...Array.from(new Set(jobsArr.map(job => job.city.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-      setFilterRegion([filterAll, ...Array.from(new Set(jobsArr.map(job => job.region.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-      setFilterCountry([filterAll, ...Array.from(new Set(jobsArr.map(job => job.country.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterPosition([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.position.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterRole([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterContract([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterCity([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.city.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterRegion([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.region.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterCountry([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.country.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
     }
 
     async function fetchData(): Promise<void> {
@@ -155,11 +155,18 @@ export default function Home() {
     if(jobsArrGlobal.length === 0){
       fetchData();
     } else {
-      const favoriteJobs = readLocalStorageFavorites();
-      jobsArrGlobal.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
-      jobsArrGlobal.forEach((job) => job.SetFavoriteClickedEvent = SetFavoriteEvent);
-      setAllJobs(jobsArrGlobal);
-      InitFilters();
+      try {
+        setIsLoading(true);
+        const favoriteJobs = readLocalStorageFavorites();
+        jobsArrGlobal.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
+        jobsArrGlobal.forEach((job) => job.SetFavoriteClickedEvent = SetFavoriteEvent);
+        setAllJobs(jobsArrGlobal);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        InitFilters();
+        setIsLoading(false);
+      }
     }
     
   }, []);
