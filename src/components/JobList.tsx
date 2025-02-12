@@ -13,7 +13,11 @@ type JobListProps = {
 function JobList({jobsArr}: JobListProps): React.JSX.Element {
     const jobs: React.JSX.Element[] = jobsArr.map((job: JobProps) => <li className={styles.jobListItem} key={job.id}><Job {...job}/></li>);
     const jobList = jobs.length > 0 ? jobs : <li className={styles.jobListItem} key={uuidv4()}><p className={styles.jobListError}>No Jobs</p></li>;
-    const {darkTheme} = useContext(ThemeContext);
+    const themeContext = useContext(ThemeContext);
+    if (!themeContext) {
+        throw new Error("ThemeContext is undefined");
+    }
+    const { darkTheme } = themeContext;
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
         color: darkTheme ? '#fff' : '#333'

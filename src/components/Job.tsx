@@ -26,7 +26,11 @@ export type JobProps = {
 
 export function Job(data: JobProps): React.JSX.Element {
     const logotype = data.logo_url ? data.logo_url : "/not-available.svg";
-    const {darkTheme} = useContext(ThemeContext);
+    const themeContext = useContext(ThemeContext);
+    if (!themeContext) {
+        throw new Error("ThemeContext is undefined");
+    }
+    const { darkTheme } = themeContext;
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
         color: darkTheme ? '#fff' : '#333',

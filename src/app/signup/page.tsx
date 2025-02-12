@@ -25,7 +25,11 @@ export default function SignUp() {
         handleSubmit
     } = useForm<SignUpProps>()
     const onSubmit: SubmitHandler<SignUpProps> = (data: SignUpProps) => console.log(data)
-    const {darkTheme} = useContext(ThemeContext);
+    const themeContext = useContext(ThemeContext);
+    if (!themeContext) {
+        throw new Error("ThemeContext is undefined");
+    }
+    const { darkTheme } = themeContext;
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
         color: darkTheme ? '#fff' : '#333',

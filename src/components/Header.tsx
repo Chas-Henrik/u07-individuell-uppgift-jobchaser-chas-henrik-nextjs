@@ -9,7 +9,11 @@ import { ThemeContext } from "@/context/themeContext";
 
 function Header(): React.JSX.Element {
     const [switchChecked, setSwitchChecked] = useState<boolean>(false);
-    const {darkTheme, toggleTheme} = useContext(ThemeContext);
+    const themeContext = useContext(ThemeContext);
+    if (!themeContext) {
+        throw new Error("ThemeContext is undefined");
+    }
+    const {darkTheme, toggleTheme} = themeContext;
 
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',

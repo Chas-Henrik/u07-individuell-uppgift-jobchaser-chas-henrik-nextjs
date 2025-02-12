@@ -65,7 +65,11 @@ export default function Home() {
   const handleFilterCitySelect = (value: string) => setSelectedCity(value);
   const handleFilterRegionSelect = (value: string) => setSelectedRegion(value);
   const handleFilterCountrySelect = (value: string) => setSelectedCountry(value);
-  const {darkTheme} = useContext(ThemeContext);
+  const themeContext = useContext(ThemeContext);
+  if (!themeContext) {
+    throw new Error("ThemeContext is undefined");
+  }
+  const { darkTheme } = themeContext;
 
   const themeStyles = {
     backgroundColor: darkTheme ? '#333' : '#fff',
