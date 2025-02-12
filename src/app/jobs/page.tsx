@@ -190,7 +190,7 @@ export default function Home() {
       </details>
       <main className={styles.main} style={themeStyles}>
         <JobList jobsArr={searchedJobs}/>
-        {isLoading && <div className={styles.spinnerCircular}><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p className={styles.spinnerLabel}>Loading...</p></div>}
+        {isLoading && <div style={themeStyles} className={styles.spinnerCircular}><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p className={styles.spinnerLabel}>Loading...</p></div>}
       </main>
     </>
   )
