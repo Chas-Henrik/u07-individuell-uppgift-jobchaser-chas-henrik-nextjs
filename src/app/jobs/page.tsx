@@ -126,20 +126,20 @@ export default function Home() {
       setFilterCountry([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.country.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
     }
 
-    async function fetchData(): Promise<void> {
+    async function FetchData(): Promise<void> {
       let pageNum = 0;
       const pageSize = 100;
       let totCount = 0;
 
       try {
         setIsLoading(true);
+        const favoriteJobs = readLocalStorageFavorites();
         do {
-          const favoriteJobs = readLocalStorageFavorites();
           const dataObj = await fetchJobs(`https://jobsearch.api.jobtechdev.se/search?offset=${pageNum*pageSize}&limit=${pageSize}&remote=true`);
           totCount = dataObj?.total.value ?? 0;
           jobsArr = jobsArr.concat(dataObj?.hits.map((job:JobData) => ParseData(job)) ?? []);
           jobsArr.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
-          setAllJobs( jobsArr );
+          setAllJobs(jobsArr);
           pageNum++;
         } while (pageNum*pageSize < totCount);
         jobsArrGlobal = jobsArr;
@@ -151,16 +151,20 @@ export default function Home() {
       }
     }
 
+    function InitGlobalData(): void {
+      const favoriteJobs = readLocalStorageFavorites();
+      jobsArrGlobal.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
+      jobsArrGlobal.forEach((job) => job.SetFavoriteClickedEvent = SetFavoriteEvent);
+      setAllJobs(jobsArrGlobal);
+    }
+
     // Don't fetch data from API if we already have it
     if(jobsArrGlobal.length === 0){
-      fetchData();
+      FetchData();
     } else {
       try {
         setIsLoading(true);
-        const favoriteJobs = readLocalStorageFavorites();
-        jobsArrGlobal.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
-        jobsArrGlobal.forEach((job) => job.SetFavoriteClickedEvent = SetFavoriteEvent);
-        setAllJobs(jobsArrGlobal);
+        InitGlobalData();
       } catch (error) {
         console.error(error);
       } finally {
