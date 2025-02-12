@@ -122,9 +122,14 @@ NextJS erbjuder en enklare lösning med mappbaserad routing (med App-router).
 Reacts ekosystem består av de verktyg och bibliotek som byggts kring React för att underlätta utveckling.
 
 Viktiga bibliotek i Reacts ekosystem:
-1. React Router  för routing
+1. React Router för routing
 2. Redux eller React Query för state-hantering
 3. Next.js för server side rendering
+4. React Hook Form
+5. Komponentbibliotek: (Shadcn, Radix, Bootsrap, Material UI, Chakra)
+6. Datafetching: React Query
+7. Animation: Framer Motion
+8. Build tools/Libraries: Vite, Nextjs, Remix
 
 ### Vad är syftet med useContext? Vilket problem med props löser den?
 Att tillhandahålla globala variabler inom ett specifikt kontext. 
