@@ -39,6 +39,7 @@ type JobData = {
   webpage_url: string;
 }
 
+let jobsArrGlobal: JobProps[] = [];
 
 export default function Home() {
   const filterAll = 'all';
@@ -138,6 +139,7 @@ export default function Home() {
           setAllJobs( jobsArr );
           pageNum++;
         } while (pageNum*pageSize < totCount);
+        jobsArrGlobal = jobsArr;
       } catch (error) {
         console.error(error);
       } finally {
@@ -146,7 +148,17 @@ export default function Home() {
       }
     }
 
-    fetchData();
+    // Don't fetch data from API if we already have it
+    if(jobsArrGlobal.length === 0){
+      fetchData();
+    } else {
+      const favoriteJobs = readLocalStorageFavorites();
+      jobsArrGlobal.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
+      jobsArrGlobal.forEach((job) => job.SetFavoriteClickedEvent = SetFavoriteEvent);
+      setAllJobs(jobsArrGlobal);
+      InitFilters();
+    }
+    
   }, []);
 
   let filteredJobs = (!selectedPosition || selectedPosition === filterAll) ? allJobs: allJobs.filter((job) => job.position.toLowerCase().includes(selectedPosition.toLowerCase()));
