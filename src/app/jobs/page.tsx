@@ -4,7 +4,7 @@ import styles from './Jobs.module.css';
 import { useEffect, useState, useContext } from 'react';
 import { SpinnerCircular } from 'spinners-react';
 import { JobProps } from '@/components/Job';
-import { readLocalStorage, writeLocalStorage } from '@/localStorage';
+import { readLocalStorageFavorites, addLocalStorageFavorites, removeLocalStorageFavorites } from '@/store/localStorage';
 import { ComboBox } from '@/components/ComboBox';
 import JobList from '@/components/JobList';
 import SearchBar from '@/components/SearchBar';
@@ -41,7 +41,7 @@ type JobData = {
 
 
 export default function Home() {
-  const filterAll = 'alla';
+  const filterAll = 'all';
   const [allJobs, setAllJobs] = useState<JobProps[]>([]);
   const [filterPosition, setFilterPosition] = useState<string[]>([]);
   const [selectedPosition, setSelectedPosition] = useState<string>('');
@@ -73,49 +73,64 @@ export default function Home() {
   };
 
   const SetFavoriteEvent = (id: string, favorite: boolean) => {
+
     setAllJobs((prevJobs) => {
       const job: (JobProps | undefined) = prevJobs.find(job => job.id === id);
       if (job) {
         job.favorite = favorite;
+        if (favorite) {
+          addLocalStorageFavorites(job);
+        } else {
+          removeLocalStorageFavorites(job);
+        }
       }
-      writeLocalStorage("u07-jobchaser-chas-henrik-nextjs : favorites", prevJobs.filter(job => job.favorite));
       return [...prevJobs];
     });
   }
 
   useEffect(() => {
+    let jobsArr: JobProps[] = [];
+
+    function ParseData(data: JobData): JobProps {
+      const job: JobProps = {
+        id: data.id,
+        SetFavoriteClickedEvent: SetFavoriteEvent,
+        favorite: false,
+        logo_url:  data.logo_url ?? '',
+        employer:  data.employer.name ?? '',
+        headline:  data.headline ?? '',
+        position: data.occupation_group.label ?? '',
+        role: data.occupation.label ?? '',
+        posted: data.publication_date ?? '',
+        expires: data.application_deadline ?? '',
+        contract: data.employment_type.label ?? '',
+        city: data.workplace_address.city ?? '',
+        region: data.workplace_address.region ?? '',
+        country: data.workplace_address.country ?? '',
+        url: data.webpage_url ?? ''
+      };
+    
+      return job;
+    }
+
+    function InitFilters() {
+      setFilterPosition([filterAll, ...Array.from(new Set(jobsArr.map(job => job.position.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterRole([filterAll, ...Array.from(new Set(jobsArr.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterContract([filterAll, ...Array.from(new Set(jobsArr.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterCity([filterAll, ...Array.from(new Set(jobsArr.map(job => job.city.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterRegion([filterAll, ...Array.from(new Set(jobsArr.map(job => job.region.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterCountry([filterAll, ...Array.from(new Set(jobsArr.map(job => job.country.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+    }
+
     async function fetchData(): Promise<void> {
       let pageNum = 0;
       const pageSize = 100;
       let totCount = 0;
-      let jobsArr: JobProps[] = [];
 
-      function ParseData(data: JobData): JobProps {
-        const job: JobProps = {
-          id: data.id,
-          SetFavoriteClickedEvent: SetFavoriteEvent,
-          favorite: false,
-          logo_url:  data.logo_url ?? '',
-          employer:  data.employer.name ?? '',
-          headline:  data.headline ?? '',
-          position: data.occupation_group.label ?? '',
-          role: data.occupation.label ?? '',
-          posted: data.publication_date ?? '',
-          expires: data.application_deadline ?? '',
-          contract: data.employment_type.label ?? '',
-          city: data.workplace_address.city ?? '',
-          region: data.workplace_address.region ?? '',
-          country: data.workplace_address.country ?? '',
-          url: data.webpage_url ?? ''
-        };
-      
-        return job;
-      }
-      
       try {
         setIsLoading(true);
         do {
-          const favoriteJobs = readLocalStorage("u07-jobchaser-chas-henrik-nextjs : favorites");
+          const favoriteJobs = readLocalStorageFavorites();
           const dataObj = await fetchJobs(`https://jobsearch.api.jobtechdev.se/search?offset=${pageNum*pageSize}&limit=${pageSize}&remote=true`);
           totCount = dataObj?.total.value ?? 0;
           jobsArr = jobsArr.concat(dataObj?.hits.map((job:JobData) => ParseData(job)) ?? []);
@@ -126,12 +141,7 @@ export default function Home() {
       } catch (error) {
         console.error(error);
       } finally {
-        setFilterPosition([filterAll, ...Array.from(new Set(jobsArr.map(job => job.position.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-        setFilterRole([filterAll, ...Array.from(new Set(jobsArr.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-        setFilterContract([filterAll, ...Array.from(new Set(jobsArr.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-        setFilterCity([filterAll, ...Array.from(new Set(jobsArr.map(job => job.city.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-        setFilterRegion([filterAll, ...Array.from(new Set(jobsArr.map(job => job.region.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-        setFilterCountry([filterAll, ...Array.from(new Set(jobsArr.map(job => job.country.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+        InitFilters();
         setIsLoading(false);
       }
     }

@@ -3,7 +3,7 @@
 import styles from './Favorites.module.css';
 import { useState, useEffect, useContext } from "react";
 import { JobProps } from '@/components/Job';
-import { readLocalStorage, writeLocalStorage } from '@/localStorage';
+import { readLocalStorageFavorites, addLocalStorageFavorites, removeLocalStorageFavorites } from '@/store/localStorage';
 import JobList from '@/components/JobList';
 import { ThemeContext } from "@/context/themeContext";
 
@@ -21,14 +21,18 @@ export default function Favorites() {
             const job: (JobProps | undefined) = prevJobs.find(job => job.id === id);
             if (job) {
                 job.favorite = favorite;
+                if (favorite) {
+                addLocalStorageFavorites(job);
+                } else {
+                removeLocalStorageFavorites(job);
+                }
             }
-            writeLocalStorage("u07-jobchaser-chas-henrik-nextjs : favorites", prevJobs.filter(job => job.favorite));
             return [...prevJobs];
         });
     }
 
     useEffect(() => {
-        const favoriteJobs: JobProps[] = readLocalStorage("u07-jobchaser-chas-henrik-nextjs : favorites");
+        const favoriteJobs: JobProps[] = readLocalStorageFavorites();
         favoriteJobs.map(job => job.SetFavoriteClickedEvent = SetFavoriteEvent);
         setFavoriteList(favoriteJobs);
     }, []);
