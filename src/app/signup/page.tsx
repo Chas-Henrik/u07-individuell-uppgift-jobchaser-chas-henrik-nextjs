@@ -7,19 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useContext } from "react";
 import { ThemeContext } from "@/context/themeContext";
 
-type SignUpProps = {
-    firstNameRequired: string;
-    lastNameRequired: string;
-    phoneRequired: string;
-    address: string;
-    city: string;
-    country: string;
-    postalCode: string;
-    dateOfBirth: string;
-    emailRequired: string;
-    passwordRequired: string;
-}
-
 export default function SignUp() {
     const formSchema = z.object({
         firstname: z.string().min(2).max(15),
