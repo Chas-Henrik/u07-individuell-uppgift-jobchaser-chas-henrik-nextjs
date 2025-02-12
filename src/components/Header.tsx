@@ -4,7 +4,7 @@ import styles from './Header.module.css';
 import { useState, useContext } from "react";
 import Nav from "@/components/Nav";
 import SwitchBox from "@/components/SwitchBox";
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 
 function Header(): React.JSX.Element {

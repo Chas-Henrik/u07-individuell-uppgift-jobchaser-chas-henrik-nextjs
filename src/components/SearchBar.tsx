@@ -3,7 +3,7 @@
 import styles from './SearchBar.module.css';
 import Image from 'next/image';
 import { ChangeEventHandler, useContext } from 'react';
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 type SearchBarProps = {
     searchTerm: string;

@@ -1,7 +1,7 @@
 'use client'
 import styles from './Home.module.css'
 import { useContext } from "react";
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 export default function LandingPage() {
     const {darkTheme} = useContext(ThemeContext);

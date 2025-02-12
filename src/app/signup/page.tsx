@@ -3,7 +3,7 @@
 import styles from './Signup.module.css'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useContext } from "react";
-import { ThemeContext } from "@/themeContext";
+import { ThemeContext } from "@/context/themeContext";
 
 type SignUpProps = {
     firstNameRequired: string;
