@@ -1,8 +1,9 @@
 .signUpForm {
     margin: 2rem auto;
-    padding: 1rem;
+    padding: 2rem;
     height: fit-content;
-    width: fit-content;
+    width: 90%;
+    max-width: 50rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,9 +19,39 @@
     }
     > .form {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        justify-items: left;
+        grid-template-columns: repeat(1, 1fr);
+        justify-items: stretch;
         gap: 1rem;
+        .formInputAddress {
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+        .formInputCity {
+            width: 100%;
+        }
+        .formInputCountry {
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+        .formInputPhone {
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+        .formLabel {
+            width: 100%;
+            grid-column: 1 / -1;
+            .formInputDateOfBirth {
+                width: fit-content;
+            }
+        }
+        .formInputEmail {
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+        .formInputPassword {
+            width: 100%;
+            grid-column: 1 / -1;
+        }
         .formInput {
             width: 100%;
             padding: 0.5rem;
@@ -28,31 +59,6 @@
             border: var(--primary-border);
             background-color: inherit;
             color: inherit;
-        }
-        > .formInputAddress {
-            grid-column: 1 / -1;
-        }
-        > .formInputCity {
-            grid-column: 1 / -1;
-        }
-        > .formInputCountry {
-            grid-column: 1 / -1;
-        }
-        > .formInputPhone {
-            grid-column: 1 / -1;
-        }
-        > .formLabel {
-            grid-column: 1 / -1;
-            >.formLabelDateOfBirth {
-                width: fit-content;
-            }
-        }
-        > .formInputEmail {
-            width: 100%;
-            grid-column: 1 / -1;
-        }
-        > .formInputPassword {
-            grid-column: 1 / -1;
         }
         > .formSubmitButton {
             width: fit-content;
@@ -72,4 +78,29 @@
     line-height: 1rem;
     font-weight: 600;
     text-align: center;
+}
+
+/* On screens that are 650px or more (Tablets & Desktops) */
+@media (min-width: 650px) {
+    .signUpForm {
+        > .form {
+            grid-template-columns: repeat(2, 1fr);
+            .formInputCountry {
+                width: 60%;
+                grid-column: 1 / -1;
+            }
+            .formInputPhone {
+                width: 60%;
+                grid-column: 1 / -1;
+            }
+            .formInputEmail {
+                width: 70%;
+                grid-column: 1 / -1;
+            }
+            .formInputPassword {
+                width: 70%;
+                grid-column: 1 / -1;
+            }
+        }
+    }
 }

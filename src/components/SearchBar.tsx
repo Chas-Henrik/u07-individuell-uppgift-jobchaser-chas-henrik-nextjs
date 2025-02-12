@@ -14,7 +14,11 @@ type SearchBarProps = {
 function SearchBar({searchTerm, searchContext, handleChange}: SearchBarProps): React.JSX.Element {
     const placeHolder = `Freetext ${searchContext ?? ''} search...`;
     const title = `Enter your ${searchContext ?? ''} search string here`;
-    const {darkTheme} = useContext(ThemeContext);
+    const themeContext = useContext(ThemeContext);
+    if (!themeContext) {
+        throw new Error("ThemeContext is undefined");
+    }
+    const { darkTheme } = themeContext;
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
         color: darkTheme ? '#fff' : '#333'

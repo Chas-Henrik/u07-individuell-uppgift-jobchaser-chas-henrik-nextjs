@@ -39,6 +39,7 @@ type JobData = {
   webpage_url: string;
 }
 
+let jobsArrGlobal: JobProps[] = [];
 
 export default function Home() {
   const filterAll = 'all';
@@ -64,7 +65,11 @@ export default function Home() {
   const handleFilterCitySelect = (value: string) => setSelectedCity(value);
   const handleFilterRegionSelect = (value: string) => setSelectedRegion(value);
   const handleFilterCountrySelect = (value: string) => setSelectedCountry(value);
-  const {darkTheme} = useContext(ThemeContext);
+  const themeContext = useContext(ThemeContext);
+  if (!themeContext) {
+    throw new Error("ThemeContext is undefined");
+  }
+  const { darkTheme } = themeContext;
 
   const themeStyles = {
     backgroundColor: darkTheme ? '#333' : '#fff',
@@ -137,6 +142,7 @@ export default function Home() {
           setAllJobs( jobsArr );
           pageNum++;
         } while (pageNum*pageSize < totCount);
+        jobsArrGlobal = jobsArr;
       } catch (error) {
         console.error(error);
       } finally {
@@ -145,7 +151,17 @@ export default function Home() {
       }
     }
 
-    fetchData();
+    // Don't fetch data from API if we already have it
+    if(jobsArrGlobal.length === 0){
+      fetchData();
+    } else {
+      const favoriteJobs = readLocalStorageFavorites();
+      jobsArrGlobal.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
+      jobsArrGlobal.forEach((job) => job.SetFavoriteClickedEvent = SetFavoriteEvent);
+      setAllJobs(jobsArrGlobal);
+      InitFilters();
+    }
+    
   }, []);
 
   let filteredJobs = (!selectedPosition || selectedPosition === filterAll) ? allJobs: allJobs.filter((job) => job.position.toLowerCase().includes(selectedPosition.toLowerCase()));
@@ -173,7 +189,7 @@ export default function Home() {
       </details>
       <main className={styles.main} style={themeStyles}>
         <JobList jobsArr={searchedJobs}/>
-        {isLoading && <div className={styles.spinnerCircular}><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p className={styles.spinnerLabel}>Loading...</p></div>}
+        {isLoading && <div style={themeStyles} className={styles.spinnerCircular}><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p className={styles.spinnerLabel}>Loading...</p></div>}
       </main>
     </>
   )

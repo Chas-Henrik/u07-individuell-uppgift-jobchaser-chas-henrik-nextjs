@@ -18,7 +18,7 @@ The site has been published on Vercel:
 ***
 *Known problems:*
   
-1. The Job list is only read once (at Page Load/Re-load), and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or expired jobs are removed). However, it is assumed that the job list from the 'JobTechDev API' is not updated very frequently, so this should not be any major issues and one can always reload to fetch the latest data.
+1. The Job list is only read once (at 'Jobs Page' Load/Re-load), and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or expired jobs are removed). However, it is assumed that the job list from the 'JobTechDev API' is not updated very frequently, so this should not be any major issues and one can always reload to fetch the latest data.
 
 *Notes:*
   
@@ -122,9 +122,14 @@ NextJS erbjuder en enklare lösning med mappbaserad routing (med App-router).
 Reacts ekosystem består av de verktyg och bibliotek som byggts kring React för att underlätta utveckling.
 
 Viktiga bibliotek i Reacts ekosystem:
-1. React Router  för routing
+1. React Router för routing
 2. Redux eller React Query för state-hantering
 3. Next.js för server side rendering
+4. React Hook Form
+5. Komponentbibliotek: (Shadcn, Radix, Bootsrap, Material UI, Chakra)
+6. Datafetching: React Query
+7. Animation: Framer Motion
+8. Build tools/Libraries: Vite, Nextjs, Remix
 
 ### Vad är syftet med useContext? Vilket problem med props löser den?
 Att tillhandahålla globala variabler inom ett specifikt kontext. 

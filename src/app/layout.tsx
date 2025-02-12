@@ -27,21 +27,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [theme, setTheme] = useState({ darkTheme: false, toggleTheme: toggleTheme});
+  const [darkTheme, setTheme] = useState(false);
 
   function toggleTheme():void {
-      setTheme(prevTheme => ({ ...prevTheme, darkTheme: !prevTheme.darkTheme }));
+      setTheme(prevTheme =>  !prevTheme);
   }
 
   const themeStyles = {
-    backgroundColor: theme.darkTheme ? '#333' : '#fff',
-    color: theme.darkTheme ? '#fff' : '#333',
+    backgroundColor: darkTheme ? '#333' : '#fff',
+    color: darkTheme ? '#fff' : '#333',
     paddingBottom: '13rem', /* Get darkTheme for the main margin (13rem) too */
   };
 
   return (
     <html lang="en">
-      <ThemeContext.Provider value={theme}>
+      <ThemeContext.Provider value={{darkTheme, toggleTheme}}>
           <body
             style={themeStyles}
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
