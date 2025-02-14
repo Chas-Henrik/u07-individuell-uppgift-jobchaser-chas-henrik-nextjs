@@ -2,6 +2,7 @@
 
 import styles from './Nav.module.css';
 import React, { useContext }from "react";
+import { motion } from "framer-motion"
 import Link from "next/link";
 import { ThemeContext } from "@/context/themeContext";
 
@@ -17,35 +18,36 @@ function Nav(): React.JSX.Element {
     };
     const buttonThemeStyles = {
         backgroundColor: darkTheme ? '#AAA' : '#DDD',
-        color: darkTheme ? '#fff' : '#333'
+        color: darkTheme ? '#fff' : '#333',
+        boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
     };
     return (
         <ul style={themeStyles} className={styles.nav}>
-            <li style={buttonThemeStyles} className={styles.liItem}>
+            <motion.li whileHover={{ scale: 1.2, backgroundColor: darkTheme?'#CCC':'#BBB', boxShadow: darkTheme?'var(--primary-box-shadow-dark-theme-hover)':'var(--primary-box-shadow-light-theme-hover)' }} style={buttonThemeStyles} className={styles.liItem}>
                 <Link href="/" scroll={false}>
                     <p>Home</p>
                 </Link>
-            </li>
-            <li style={buttonThemeStyles} className={styles.liItem}>
+            </motion.li>
+            <motion.li whileHover={{ scale: 1.2, backgroundColor: darkTheme?'#CCC':'#BBB', boxShadow: darkTheme?'var(--primary-box-shadow-dark-theme-hover)':'var(--primary-box-shadow-light-theme-hover)' }} style={buttonThemeStyles} className={styles.liItem}>
                 <Link href="/signup" scroll={false}>
                     <p>Sign Up</p>
                 </Link>
-            </li>
-            <li style={buttonThemeStyles} className={styles.liItem}>
+            </motion.li>
+            <motion.li whileHover={{ scale: 1.2, backgroundColor: darkTheme?'#CCC':'#BBB', boxShadow: darkTheme?'var(--primary-box-shadow-dark-theme-hover)':'var(--primary-box-shadow-light-theme-hover)' }} style={buttonThemeStyles} className={styles.liItem}>
                 <Link href="/signin" scroll={false}>
                     <p>Sign In</p>
                 </Link>
-            </li>
-            <li style={buttonThemeStyles} className={styles.liItem}>
+            </motion.li>
+            <motion.li whileHover={{ scale: 1.2, backgroundColor: darkTheme?'#CCC':'#BBB', boxShadow: darkTheme?'var(--primary-box-shadow-dark-theme-hover)':'var(--primary-box-shadow-light-theme-hover)' }} style={buttonThemeStyles} className={styles.liItem}>
                 <Link href="/jobs" scroll={false}>
                     <p>Jobs</p>
                 </Link>
-            </li>
-            <li style={buttonThemeStyles} className={styles.liItem}>
+            </motion.li>
+            <motion.li whileHover={{ scale: 1.2, backgroundColor: darkTheme?'#CCC':'#BBB', boxShadow: darkTheme?'var(--primary-box-shadow-dark-theme-hover)':'var(--primary-box-shadow-light-theme-hover)' }} style={buttonThemeStyles} className={styles.liItem}>
                 <Link href="/favorites" scroll={false}>
                     <p>Favorites</p>
                 </Link>
-            </li>
+            </motion.li>
         </ul>
     )
 }

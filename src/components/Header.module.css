@@ -3,11 +3,25 @@
     top: 0;
     width: 100%;
     display: grid;
-    grid-template-columns: minmax(0px, 12rem) 10fr 12rem;
+    grid-template-columns: auto 10fr 13rem;
     align-items: center;
     gap: 1rem;
     box-shadow: var(--primary-box-shadow);
     background-color: var(--primary-background);
     overflow: hidden;
+    > .div {
+        max-width: 0rem;
+    }
 }
 
+/* On screens that are 1100px or more (Medium & Large Desktops) */
+@media (min-width: 1100px) {
+    .header {
+        grid-template-columns: 13rem 10fr 13rem;
+        > .div {
+            width: 13rem;
+            max-width: 0rem;
+            min-width: 0;
+        }
+    }
+}
