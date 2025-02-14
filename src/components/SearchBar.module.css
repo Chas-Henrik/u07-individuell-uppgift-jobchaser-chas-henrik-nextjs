@@ -2,19 +2,18 @@
 .searchBar {
     width: fit-content;
     margin: 1rem auto;
-    display: grid;
-    grid-template-columns: 1.5rem 1fr;
+    display: flex;
+    justify-content: flex-start;
     align-items: center;
     border: 1px solid rgb(226,232,240);
     border-radius: 0.5em;
-    box-shadow: 2px 2px 10px 0px #00000033;
     > .searchImg {
+        margin: 0 0.5rem;
         width: 1.5rem;
         aspect-ratio: 1/1;
         object-fit: cover;
     }
     > .searchInput {
-        margin-left: 0.5rem;
         width: 20rem;
         font-size: 1rem;
         line-height: 2.5;
@@ -22,12 +21,7 @@
         border: none;
         outline: none;
         border-radius: 0.5em;
+        background-color: inherit;
     }
 }
 
-.searchBar:hover {
-    background-color: #F2F5F9;
-    > .searchImg, .searchInput {
-        background-color: #F2F5F9;
-    }
-}

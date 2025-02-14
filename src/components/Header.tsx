@@ -28,7 +28,7 @@ function Header(): React.JSX.Element {
 
     return (
         <header style={themeStyles} className={styles.header}>
-            <div></div>
+            <div className={styles.div}></div>
             <Nav/>
             <SwitchBox status={["Dark/light-mode", "Dark/light-mode"]} checked={switchChecked} onCheckedChange={handleCheckedChange} />
         </header>

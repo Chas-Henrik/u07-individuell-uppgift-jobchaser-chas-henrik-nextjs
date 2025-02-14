@@ -3,6 +3,7 @@
 import styles from './SwitchBox.module.css';
 import { useContext } from 'react';
 import { Switch } from "@/components/ui/switch";
+import { motion } from "framer-motion"
 import { ThemeContext } from "@/context/themeContext";
 
 type SwitchBoxProps = {
@@ -23,10 +24,10 @@ function SwitchBox({status, checked, onCheckedChange}: SwitchBoxProps): React.JS
     };
 
     return (
-        <article style={themeStyles} className={styles.switchBoxContainer}>
+        <motion.article whileHover={{ scale: 1.2}} style={themeStyles} className={styles.switchBoxContainer}>
             <h2>{status[checked ? 1 : 0]}</h2>
             <Switch title={status[checked ? 1 : 0]} checked={checked} onCheckedChange={onCheckedChange} />
-        </article>
+        </motion.article>
     )
 }
 

@@ -17,7 +17,8 @@ export default function LandingPage() {
 
     return (
         <article style={themeStyles} className={styles.article} >
-            <h1 className={styles.h1}>Landing Page</h1>
+            <h1 className={styles.h1}>Job Chaser</h1>
+            <p className={styles.p}>The ultimate tool for finding remote positions...</p>
         </article>
     )
 }

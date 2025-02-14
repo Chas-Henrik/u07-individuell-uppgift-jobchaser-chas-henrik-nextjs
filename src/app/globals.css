@@ -18,6 +18,8 @@
   --primary-border: 2px solid #ccc;
   --primary-box-shadow-light-theme: 2px 2px 10px 0px #00000033;
   --primary-box-shadow-dark-theme: 2px 2px 10px 0px #FFFFFF33;
+  --primary-box-shadow-light-theme-hover: 6px 6px 30px 0px #00000033;
+  --primary-box-shadow-dark-theme-hover: 6px 6px 30px 0px #FFFFFF33;
   
   font-family: var(--primary-font);
   font-size: 62.5%;
@@ -34,8 +36,8 @@ body {
 }
 
 
-/* On screens that are 650px to 1024px (Tablets & Small Desktops) */
-@media (max-width: 1024px) and (min-width: 650px) {
+/* On screens that are 750px to 1100px (Tablets & Small Desktops) */
+@media (max-width: 1100px) and (min-width: 750px) {
 
   /*** Header ***/
   :root {
@@ -43,8 +45,8 @@ body {
   }
 }
 
-/* On screens that are 1024px or more (Medium & Large Desktops) */
-@media (min-width: 1024px) {
+/* On screens that are 1100px or more (Medium & Large Desktops) */
+@media (min-width: 1100px) {
 
   /*** Header ***/
   :root {

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useContext } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { motion } from "framer-motion"
 import { ThemeContext } from "@/context/themeContext";
 
 import { cn } from "@/lib/utils";
@@ -44,53 +45,60 @@ if (!themeContext) {
 const { darkTheme } = themeContext;
 const themeStyles = darkTheme ? 'bg-stone-800 text-gray-200 ' : 'bg-white text-gray-700 ';
 const themeStylesDropDown = darkTheme ? 'bg-stone-800 text-gray-200 ' : 'bg-white text-gray-800 ';
+const themeStylesDiv = {
+    backgroundColor: darkTheme ? '#333' : '#fff',
+    color: darkTheme ? '#fff' : '#333',
+    boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
+};
 
 return (
-<Popover open={open} onOpenChange={setOpen}>
-    <PopoverTrigger asChild>
-    <Button
-        title={`Select '${filterTitle}'...`}
-        variant="outline"
-        role="combobox"
-        aria-expanded={open}
-        className={themeStyles + "shadow-lg overflow-hidden text-wrap text-ellipsis w-[250px] justify-between"}
-    >
-        {value
-        ? comboBoxItems.find((item) => item.value === value)?.label
-        : `Select '${filterTitle}'...`}
-        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-    </Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-[250px] p-0">
-    <Command className={themeStylesDropDown}>
-        <CommandInput placeholder="Search item..." />
-        <CommandList>
-        <CommandEmpty>{`No '${filterTitle}' found.`}</CommandEmpty>
-        <CommandGroup>
-            {comboBoxItems.map((item) => (
-            <CommandItem
-                key={item.value}
-                value={item.value}
-                className={themeStylesDropDown}
-                onSelect={(currentValue: string) => {
-                setValue(currentValue === value ? "" : currentValue);
-                setOpen(false);
-                handleSelect(currentValue);
-                }}
-            >
-                <Check
-                className={cn(
-                    "mr-2 h-4 w-4",
-                    value === item.value ? "opacity-100" : "opacity-0"
-                )}
-                />
-                {item.label}
-            </CommandItem>
-            ))}
-        </CommandGroup>
-        </CommandList>
-    </Command>
-    </PopoverContent>
-</Popover>
+<motion.div whileHover={{ scale: 1.2, boxShadow: darkTheme?'var(--primary-box-shadow-dark-theme-hover)':'var(--primary-box-shadow-light-theme-hover)' }} style={themeStylesDiv}>
+    <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+        <Button
+            title={`Select '${filterTitle}'...`}
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className={themeStyles + "shadow-lg overflow-hidden text-wrap text-ellipsis w-[250px] justify-between"}
+        >
+            {value
+            ? comboBoxItems.find((item) => item.value === value)?.label
+            : `Select '${filterTitle}'...`}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[250px] p-0">
+        <Command className={themeStylesDropDown}>
+            <CommandInput placeholder="Search item..." />
+            <CommandList>
+            <CommandEmpty>{`No '${filterTitle}' found.`}</CommandEmpty>
+            <CommandGroup>
+                {comboBoxItems.map((item) => (
+                <CommandItem
+                    key={item.value}
+                    value={item.value}
+                    className={themeStylesDropDown}
+                    onSelect={(currentValue: string) => {
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
+                    handleSelect(currentValue);
+                    }}
+                >
+                    <Check
+                    className={cn(
+                        "mr-2 h-4 w-4",
+                        value === item.value ? "opacity-100" : "opacity-0"
+                    )}
+                    />
+                    {item.label}
+                </CommandItem>
+                ))}
+            </CommandGroup>
+            </CommandList>
+        </Command>
+        </PopoverContent>
+    </Popover>
+</motion.div>
 );
 }
