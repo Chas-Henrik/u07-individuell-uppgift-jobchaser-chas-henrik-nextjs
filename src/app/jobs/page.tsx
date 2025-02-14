@@ -119,12 +119,12 @@ export default function Home() {
     }
 
     function InitFilters() {
-      setFilterPosition([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.position.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-      setFilterRole([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-      setFilterContract([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-      setFilterCity([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.city.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-      setFilterRegion([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.region.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
-      setFilterCountry([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.country.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))]);
+      setFilterPosition([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.position.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
+      setFilterRole([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
+      setFilterContract([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
+      setFilterCity([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.city.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
+      setFilterRegion([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.region.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
+      setFilterCountry([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.country.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
     }
 
     async function FetchData(): Promise<void> {
@@ -143,7 +143,7 @@ export default function Home() {
           setAllJobs(jobsArr);
           pageNum++;
         } while (pageNum*pageSize < totCount);
-        jobsArrGlobal = jobsArr;
+        jobsArrGlobal = [...jobsArr];
       } catch (error) {
         console.error(error);
       } finally {
@@ -156,7 +156,7 @@ export default function Home() {
       const favoriteJobs = readLocalStorageFavorites();
       jobsArrGlobal.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
       jobsArrGlobal.forEach((job) => job.SetFavoriteClickedEvent = SetFavoriteEvent);
-      setAllJobs(jobsArrGlobal);
+      setAllJobs([...jobsArrGlobal]);
     }
 
     // Don't fetch data from API if we already have it
