@@ -84,7 +84,7 @@ function reducer(state: State, action: FilterListAction): State {
         ...state,
         jobsArr: [...(action.jobsArr ?? [])]
       };
-    case ACTIONS.FILTER_JOBS:
+    case ACTIONS.FILTER_JOBS: // This is not used yet
       {
         let filteredJobs;
         const filter = action.filter;
@@ -146,7 +146,7 @@ function reducer(state: State, action: FilterListAction): State {
         ...state,
         filterListCountry: [filterAll, ...Array.from(new Set((action.jobsArr ?? []).map((job: JobProps) => job.country.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
       };
-    case ACTIONS.UPDATE_FILTER_TERMS:
+    case ACTIONS.UPDATE_FILTER_TERMS:  // This is not used yet
       {
         const filter = action.filter;
         if(filter) 
