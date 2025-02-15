@@ -77,7 +77,7 @@ let filterListRegion : string[] = [];
 let filterListCountry : string[] = [];
 
 
-function InitFilters(jobsArray: JobProps[]): void {
+function UpdateFilterLists(jobsArray: JobProps[]): void {
   filterListPosition = [filterAll, ...Array.from(new Set(jobsArray.map(job => job.position.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))];
   filterListRole = [filterAll, ...Array.from(new Set(jobsArray.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))];
   filterListContract = [filterAll, ...Array.from(new Set(jobsArray.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))];
@@ -89,7 +89,7 @@ function InitFilters(jobsArray: JobProps[]): void {
 function reducer(state: State, action: FilterListAction): State {
   switch (action.type) {
     case ACTIONS.SET_JOBS:
-      InitFilters(action.payload.jobsArr ?? []);
+      UpdateFilterLists(action.payload.jobsArr ?? []);
       return {
         ...state,
         jobsArr: [...(action.payload.jobsArr ?? [])]
@@ -319,8 +319,7 @@ export default function Home() {
   }, []);
 
   const filteredJobs = applyFilters(state.jobsArr, filter);
-
-  // Perhaps we should re-run InitFilters(jobsArrGlobal) when the filters change, but for now we'll just re-run the filtering
+  UpdateFilterLists(filteredJobs); // Not sure if I want this...
 
   return (
     <>
