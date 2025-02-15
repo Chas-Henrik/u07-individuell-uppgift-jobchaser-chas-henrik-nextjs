@@ -39,40 +39,66 @@ type JobData = {
   webpage_url: string;
 }
 
-const filterAll = 'all';
-
 let jobsArrGlobal: JobProps[] = [];
 
-const ACTIONS = {
-  INIT_FILTER_TERMS: 'init-filter-terms',
-  SET_FILTER_TERM: 'set-filter-term',
+// State Reducer
+
+type State = {
+  filterListPosition: string[];
 }
 
+enum ACTIONS {
+  INIT_FILTER_TERMS_POSITION = 'init-filter-terms-position',
+}
 
-function filterListReducer(filterListPosition: { filterList: string[] }, action: {type: typeof ACTIONS.INIT_FILTER_TERMS, payload: JobProps[]}) {
+type FilterListAction = {
+  type: ACTIONS;
+  payload: JobProps[];
+}
+
+const filterAll = 'all';
+
+function reducer(state: State, action: FilterListAction): State {
   switch (action.type) {
-    case ACTIONS.INIT_FILTER_TERMS:
+    case ACTIONS.INIT_FILTER_TERMS_POSITION:
       return {
-        ...filterListPosition,
-        filterList: [filterAll, ...Array.from(new Set((action.payload ?? []).map((job: JobProps) => job.position.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
+        ...state,
+        filterListPosition: [filterAll, ...Array.from(new Set((action.payload ?? []).map((job: JobProps) => job.position.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
       };
     default:
-      return filterListPosition;
+      return state;
   }
 }
 
-function filterReducer(filterPosition: string, action:  {type: typeof ACTIONS.SET_FILTER_TERM, payload: string}) {
+// Filter Reducer
+
+type FilterState = {
+  filterPosition: string;
+}
+
+enum FILTER_ACTIONS {
+  SET_FILTER_POSITION = 'set-filter-position',
+}
+
+type FilterAction = {
+  type: FILTER_ACTIONS;
+  payload: string;
+}
+
+function filterReducer(filter: FilterState, action:  FilterAction): FilterState {
   switch (action.type) {
-    case ACTIONS.SET_FILTER_TERM:
-      return action.payload ?? '';
+    case FILTER_ACTIONS.SET_FILTER_POSITION:
+      return { ...filter,
+        filterPosition: action.payload ?? ''
+      };
     default:
-      return filterPosition;
+      return filter;
   }
 }
 
 export default function Home() {
-  const [filterListPosition, dispatchFilterListPosition] = useReducer(filterListReducer, { filterList: [] });
-  const [filterPosition, dispatchFilterPosition] = useReducer(filterReducer, "");
+  const [state, dispatch] = useReducer(reducer, { filterListPosition: [] });
+  const [filter, dispatchFilter] = useReducer(filterReducer, { filterPosition: '' });
   const [allJobs, setAllJobs] = useState<JobProps[]>([]);
   const [filterRole, setFilterRole] = useState<string[]>([]);
   const [selectedRole, setSelectedRole] = useState<string>('');
@@ -146,7 +172,7 @@ export default function Home() {
     }
 
     function InitFilters() {
-      dispatchFilterListPosition({type: ACTIONS.INIT_FILTER_TERMS, payload: jobsArrGlobal });
+      dispatch({type: ACTIONS.INIT_FILTER_TERMS_POSITION, payload: jobsArrGlobal});
       setFilterRole([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
       setFilterContract([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
       setFilterCity([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.city.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
@@ -203,7 +229,7 @@ export default function Home() {
     
   }, []);
 
-  let filteredJobs = (!filterPosition || filterPosition === filterAll) ? allJobs: allJobs.filter((job) => job.position.toLowerCase().includes(filterPosition.toLowerCase()));
+  let filteredJobs = (!filter.filterPosition || filter.filterPosition === filterAll) ? allJobs: allJobs.filter((job) => job.position.toLowerCase().includes(filter.filterPosition.toLowerCase()));
   filteredJobs = (!selectedRole || selectedRole === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.role.toLowerCase().includes(selectedRole.toLowerCase()));
   filteredJobs = (!selectedContract || selectedContract === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.contract.toLowerCase().includes(selectedContract.toLowerCase()));
   filteredJobs = (!selectedCity || selectedCity === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.city.toLowerCase().includes(selectedCity.toLowerCase()));
@@ -219,7 +245,7 @@ export default function Home() {
       <details style={themeStyles} className={styles.searchContainer}>
         <summary className={styles.summary}>Filters</summary>
         <article className={styles.filtersContainer}>
-          <ComboBox filterTitle="Position" filterTerms={filterListPosition.filterList ?? []} handleSelect={(value:string) => dispatchFilterPosition({type: ACTIONS.SET_FILTER_TERM, payload: value })}/>
+          <ComboBox filterTitle="Position" filterTerms={state.filterListPosition ?? []} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_POSITION, payload: value })}/>
           <ComboBox filterTitle="Role" filterTerms={filterRole} handleSelect={handleFilterRoleSelect}/>
           <ComboBox filterTitle="Contract Type" filterTerms={filterContract} handleSelect={handleFilterContractSelect}/>
           <ComboBox filterTitle="City" filterTerms={filterCity} handleSelect={handleFilterCitySelect}/>
