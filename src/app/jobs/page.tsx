@@ -63,7 +63,8 @@ enum ACTIONS {
   SET_FILTER_TERMS_CONTRACT = 'set-filter-terms-contract',
   SET_FILTER_TERMS_CITY = 'set-filter-terms-city',
   SET_FILTER_TERMS_REGION = 'set-filter-terms-region',
-  SET_FILTER_TERMS_COUNTRY = 'set-filter-terms-country'
+  SET_FILTER_TERMS_COUNTRY = 'set-filter-terms-country',
+  UPDATE_FILTER_TERMS = 'update-filter-terms'
 }
 
 type FilterListAction = {
@@ -84,21 +85,23 @@ function reducer(state: State, action: FilterListAction): State {
         jobsArr: [...(action.jobsArr ?? [])]
       };
     case ACTIONS.FILTER_JOBS:
-      let filteredJobs;
-      const filter = action.filter;
-      if(filter) {
-        filteredJobs = (!action.filter?.filterPosition || action.filter?.filterPosition === filterAll) ? state.jobsArr: state.jobsArr.filter((job) => job.position.toLowerCase().includes(filter.filterPosition.toLowerCase()));
-        filteredJobs = (!action.filter?.filterRole || action.filter?.filterRole === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.role.toLowerCase().includes(filter.filterRole.toLowerCase()));
-        filteredJobs = (!action.filter?.filterContract || action.filter?.filterContract === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.contract.toLowerCase().includes(filter.filterContract.toLowerCase()));
-        filteredJobs = (!action.filter?.filterCity || action.filter?.filterCity === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.city.toLowerCase().includes(filter.filterCity.toLowerCase()));
-        filteredJobs = (!action.filter?.filterRegion || action.filter?.filterRegion === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.region.toLowerCase().includes(filter.filterRegion.toLowerCase()));
-        filteredJobs = (!action.filter?.filterCountry || action.filter?.filterCountry === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.country.toLowerCase().includes(filter.filterCountry?.toLowerCase()));
-        filteredJobs = filteredJobs.filter(job => job.headline?.toLowerCase().includes(filter.filterHeadline?.toLowerCase()));
+      {
+        let filteredJobs;
+        const filter = action.filter;
+        if(filter) {
+          filteredJobs = (!action.filter?.filterPosition || action.filter?.filterPosition === filterAll) ? state.jobsArr: state.jobsArr.filter((job) => job.position.toLowerCase().includes(filter.filterPosition.toLowerCase()));
+          filteredJobs = (!action.filter?.filterRole || action.filter?.filterRole === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.role.toLowerCase().includes(filter.filterRole.toLowerCase()));
+          filteredJobs = (!action.filter?.filterContract || action.filter?.filterContract === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.contract.toLowerCase().includes(filter.filterContract.toLowerCase()));
+          filteredJobs = (!action.filter?.filterCity || action.filter?.filterCity === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.city.toLowerCase().includes(filter.filterCity.toLowerCase()));
+          filteredJobs = (!action.filter?.filterRegion || action.filter?.filterRegion === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.region.toLowerCase().includes(filter.filterRegion.toLowerCase()));
+          filteredJobs = (!action.filter?.filterCountry || action.filter?.filterCountry === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.country.toLowerCase().includes(filter.filterCountry?.toLowerCase()));
+          filteredJobs = filteredJobs.filter(job => job.headline?.toLowerCase().includes(filter.filterHeadline?.toLowerCase()));
+        }
+        return {
+          ...state,
+          filteredJobsArr: [...(filteredJobs ?? [])]
+        };
       }
-      return {
-        ...state,
-        filteredJobsArr: [...(filteredJobs ?? [])]
-      };
     case ACTIONS.SET_FAVORITE:
       const job: (JobProps | undefined) = state.jobsArr?.find(job => job.id === action.id);
       if(job) {
@@ -143,6 +146,29 @@ function reducer(state: State, action: FilterListAction): State {
         ...state,
         filterListCountry: [filterAll, ...Array.from(new Set((action.jobsArr ?? []).map((job: JobProps) => job.country.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
       };
+    case ACTIONS.UPDATE_FILTER_TERMS:
+      {
+        const filter = action.filter;
+        if(filter) 
+        {
+          const filterListPosition = ((filter.filterPosition === "") || (filter.filterPosition === filterAll)) ? [filterAll, ...Array.from(new Set((action.jobsArr ?? []).map((job: JobProps) => job.position.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListPosition;
+          const filterListRole = ((filter.filterRole === "") || (filter.filterRole === filterAll)) ? [filterAll, ...Array.from(new Set((action.jobsArr ?? []).map((job: JobProps) => job.role.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListRole;
+          const filterListContract = ((filter.filterContract === "") || (filter.filterContract === filterAll)) ? [filterAll, ...Array.from(new Set((action.jobsArr ?? []).map((job: JobProps) => job.contract.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListContract;
+          const filterListCity = ((filter.filterCity === "") || (filter.filterCity === filterAll)) ? [filterAll, ...Array.from(new Set((action.jobsArr ?? []).map((job: JobProps) => job.city.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListCity;
+          const filterListRegion = ((filter.filterRegion === "") || (filter.filterRegion === filterAll)) ? [filterAll, ...Array.from(new Set((action.jobsArr ?? []).map((job: JobProps) => job.region.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListRegion;
+          const filterListCountry = ((filter.filterCountry === "") || (filter.filterCountry === filterAll)) ? [filterAll, ...Array.from(new Set((action.jobsArr ?? []).map((job: JobProps) => job.country.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListCountry;
+          return {
+            ...state,
+            filterListPosition: filterListPosition,
+            filterListRole: filterListRole,
+            filterListContract: filterListContract,
+            filterListCity: filterListCity,
+            filterListRegion: filterListRegion,
+            filterListCountry: filterListCountry
+            };
+        } 
+        return state;
+      }
     default:
       return state;
   }
