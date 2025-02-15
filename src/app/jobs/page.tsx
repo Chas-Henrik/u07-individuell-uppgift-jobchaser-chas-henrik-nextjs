@@ -44,6 +44,7 @@ let jobsArrGlobal: JobProps[] = [];
 // State Reducer
 
 type State = {
+  jobsArr: JobProps[];
   filterListPosition: string[];
   filterListRole: string[];
   filterListContract: string[];
@@ -53,49 +54,72 @@ type State = {
 }
 
 enum ACTIONS {
-  INIT_FILTER_TERMS_POSITION = 'init-filter-terms-position',
-  INIT_FILTER_TERMS_ROLE = 'init-filter-terms-role',
-  INIT_FILTER_TERMS_CONTRACT = 'init-filter-terms-contract',
-  INIT_FILTER_TERMS_CITY = 'init-filter-terms-city',
-  INIT_FILTER_TERMS_REGION = 'init-filter-terms-region',
-  INIT_FILTER_TERMS_COUNTRY = 'init-filter-terms-country'
+  SET_JOBS = 'set-jobs',
+  SET_FAVORITE = 'set-favorite',
+  SET_FILTER_TERMS_POSITION = 'set-filter-terms-position',
+  SET_FILTER_TERMS_ROLE = 'set-filter-terms-role',
+  SET_FILTER_TERMS_CONTRACT = 'set-filter-terms-contract',
+  SET_FILTER_TERMS_CITY = 'set-filter-terms-city',
+  SET_FILTER_TERMS_REGION = 'set-filter-terms-region',
+  SET_FILTER_TERMS_COUNTRY = 'set-filter-terms-country'
 }
 
 type FilterListAction = {
   type: ACTIONS;
   payload?: JobProps[];
+  id?: string;
+  favorite?: boolean;
 }
 
 const filterAll = 'all';
 
 function reducer(state: State, action: FilterListAction): State {
   switch (action.type) {
-    case ACTIONS.INIT_FILTER_TERMS_POSITION:
+    case ACTIONS.SET_JOBS:
+      return {
+        ...state,
+        jobsArr: [...(action.payload ?? [])]
+      };
+    case ACTIONS.SET_FAVORITE:
+      const job: (JobProps | undefined) = state.jobsArr?.find(job => job.id === action.id);
+      if(job) {
+        job.favorite = action.favorite!;
+        if (action.favorite) {
+          addLocalStorageFavorites(job);
+        } else {
+          removeLocalStorageFavorites(job);
+        }
+      }
+      return {
+        ...state,
+        jobsArr: [...state.jobsArr]
+      };
+    case ACTIONS.SET_FILTER_TERMS_POSITION:
       return {
         ...state,
         filterListPosition: [filterAll, ...Array.from(new Set((action.payload ?? []).map((job: JobProps) => job.position.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
       };
-    case ACTIONS.INIT_FILTER_TERMS_ROLE:
+    case ACTIONS.SET_FILTER_TERMS_ROLE:
       return {
         ...state,
         filterListRole: [filterAll, ...Array.from(new Set((action.payload ?? []).map((job: JobProps) => job.role.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
       };
-    case ACTIONS.INIT_FILTER_TERMS_CONTRACT:
+    case ACTIONS.SET_FILTER_TERMS_CONTRACT:
       return {
         ...state,
         filterListContract: [filterAll, ...Array.from(new Set((action.payload ?? []).map((job: JobProps) => job.contract.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
       };
-    case ACTIONS.INIT_FILTER_TERMS_CITY:
+    case ACTIONS.SET_FILTER_TERMS_CITY:
     return {
       ...state,
       filterListCity: [filterAll, ...Array.from(new Set((action.payload ?? []).map((job: JobProps) => job.city.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
     };
-    case ACTIONS.INIT_FILTER_TERMS_REGION:
+    case ACTIONS.SET_FILTER_TERMS_REGION:
       return {
         ...state,
         filterListRegion: [filterAll, ...Array.from(new Set((action.payload ?? []).map((job: JobProps) => job.region.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
       };
-    case ACTIONS.INIT_FILTER_TERMS_COUNTRY:
+    case ACTIONS.SET_FILTER_TERMS_COUNTRY:
       return {
         ...state,
         filterListCountry: [filterAll, ...Array.from(new Set((action.payload ?? []).map((job: JobProps) => job.country.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
@@ -169,6 +193,7 @@ function filterReducer(filter: FilterState, action:  FilterAction): FilterState 
 
 export default function Home() {
   const [state, dispatch] = useReducer(reducer, { 
+    jobsArr: [],
     filterListPosition: [], 
     filterListRole: [], 
     filterListContract: [], 
@@ -185,7 +210,6 @@ export default function Home() {
     filterCountry: '',
     filterHeadline: ''
   });
-  const [allJobs, setAllJobs] = useState<JobProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const themeContext = useContext(ThemeContext);
   if (!themeContext) {
@@ -199,21 +223,6 @@ export default function Home() {
     boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
   };
 
-  const SetFavoriteEvent = (id: string, favorite: boolean) => {
-
-    setAllJobs((prevJobs) => {
-      const job: (JobProps | undefined) = prevJobs.find(job => job.id === id);
-      if (job) {
-        job.favorite = favorite;
-        if (favorite) {
-          addLocalStorageFavorites(job);
-        } else {
-          removeLocalStorageFavorites(job);
-        }
-      }
-      return [...prevJobs];
-    });
-  }
 
   useEffect(() => {
     let jobsArr: JobProps[] = [];
@@ -221,7 +230,7 @@ export default function Home() {
     function ParseData(data: JobData): JobProps {
       const job: JobProps = {
         id: data.id,
-        SetFavoriteClickedEvent: SetFavoriteEvent,
+        SetFavoriteClickedEvent: (id: string, favorite: boolean) => dispatch({type: ACTIONS.SET_FAVORITE, id: id, favorite: favorite}),
         favorite: false,
         logo_url:  data.logo_url ?? '',
         employer:  data.employer.name ?? '',
@@ -241,12 +250,12 @@ export default function Home() {
     }
 
     function InitFilters() {
-      dispatch({type: ACTIONS.INIT_FILTER_TERMS_POSITION, payload: jobsArrGlobal});
-      dispatch({type: ACTIONS.INIT_FILTER_TERMS_ROLE, payload: jobsArrGlobal});
-      dispatch({type: ACTIONS.INIT_FILTER_TERMS_CONTRACT, payload: jobsArrGlobal});
-      dispatch({type: ACTIONS.INIT_FILTER_TERMS_CITY, payload: jobsArrGlobal});
-      dispatch({type: ACTIONS.INIT_FILTER_TERMS_REGION, payload: jobsArrGlobal});
-      dispatch({type: ACTIONS.INIT_FILTER_TERMS_COUNTRY, payload: jobsArrGlobal});
+      dispatch({type: ACTIONS.SET_FILTER_TERMS_POSITION, payload: jobsArrGlobal});
+      dispatch({type: ACTIONS.SET_FILTER_TERMS_ROLE, payload: jobsArrGlobal});
+      dispatch({type: ACTIONS.SET_FILTER_TERMS_CONTRACT, payload: jobsArrGlobal});
+      dispatch({type: ACTIONS.SET_FILTER_TERMS_CITY, payload: jobsArrGlobal});
+      dispatch({type: ACTIONS.SET_FILTER_TERMS_REGION, payload: jobsArrGlobal});
+      dispatch({type: ACTIONS.SET_FILTER_TERMS_COUNTRY, payload: jobsArrGlobal});
     }
 
     async function FetchData(): Promise<void> {
@@ -262,7 +271,7 @@ export default function Home() {
           totCount = dataObj?.total.value ?? 0;
           jobsArr = jobsArr.concat(dataObj?.hits.map((job:JobData) => ParseData(job)) ?? []);
           jobsArr.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
-          setAllJobs(jobsArr);
+          dispatch({type: ACTIONS.SET_JOBS, payload: jobsArr});
           pageNum++;
         } while (pageNum*pageSize < totCount);
         jobsArrGlobal = [...jobsArr];
@@ -277,8 +286,8 @@ export default function Home() {
     function InitGlobalData(): void {
       const favoriteJobs = readLocalStorageFavorites();
       jobsArrGlobal.forEach(job => job.favorite = favoriteJobs.some(favJob => favJob.id === job.id));
-      jobsArrGlobal.forEach((job) => job.SetFavoriteClickedEvent = SetFavoriteEvent);
-      setAllJobs([...jobsArrGlobal]);
+      jobsArrGlobal.forEach((job) => job.SetFavoriteClickedEvent = (id: string, favorite: boolean) => dispatch({type: ACTIONS.SET_FAVORITE, id: id, favorite: favorite}));
+      dispatch({type: ACTIONS.SET_JOBS, payload: jobsArrGlobal});
     }
 
     // Don't fetch data from API if we already have it
@@ -298,7 +307,7 @@ export default function Home() {
     
   }, []);
 
-  let filteredJobs = (!filter.filterPosition || filter.filterPosition === filterAll) ? allJobs: allJobs.filter((job) => job.position.toLowerCase().includes(filter.filterPosition.toLowerCase()));
+  let filteredJobs = (!filter.filterPosition || filter.filterPosition === filterAll) ? state.jobsArr: state.jobsArr.filter((job) => job.position.toLowerCase().includes(filter.filterPosition.toLowerCase()));
   filteredJobs = (!filter.filterRole || filter.filterRole === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.role.toLowerCase().includes(filter.filterRole.toLowerCase()));
   filteredJobs = (!filter.filterContract || filter.filterContract === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.contract.toLowerCase().includes(filter.filterContract.toLowerCase()));
   filteredJobs = (!filter.filterCity || filter.filterCity === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.city.toLowerCase().includes(filter.filterCity.toLowerCase()));
