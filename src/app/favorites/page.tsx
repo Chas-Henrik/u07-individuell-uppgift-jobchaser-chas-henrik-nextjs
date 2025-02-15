@@ -26,9 +26,9 @@ export default function Favorites() {
             if (job) {
                 job.favorite = favorite;
                 if (favorite) {
-                addLocalStorageFavorites(job);
+                    addLocalStorageFavorites(job);
                 } else {
-                removeLocalStorageFavorites(job);
+                    removeLocalStorageFavorites(job);
                 }
             }
             return [...prevJobs];
