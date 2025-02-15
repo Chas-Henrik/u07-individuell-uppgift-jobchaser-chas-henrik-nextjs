@@ -46,24 +46,12 @@ let jobsArrGlobal: JobProps[] = [];
 type State = {
   jobsArr: JobProps[];
   filteredJobsArr: JobProps[];
-  filterListPosition: string[];
-  filterListRole: string[];
-  filterListContract: string[];
-  filterListCity: string[];
-  filterListRegion: string[];
-  filterListCountry: string[];
 }
 
 enum ACTIONS {
   SET_JOBS = 'set-jobs',
   FILTER_JOBS = 'filter-jobs',
   SET_FAVORITE = 'set-favorite',
-  SET_FILTER_TERMS_POSITION = 'set-filter-terms-position',
-  SET_FILTER_TERMS_ROLE = 'set-filter-terms-role',
-  SET_FILTER_TERMS_CONTRACT = 'set-filter-terms-contract',
-  SET_FILTER_TERMS_CITY = 'set-filter-terms-city',
-  SET_FILTER_TERMS_REGION = 'set-filter-terms-region',
-  SET_FILTER_TERMS_COUNTRY = 'set-filter-terms-country',
   UPDATE_FILTER_TERMS = 'update-filter-terms'
 }
 
@@ -81,9 +69,27 @@ type FilterListAction = {
 
 const filterAll = 'all';
 
+let filterListPosition: string[] = [];
+let filterListRole: string[] = [];
+let filterListContract: string[] = [];
+let filterListCity : string[] = [];
+let filterListRegion : string[] = [];
+let filterListCountry : string[] = [];
+
+
+function InitFilters(jobsArray: JobProps[]): void {
+  filterListPosition = [filterAll, ...Array.from(new Set(jobsArray.map(job => job.position.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))];
+  filterListRole = [filterAll, ...Array.from(new Set(jobsArray.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))];
+  filterListContract = [filterAll, ...Array.from(new Set(jobsArray.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))];
+  filterListCity = [filterAll, ...Array.from(new Set(jobsArray.map(job => job.city.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))];
+  filterListRegion = [filterAll, ...Array.from(new Set(jobsArray.map(job => job.region.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))];
+  filterListCountry = [filterAll, ...Array.from(new Set(jobsArray.map(job => job.country.toLowerCase()))).filter((term): term is string => term !== null).sort((a, b) => a.localeCompare(b))];
+}
+
 function reducer(state: State, action: FilterListAction): State {
   switch (action.type) {
     case ACTIONS.SET_JOBS:
+      InitFilters(action.payload.jobsArr ?? []);
       return {
         ...state,
         jobsArr: [...(action.payload.jobsArr ?? [])]
@@ -120,56 +126,17 @@ function reducer(state: State, action: FilterListAction): State {
         ...state,
         jobsArr: [...state.jobsArr]
       };
-    case ACTIONS.SET_FILTER_TERMS_POSITION:
-      return {
-        ...state,
-        filterListPosition: [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.position.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
-      };
-    case ACTIONS.SET_FILTER_TERMS_ROLE:
-      return {
-        ...state,
-        filterListRole: [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.role.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
-      };
-    case ACTIONS.SET_FILTER_TERMS_CONTRACT:
-      return {
-        ...state,
-        filterListContract: [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.contract.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
-      };
-    case ACTIONS.SET_FILTER_TERMS_CITY:
-    return {
-      ...state,
-      filterListCity: [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.city.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
-    };
-    case ACTIONS.SET_FILTER_TERMS_REGION:
-      return {
-        ...state,
-        filterListRegion: [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.region.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
-      };
-    case ACTIONS.SET_FILTER_TERMS_COUNTRY:
-      return {
-        ...state,
-        filterListCountry: [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.country.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
-      };
     case ACTIONS.UPDATE_FILTER_TERMS:  // This is not used yet
       {
         const filter = action.payload.filter;
         if(filter) 
         {
-          const filterListPosition = ((filter.filterPosition === "") || (filter.filterPosition === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.position.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListPosition;
-          const filterListRole = ((filter.filterRole === "") || (filter.filterRole === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.role.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListRole;
-          const filterListContract = ((filter.filterContract === "") || (filter.filterContract === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.contract.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListContract;
-          const filterListCity = ((filter.filterCity === "") || (filter.filterCity === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.city.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListCity;
-          const filterListRegion = ((filter.filterRegion === "") || (filter.filterRegion === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.region.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListRegion;
-          const filterListCountry = ((filter.filterCountry === "") || (filter.filterCountry === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.country.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : state.filterListCountry;
-          return {
-            ...state,
-            filterListPosition: filterListPosition,
-            filterListRole: filterListRole,
-            filterListContract: filterListContract,
-            filterListCity: filterListCity,
-            filterListRegion: filterListRegion,
-            filterListCountry: filterListCountry
-            };
+          filterListPosition = ((filter.filterPosition === "") || (filter.filterPosition === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.position.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : filterListPosition;
+          filterListRole = ((filter.filterRole === "") || (filter.filterRole === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.role.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : filterListRole;
+          filterListContract = ((filter.filterContract === "") || (filter.filterContract === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.contract.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : filterListContract;
+          filterListCity = ((filter.filterCity === "") || (filter.filterCity === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.city.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : filterListCity;
+          filterListRegion = ((filter.filterRegion === "") || (filter.filterRegion === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.region.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : filterListRegion;
+          filterListCountry = ((filter.filterCountry === "") || (filter.filterCountry === filterAll)) ? [filterAll, ...Array.from(new Set((action.payload.jobsArr ?? []).map((job: JobProps) => job.country.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))] : filterListCountry;
         } 
         return state;
       }
@@ -254,13 +221,7 @@ function applyFilters(jobsArr: JobProps[], filter:FilterState): JobProps[] {
 export default function Home() {
   const [state, dispatch] = useReducer(reducer, { 
     jobsArr: [],
-    filteredJobsArr: [],
-    filterListPosition: [], 
-    filterListRole: [], 
-    filterListContract: [], 
-    filterListCity: [], 
-    filterListRegion: [], 
-    filterListCountry: [] 
+    filteredJobsArr: []
   });
   const [filter, dispatchFilter] = useReducer(filterReducer, { 
     filterPosition: '', 
@@ -310,15 +271,6 @@ export default function Home() {
       return job;
     }
 
-    function InitFilters() {
-      dispatch({type: ACTIONS.SET_FILTER_TERMS_POSITION, payload: {jobsArr: jobsArrGlobal}});
-      dispatch({type: ACTIONS.SET_FILTER_TERMS_ROLE, payload: {jobsArr: jobsArrGlobal}});
-      dispatch({type: ACTIONS.SET_FILTER_TERMS_CONTRACT, payload: {jobsArr: jobsArrGlobal}});
-      dispatch({type: ACTIONS.SET_FILTER_TERMS_CITY, payload: {jobsArr: jobsArrGlobal}});
-      dispatch({type: ACTIONS.SET_FILTER_TERMS_REGION, payload: {jobsArr: jobsArrGlobal}});
-      dispatch({type: ACTIONS.SET_FILTER_TERMS_COUNTRY, payload: {jobsArr: jobsArrGlobal}});
-    }
-
     async function FetchData(): Promise<void> {
       let pageNum = 0;
       const pageSize = 100;
@@ -339,7 +291,6 @@ export default function Home() {
       } catch (error) {
         console.error(error);
       } finally {
-        InitFilters();
         setIsLoading(false);
       }
     }
@@ -361,7 +312,6 @@ export default function Home() {
       } catch (error) {
         console.error(error);
       } finally {
-        InitFilters();
         setIsLoading(false);
       }
     }
@@ -370,19 +320,19 @@ export default function Home() {
 
   const filteredJobs = applyFilters(state.jobsArr, filter);
 
-  // Perhaps we should re-run InitFilters() when the filters change, but for now we'll just re-run the filtering
+  // Perhaps we should re-run InitFilters(jobsArrGlobal) when the filters change, but for now we'll just re-run the filtering
 
   return (
     <>
       <details style={themeStyles} className={styles.searchContainer}>
         <summary className={styles.summary}>Filters</summary>
         <article className={styles.filtersContainer}>
-          <ComboBox filterTitle="Position" filterTerms={state.filterListPosition ?? []} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_POSITION, payload: value })}/>
-          <ComboBox filterTitle="Role" filterTerms={state.filterListRole ?? []} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_ROLE, payload: value })}/>
-          <ComboBox filterTitle="Contract Type" filterTerms={state.filterListContract ?? []} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_CONTRACT, payload: value })}/>
-          <ComboBox filterTitle="City" filterTerms={state.filterListCity ?? []} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_CITY, payload: value })}/>
-          <ComboBox filterTitle="Region" filterTerms={state.filterListRegion ?? []} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_REGION, payload: value })}/>
-          <ComboBox filterTitle="Country" filterTerms={state.filterListCountry ?? []} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_COUNTRY, payload: value })}/>
+          <ComboBox filterTitle="Position" filterTerms={filterListPosition} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_POSITION, payload: value })}/>
+          <ComboBox filterTitle="Role" filterTerms={filterListRole} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_ROLE, payload: value })}/>
+          <ComboBox filterTitle="Contract Type" filterTerms={filterListContract} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_CONTRACT, payload: value })}/>
+          <ComboBox filterTitle="City" filterTerms={filterListCity} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_CITY, payload: value })}/>
+          <ComboBox filterTitle="Region" filterTerms={filterListRegion} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_REGION, payload: value })}/>
+          <ComboBox filterTitle="Country" filterTerms={filterListCountry} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_COUNTRY, payload: value })}/>
         </article>
         <SearchBar searchTerm={filter.filterHeadline} searchContext={"'Headline'"} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_HEADLINE, payload: e.target.value })}/>
       </details>
