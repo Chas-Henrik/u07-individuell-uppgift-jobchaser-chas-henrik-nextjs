@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './Jobs.module.css';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useReducer } from 'react';
 import { SpinnerCircular } from 'spinners-react';
 import { JobProps } from '@/components/Job';
 import { readLocalStorageFavorites, addLocalStorageFavorites, removeLocalStorageFavorites } from '@/store/localStorage';
@@ -39,13 +39,41 @@ type JobData = {
   webpage_url: string;
 }
 
+const filterAll = 'all';
+
 let jobsArrGlobal: JobProps[] = [];
 
+const ACTIONS = {
+  INIT_FILTER_TERMS: 'init-filter-terms',
+  SET_FILTER_TERM: 'set-filter-term',
+}
+
+
+function filterListReducer(filterListPosition: { filterList: string[] }, action: {type: typeof ACTIONS.INIT_FILTER_TERMS, payload: JobProps[]}) {
+  switch (action.type) {
+    case ACTIONS.INIT_FILTER_TERMS:
+      return {
+        ...filterListPosition,
+        filterList: [filterAll, ...Array.from(new Set((action.payload ?? []).map((job: JobProps) => job.position.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]
+      };
+    default:
+      return filterListPosition;
+  }
+}
+
+function filterReducer(filterPosition: string, action:  {type: typeof ACTIONS.SET_FILTER_TERM, payload: string}) {
+  switch (action.type) {
+    case ACTIONS.SET_FILTER_TERM:
+      return action.payload ?? '';
+    default:
+      return filterPosition;
+  }
+}
+
 export default function Home() {
-  const filterAll = 'all';
+  const [filterListPosition, dispatchFilterListPosition] = useReducer(filterListReducer, { filterList: [] });
+  const [filterPosition, dispatchFilterPosition] = useReducer(filterReducer, "");
   const [allJobs, setAllJobs] = useState<JobProps[]>([]);
-  const [filterPosition, setFilterPosition] = useState<string[]>([]);
-  const [selectedPosition, setSelectedPosition] = useState<string>('');
   const [filterRole, setFilterRole] = useState<string[]>([]);
   const [selectedRole, setSelectedRole] = useState<string>('');
   const [filterContract, setFilterContract] = useState<string[]>([]);
@@ -59,7 +87,6 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
-  const handleFilterPositionSelect = (value: string) => setSelectedPosition(value);
   const handleFilterRoleSelect = (value: string) => setSelectedRole(value);
   const handleFilterContractSelect = (value: string) => setSelectedContract(value);
   const handleFilterCitySelect = (value: string) => setSelectedCity(value);
@@ -119,7 +146,7 @@ export default function Home() {
     }
 
     function InitFilters() {
-      setFilterPosition([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.position.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
+      dispatchFilterListPosition({type: ACTIONS.INIT_FILTER_TERMS, payload: jobsArrGlobal });
       setFilterRole([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.role.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
       setFilterContract([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.contract.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
       setFilterCity([filterAll, ...Array.from(new Set(jobsArrGlobal.map(job => job.city.toLowerCase()))).filter((term): term is string => term !== null && term !== '').sort((a, b) => a.localeCompare(b))]);
@@ -176,7 +203,7 @@ export default function Home() {
     
   }, []);
 
-  let filteredJobs = (!selectedPosition || selectedPosition === filterAll) ? allJobs: allJobs.filter((job) => job.position.toLowerCase().includes(selectedPosition.toLowerCase()));
+  let filteredJobs = (!filterPosition || filterPosition === filterAll) ? allJobs: allJobs.filter((job) => job.position.toLowerCase().includes(filterPosition.toLowerCase()));
   filteredJobs = (!selectedRole || selectedRole === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.role.toLowerCase().includes(selectedRole.toLowerCase()));
   filteredJobs = (!selectedContract || selectedContract === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.contract.toLowerCase().includes(selectedContract.toLowerCase()));
   filteredJobs = (!selectedCity || selectedCity === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.city.toLowerCase().includes(selectedCity.toLowerCase()));
@@ -185,12 +212,14 @@ export default function Home() {
 
   const searchedJobs = filteredJobs.filter(job => job.headline?.toLowerCase().includes(searchTerm.toLowerCase()));
 
+  // Perhaps we should re-run InitFilters() when the filters change, but for now we'll just re-run the filtering
+
   return (
     <>
       <details style={themeStyles} className={styles.searchContainer}>
         <summary className={styles.summary}>Filters</summary>
         <article className={styles.filtersContainer}>
-          <ComboBox filterTitle="Position" filterTerms={filterPosition} handleSelect={handleFilterPositionSelect}/>
+          <ComboBox filterTitle="Position" filterTerms={filterListPosition.filterList ?? []} handleSelect={(value:string) => dispatchFilterPosition({type: ACTIONS.SET_FILTER_TERM, payload: value })}/>
           <ComboBox filterTitle="Role" filterTerms={filterRole} handleSelect={handleFilterRoleSelect}/>
           <ComboBox filterTitle="Contract Type" filterTerms={filterContract} handleSelect={handleFilterContractSelect}/>
           <ComboBox filterTitle="City" filterTerms={filterCity} handleSelect={handleFilterCitySelect}/>
