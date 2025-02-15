@@ -191,6 +191,17 @@ function filterReducer(filter: FilterState, action:  FilterAction): FilterState 
   }
 }
 
+function applyFilters(jobsArr: JobProps[], filter:FilterState): JobProps[] {
+  let filteredJobs = (!filter.filterPosition || filter.filterPosition === filterAll) ? jobsArr: jobsArr.filter((job) => job.position.toLowerCase().includes(filter.filterPosition.toLowerCase()));
+  filteredJobs = (!filter.filterRole || filter.filterRole === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.role.toLowerCase().includes(filter.filterRole.toLowerCase()));
+  filteredJobs = (!filter.filterContract || filter.filterContract === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.contract.toLowerCase().includes(filter.filterContract.toLowerCase()));
+  filteredJobs = (!filter.filterCity || filter.filterCity === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.city.toLowerCase().includes(filter.filterCity.toLowerCase()));
+  filteredJobs = (!filter.filterRegion || filter.filterRegion === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.region.toLowerCase().includes(filter.filterRegion.toLowerCase()));
+  filteredJobs = (!filter.filterCountry || filter.filterCountry === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.country.toLowerCase().includes(filter.filterCountry.toLowerCase()));
+
+  return filteredJobs.filter(job => job.headline?.toLowerCase().includes(filter.filterHeadline.toLowerCase()));
+}
+
 export default function Home() {
   const [state, dispatch] = useReducer(reducer, { 
     jobsArr: [],
@@ -307,14 +318,7 @@ export default function Home() {
     
   }, []);
 
-  let filteredJobs = (!filter.filterPosition || filter.filterPosition === filterAll) ? state.jobsArr: state.jobsArr.filter((job) => job.position.toLowerCase().includes(filter.filterPosition.toLowerCase()));
-  filteredJobs = (!filter.filterRole || filter.filterRole === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.role.toLowerCase().includes(filter.filterRole.toLowerCase()));
-  filteredJobs = (!filter.filterContract || filter.filterContract === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.contract.toLowerCase().includes(filter.filterContract.toLowerCase()));
-  filteredJobs = (!filter.filterCity || filter.filterCity === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.city.toLowerCase().includes(filter.filterCity.toLowerCase()));
-  filteredJobs = (!filter.filterRegion || filter.filterRegion === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.region.toLowerCase().includes(filter.filterRegion.toLowerCase()));
-  filteredJobs = (!filter.filterCountry || filter.filterCountry === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.country.toLowerCase().includes(filter.filterCountry.toLowerCase()));
-
-  const searchedJobs = filteredJobs.filter(job => job.headline?.toLowerCase().includes(filter.filterHeadline.toLowerCase()));
+  const filteredJobs = applyFilters(state.jobsArr, filter);
 
   // Perhaps we should re-run InitFilters() when the filters change, but for now we'll just re-run the filtering
 
@@ -333,7 +337,7 @@ export default function Home() {
         <SearchBar searchTerm={filter.filterHeadline} searchContext={"'Headline'"} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_HEADLINE, payload: e.target.value })}/>
       </details>
       <main className={styles.main} style={themeStyles}>
-        <JobList jobsArr={searchedJobs}/>
+        <JobList jobsArr={filteredJobs}/>
         {isLoading && <div style={themeStyles} className={styles.spinnerCircular}><SpinnerCircular size="15rem" thickness={250} speed={100}  color="#0000FF" /><p className={styles.spinnerLabel}>Loading...</p></div>}
       </main>
     </>
