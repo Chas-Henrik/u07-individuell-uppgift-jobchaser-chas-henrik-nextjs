@@ -114,6 +114,7 @@ type FilterState = {
   filterCity: string;
   filterRegion: string;
   filterCountry: string;
+  filterHeadline: string;
 }
 
 enum FILTER_ACTIONS {
@@ -122,7 +123,8 @@ enum FILTER_ACTIONS {
   SET_FILTER_CONTRACT = 'set-filter-contract',
   SET_FILTER_CITY = 'set-filter-city',
   SET_FILTER_REGION = 'set-filter-region',
-  SET_FILTER_COUNTRY = 'set-filter-country'
+  SET_FILTER_COUNTRY = 'set-filter-country',
+  SET_FILTER_HEADLINE = 'set-filter-headline'
 }
 
 type FilterAction = {
@@ -156,6 +158,10 @@ function filterReducer(filter: FilterState, action:  FilterAction): FilterState 
       return { ...filter,
         filterCountry: action.payload ?? ''
       };
+    case FILTER_ACTIONS.SET_FILTER_HEADLINE:
+      return { ...filter,
+        filterHeadline: action.payload ?? ''
+      };
     default:
     return filter;
   }
@@ -176,12 +182,11 @@ export default function Home() {
     filterContract: '', 
     filterCity: '', 
     filterRegion: '', 
-    filterCountry: '' 
+    filterCountry: '',
+    filterHeadline: ''
   });
   const [allJobs, setAllJobs] = useState<JobProps[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
   const themeContext = useContext(ThemeContext);
   if (!themeContext) {
     throw new Error("ThemeContext is undefined");
@@ -300,7 +305,7 @@ export default function Home() {
   filteredJobs = (!filter.filterRegion || filter.filterRegion === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.region.toLowerCase().includes(filter.filterRegion.toLowerCase()));
   filteredJobs = (!filter.filterCountry || filter.filterCountry === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.country.toLowerCase().includes(filter.filterCountry.toLowerCase()));
 
-  const searchedJobs = filteredJobs.filter(job => job.headline?.toLowerCase().includes(searchTerm.toLowerCase()));
+  const searchedJobs = filteredJobs.filter(job => job.headline?.toLowerCase().includes(filter.filterHeadline.toLowerCase()));
 
   // Perhaps we should re-run InitFilters() when the filters change, but for now we'll just re-run the filtering
 
@@ -316,7 +321,7 @@ export default function Home() {
           <ComboBox filterTitle="Region" filterTerms={state.filterListRegion ?? []} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_REGION, payload: value })}/>
           <ComboBox filterTitle="Country" filterTerms={state.filterListCountry ?? []} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_COUNTRY, payload: value })}/>
         </article>
-        <SearchBar searchTerm={searchTerm} searchContext={"'Headline'"} handleChange={handleSearch}/>
+        <SearchBar searchTerm={filter.filterHeadline} searchContext={"'Headline'"} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_HEADLINE, payload: e.target.value })}/>
       </details>
       <main className={styles.main} style={themeStyles}>
         <JobList jobsArr={searchedJobs}/>
