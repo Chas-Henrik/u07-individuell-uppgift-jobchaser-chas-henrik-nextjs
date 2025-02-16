@@ -10,6 +10,11 @@ import JobList from '@/components/JobList';
 import SearchBar from '@/components/SearchBar';
 import { ThemeContext } from "@/context/themeContext";
 
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'
+import { FilterState, setFilterPosition, setFilterRole, setFilterContract, setFilterCity, setFilterRegion, setFilterCountry, setFilterHeadline,
+  selectFilterPosition, selectFilterRole, selectFilterContract, selectFilterCity, selectFilterRegion, selectFilterCountry, selectFilterHeadline, 
+  } from '@/lib/features/filter/filterSlice'
+
 async function fetchJobs(url: string) {
   try {
       const response = await fetch(url);
@@ -147,94 +152,29 @@ function reducer(state: State, action: FilterListAction): State {
   }
 }
 
-// Filter Reducer
-
-type FilterState = {
-  filterPosition: string;
-  filterRole: string;
-  filterContract: string;
-  filterCity: string;
-  filterRegion: string;
-  filterCountry: string;
-  filterHeadline: string;
-}
-
-enum FILTER_ACTIONS {
-  SET_FILTER_POSITION = 'set-filter-position',
-  SET_FILTER_ROLE = 'set-filter-role',
-  SET_FILTER_CONTRACT = 'set-filter-contract',
-  SET_FILTER_CITY = 'set-filter-city',
-  SET_FILTER_REGION = 'set-filter-region',
-  SET_FILTER_COUNTRY = 'set-filter-country',
-  SET_FILTER_HEADLINE = 'set-filter-headline'
-}
-
-type FilterAction = {
-  type: FILTER_ACTIONS;
-  payload: string;
-}
-
-function filterReducer(filter: FilterState, action:  FilterAction): FilterState {
-  switch (action.type) {
-    case FILTER_ACTIONS.SET_FILTER_POSITION:
-      return { ...filter,
-        filterPosition: action.payload ?? ''
-      };
-    case FILTER_ACTIONS.SET_FILTER_ROLE:
-      return { ...filter,
-        filterRole: action.payload ?? ''
-      };
-    case FILTER_ACTIONS.SET_FILTER_CONTRACT:
-      return { ...filter,
-        filterContract: action.payload ?? ''
-      };
-    case FILTER_ACTIONS.SET_FILTER_CITY:
-      return { ...filter,
-        filterCity: action.payload ?? ''
-      };
-    case FILTER_ACTIONS.SET_FILTER_REGION:
-      return { ...filter,
-        filterRegion: action.payload ?? ''
-      };
-    case FILTER_ACTIONS.SET_FILTER_COUNTRY:
-      return { ...filter,
-        filterCountry: action.payload ?? ''
-      };
-    case FILTER_ACTIONS.SET_FILTER_HEADLINE:
-      return { ...filter,
-        filterHeadline: action.payload ?? ''
-      };
-    default:
-    return filter;
-  }
-}
-
-function applyFilters(jobsArr: JobProps[], filter:FilterState): JobProps[] {
-  let filteredJobs = (!filter.filterPosition || filter.filterPosition === filterAll) ? jobsArr: jobsArr.filter((job) => job.position.toLowerCase().includes(filter.filterPosition.toLowerCase()));
-  filteredJobs = (!filter.filterRole || filter.filterRole === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.role.toLowerCase().includes(filter.filterRole.toLowerCase()));
-  filteredJobs = (!filter.filterContract || filter.filterContract === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.contract.toLowerCase().includes(filter.filterContract.toLowerCase()));
-  filteredJobs = (!filter.filterCity || filter.filterCity === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.city.toLowerCase().includes(filter.filterCity.toLowerCase()));
-  filteredJobs = (!filter.filterRegion || filter.filterRegion === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.region.toLowerCase().includes(filter.filterRegion.toLowerCase()));
-  filteredJobs = (!filter.filterCountry || filter.filterCountry === filterAll) ? filteredJobs: filteredJobs.filter((job) => job.country.toLowerCase().includes(filter.filterCountry.toLowerCase()));
-
-  return filteredJobs.filter(job => job.headline?.toLowerCase().includes(filter.filterHeadline.toLowerCase()));
-}
 
 export default function Home() {
+  // Local state variables
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Redux Toolkit
+  const filterPosition = useAppSelector(selectFilterPosition);
+  const filterRole = useAppSelector(selectFilterRole);
+  const filterContract = useAppSelector(selectFilterContract);
+  const filterCity = useAppSelector(selectFilterCity);
+  const filterRegion = useAppSelector(selectFilterRegion);
+  const filterCountry = useAppSelector(selectFilterCountry);
+  const filterHeadline = useAppSelector(selectFilterHeadline);
+
+  const filterDispatch = useAppDispatch();
+
+  // useReducer
   const [state, dispatch] = useReducer(reducer, { 
     jobsArr: [],
     filteredJobsArr: []
   });
-  const [filter, dispatchFilter] = useReducer(filterReducer, { 
-    filterPosition: '', 
-    filterRole: '', 
-    filterContract: '', 
-    filterCity: '', 
-    filterRegion: '', 
-    filterCountry: '',
-    filterHeadline: ''
-  });
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Theme Context
   const themeContext = useContext(ThemeContext);
   if (!themeContext) {
     throw new Error("ThemeContext is undefined");
@@ -248,6 +188,17 @@ export default function Home() {
   };
 
 
+  function applyFilters(jobsArr: JobProps[]): JobProps[] {
+    let filteredJobs = (!filterPosition || filterPosition === filterAll) ? jobsArr : jobsArr.filter((job) => job.position.toLowerCase().includes(filterPosition.toLowerCase()));
+    filteredJobs = (!filterRole || filterRole === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.role.toLowerCase().includes(filterRole.toLowerCase()));
+    filteredJobs = (!filterContract || filterContract === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.contract.toLowerCase().includes(filterContract.toLowerCase()));
+    filteredJobs = (!filterCity || filterCity === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.city.toLowerCase().includes(filterCity.toLowerCase()));
+    filteredJobs = (!filterRegion || filterRegion === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.region.toLowerCase().includes(filterRegion.toLowerCase()));
+    filteredJobs = (!filterCountry || filterCountry === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.country.toLowerCase().includes(filterCountry.toLowerCase()));
+
+    return filteredJobs.filter(job => job.headline?.toLowerCase().includes(filterHeadline.toLowerCase()));
+  }
+  
   useEffect(() => {
     let jobsArr: JobProps[] = [];
 
@@ -320,7 +271,7 @@ export default function Home() {
     
   }, []);
 
-  const filteredJobs = applyFilters(state.jobsArr, filter);
+  const filteredJobs = applyFilters(state.jobsArr);
   UpdateFilterLists(filteredJobs); // Not sure if I want this...
 
   return (
@@ -328,14 +279,14 @@ export default function Home() {
       <details style={themeStyles} className={styles.searchContainer}>
         <summary className={styles.summary}>Filters</summary>
         <article className={styles.filtersContainer}>
-          <ComboBox filterTitle="Position" filterTerms={filterListPosition} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_POSITION, payload: value })}/>
-          <ComboBox filterTitle="Role" filterTerms={filterListRole} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_ROLE, payload: value })}/>
-          <ComboBox filterTitle="Contract Type" filterTerms={filterListContract} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_CONTRACT, payload: value })}/>
-          <ComboBox filterTitle="City" filterTerms={filterListCity} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_CITY, payload: value })}/>
-          <ComboBox filterTitle="Region" filterTerms={filterListRegion} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_REGION, payload: value })}/>
-          <ComboBox filterTitle="Country" filterTerms={filterListCountry} handleSelect={(value:string) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_COUNTRY, payload: value })}/>
+          <ComboBox filterTitle="Position" filterTerms={filterListPosition} handleSelect={(value:string) => filterDispatch(setFilterPosition(value))}/>
+          <ComboBox filterTitle="Role" filterTerms={filterListRole} handleSelect={(value:string) => filterDispatch(setFilterRole(value))}/>
+          <ComboBox filterTitle="Contract Type" filterTerms={filterListContract} handleSelect={(value:string) => filterDispatch(setFilterContract(value))}/>
+          <ComboBox filterTitle="City" filterTerms={filterListCity} handleSelect={(value:string) => filterDispatch(setFilterCity(value))}/>
+          <ComboBox filterTitle="Region" filterTerms={filterListRegion} handleSelect={(value:string) => filterDispatch(setFilterRegion(value))}/>
+          <ComboBox filterTitle="Country" filterTerms={filterListCountry} handleSelect={(value:string) => filterDispatch(setFilterCountry(value))}/>
         </article>
-        <SearchBar searchTerm={filter.filterHeadline} searchContext={"'Headline'"} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => dispatchFilter({type: FILTER_ACTIONS.SET_FILTER_HEADLINE, payload: e.target.value })}/>
+        <SearchBar searchTerm={filterHeadline} searchContext={"'Headline'"} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => filterDispatch(setFilterHeadline(e.target.value))}/>
       </details>
       <main className={styles.main} style={themeStyles}>
         <JobList jobsArr={filteredJobs}/>
