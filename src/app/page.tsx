@@ -12,7 +12,6 @@ export default function LandingPage() {
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
         color: darkTheme ? '#fff' : '#333',
-        boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
     };
 
     return (

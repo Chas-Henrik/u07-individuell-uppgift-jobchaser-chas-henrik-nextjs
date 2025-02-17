@@ -60,7 +60,7 @@ return (
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className={themeStyles + "shadow-lg overflow-hidden text-wrap text-ellipsis w-[250px] justify-between"}
+            className={themeStyles + "min-h-fit shadow-lg overflow-hidden text-wrap text-ellipsis w-[250px] justify-between"}
         >
             {value
             ? comboBoxItems.find((item) => item.value === value)?.label
