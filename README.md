@@ -15,7 +15,7 @@ The app supports the following features:
 6. Hover effects on all buttons (using Framer).
 
 The site has been published on Vercel:  
-[https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs-yunn.vercel.app/](https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs-yunn.vercel.app/)
+[https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/](https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/)
 
 ***
 *Known problems:*
@@ -113,6 +113,7 @@ Innehåller många bra funktioner och verktyg för att underlätta utveckling av
 
 Nackdelar:
 1. Dependency problem mellan olika versioner av mjukvaror.
+2. Kräver mer 'Know-How'.
 
 ### Vad menas med Routing? På vilket sätt löser NextJS Routing v.s "vanliga React"?
 En URL består av ett protokoll (t.ex. `https://`), en domän (t.ex. `chasacademy.se`) och en route (t.ex. `/studera-hos-oss`) och routing är navigeringen mellan olika routes.
