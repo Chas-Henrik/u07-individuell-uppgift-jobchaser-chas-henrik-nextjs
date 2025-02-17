@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { filterSlice } from './features/filter/filterSlice'
+import { jobsSlice } from '@/lib/features/lists/jobsSlice'
+import { filterSlice } from '@/lib/features/filters/filterSlice'
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
+            jobs: jobsSlice.reducer,
             filter: filterSlice.reducer,
         },
     })
