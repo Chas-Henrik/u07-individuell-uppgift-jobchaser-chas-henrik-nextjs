@@ -3,7 +3,26 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '@/lib/store'
 import { addLocalStorageFavorites, removeLocalStorageFavorites, readLocalStorageFavorites } from '@/store/localStorage';
 
-export type ApiJobType = {
+export type ApiJobData = {
+    id: string;
+    logo_url: string;
+    employer: { name: string };
+    headline: string;
+    occupation_group: { label: string };
+    occupation: { label: string };
+    publication_date: string;
+    application_deadline: string;
+    employment_type: { label: string };
+    workplace_address: { city: string; region: string; country: string };
+    webpage_url: string;
+}
+
+export type ApiJobType = { 
+    total: { value: number }, 
+    hits: ApiJobData[] 
+}
+
+export type JobType = {
     id: string;
     favorite: boolean;
     logo_url: string;
@@ -21,7 +40,7 @@ export type ApiJobType = {
 }
 
 export const fetchJobs = createAsyncThunk<
-    unknown,                // The resolved data type (what you return)
+    ApiJobType,             // The resolved data type (what you return)
     string,                 // The payload type you expect
     { rejectValue: string } // Optionally, the type of 'rejectWithValue'
 >(
@@ -41,8 +60,8 @@ export const fetchJobs = createAsyncThunk<
 
 // Define a type for the slice state
 export type JobsState = {
-    jobsArr: ApiJobType[];
-    favArr: ApiJobType[];
+    jobsArr: JobType[];
+    favArr: JobType[];
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
 }
@@ -65,20 +84,20 @@ export const jobsSlice = createSlice({
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
-        setJobs: (state, action: PayloadAction<ApiJobType[]>) => {
+        setJobs: (state, action: PayloadAction<JobType[]>) => {
             if(action.payload !== undefined && action.payload !== null) {
                 state.jobsArr = action.payload !== undefined ? action.payload : [];
             }
         },
-        appendJobs: (state, action: PayloadAction<ApiJobType[] | undefined>) => {
+        appendJobs: (state, action: PayloadAction<JobType[] | undefined>) => {
             if(action.payload !== undefined && action.payload !== null) {
                 state.jobsArr = state.jobsArr.concat(action.payload);
             }
         },
         setFavorite: (state, action: PayloadAction<FavoritePayload | undefined>) => {
             if(action.payload !== undefined && action.payload !== null) {
-                const job: (ApiJobType | undefined) = state.jobsArr?.find(job => job.id === action.payload?.id);
-                const favJob: (ApiJobType | undefined) = state.favArr?.find(job => job.id === action.payload?.id);
+                const job: (JobType | undefined) = state.jobsArr?.find(job => job.id === action.payload?.id);
+                const favJob: (JobType | undefined) = state.favArr?.find(job => job.id === action.payload?.id);
                 if(job) {
                     job.favorite = action.payload.favorite;
                 }

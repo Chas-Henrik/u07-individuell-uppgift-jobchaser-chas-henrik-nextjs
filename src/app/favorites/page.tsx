@@ -2,16 +2,17 @@
 
 import styles from './Favorites.module.css';
 import { useEffect, useContext } from "react";
+import { JobType } from '@/lib/features/lists/jobsSlice'; 
 import { JobProps } from '@/components/Job';
 import JobList from '@/components/JobList';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
-import { setFavorite, fetchFavorites,  selectFavorites } from '@/lib/features/lists/jobsSlice'; 
+import { setFavorite, fetchFavorites, selectFavorites } from '@/lib/features/lists/jobsSlice';
 
 import { ThemeContext } from "@/context/themeContext";
 
 export default function Favorites() {
     // Redux Toolkit (jobsSlice)
-    const favoriteJobs = useAppSelector(selectFavorites);
+    const favoriteJobs: JobType[] = useAppSelector(selectFavorites);
     const jobsDispatch = useAppDispatch();
 
     const themeContext = useContext(ThemeContext);

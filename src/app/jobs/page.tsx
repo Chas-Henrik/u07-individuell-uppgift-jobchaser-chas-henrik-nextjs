@@ -12,26 +12,15 @@ import { ComboBox } from '@/components/ComboBox';
 import JobList from '@/components/JobList';
 import SearchBar from '@/components/SearchBar';
 import { ThemeContext } from "@/context/themeContext";
+import { JobType } from '@/lib/features/lists/jobsSlice';
 
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setFilterPosition, setFilterRole, setFilterContract, setFilterCity, setFilterRegion, setFilterCountry, setFilterHeadline,
   selectFilterPosition, selectFilterRole, selectFilterContract, selectFilterCity, selectFilterRegion, selectFilterCountry, selectFilterHeadline
   } from '@/lib/features/filters/filterSlice'
-import { ApiJobType, fetchJobs, setJobs, appendJobs, setFavorite, updateFavorites, selectJobs, selectFavorites } from '@/lib/features/lists/jobsSlice'; 
+import { ApiJobType, ApiJobData, fetchJobs, setJobs, appendJobs, setFavorite, selectJobs } from '@/lib/features/lists/jobsSlice'; 
 
-type JobData = {
-  id: string;
-  logo_url: string;
-  employer: { name: string };
-  headline: string;
-  occupation_group: { label: string };
-  occupation: { label: string };
-  publication_date: string;
-  application_deadline: string;
-  employment_type: { label: string };
-  workplace_address: { city: string; region: string; country: string };
-  webpage_url: string;
-}
+
 
 const filterAll = 'all';
 
@@ -87,25 +76,18 @@ export default function Home() {
     boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
   };
 
+  // Event Handlers
+
   function SetFavoriteClickedEvent(id: string, favorite: boolean) {
     jobsDispatch(setFavorite({ id: id, favorite: favorite }));
   }
-
-  function applyFilters(jobsArr: JobProps[]): JobProps[] {
-    let filteredJobs = (!filterPosition || filterPosition === filterAll) ? jobsArr : jobsArr.filter((job) => job.position.toLowerCase().includes(filterPosition.toLowerCase()));
-    filteredJobs = (!filterRole || filterRole === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.role.toLowerCase().includes(filterRole.toLowerCase()));
-    filteredJobs = (!filterContract || filterContract === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.contract.toLowerCase().includes(filterContract.toLowerCase()));
-    filteredJobs = (!filterCity || filterCity === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.city.toLowerCase().includes(filterCity.toLowerCase()));
-    filteredJobs = (!filterRegion || filterRegion === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.region.toLowerCase().includes(filterRegion.toLowerCase()));
-    filteredJobs = (!filterCountry || filterCountry === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.country.toLowerCase().includes(filterCountry.toLowerCase()));
-
-    return filteredJobs.filter(job => job.headline?.toLowerCase().includes(filterHeadline.toLowerCase()));
-  }
   
+  // React Hooks
+
   useEffect(() => {
 
-    function ParseData(data: JobData, favorites: JobData[]): ApiJobType {
-      const job: ApiJobType = {
+    function ParseData(data: ApiJobData, favorites: JobType[]): JobType {
+      const job: JobType = {
         id: data.id,
         favorite: favorites.some(favJob => favJob.id === data.id),
         logo_url:  data.logo_url ?? '',
@@ -134,12 +116,12 @@ export default function Home() {
         setIsLoading(true);
         const favoriteJobs = readLocalStorageFavorites();
         do {
-          let jobsDataArr: ApiJobType[] = [];
+          let jobsDataArr: JobType[] = [];
           const resultAction = await jobsDispatch(fetchJobs(`https://jobsearch.api.jobtechdev.se/search?offset=${pageNum*pageSize}&limit=${pageSize}&remote=true`));
           if (fetchJobs.fulfilled.match(resultAction)) {
-            const dataObj = resultAction.payload as { total: { value: number }, hits: JobData[] };
+            const dataObj: ApiJobType = resultAction.payload;
             totCount = dataObj?.total.value ?? 0;
-            jobsDataArr = dataObj?.hits.map((job:JobData) => ParseData(job, favoriteJobs)) ?? [];
+            jobsDataArr = dataObj?.hits.map((job:ApiJobData) => ParseData(job, favoriteJobs)) ?? [];
           } else {
             throw new Error('Failed to fetch jobs');
           }
@@ -158,6 +140,20 @@ export default function Home() {
       FetchData();
     }
   }, []);
+
+
+  // Helper Functions
+
+  function applyFilters(jobsArr: JobProps[]): JobProps[] {
+    let filteredJobs = (!filterPosition || filterPosition === filterAll) ? jobsArr : jobsArr.filter((job) => job.position.toLowerCase().includes(filterPosition.toLowerCase()));
+    filteredJobs = (!filterRole || filterRole === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.role.toLowerCase().includes(filterRole.toLowerCase()));
+    filteredJobs = (!filterContract || filterContract === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.contract.toLowerCase().includes(filterContract.toLowerCase()));
+    filteredJobs = (!filterCity || filterCity === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.city.toLowerCase().includes(filterCity.toLowerCase()));
+    filteredJobs = (!filterRegion || filterRegion === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.region.toLowerCase().includes(filterRegion.toLowerCase()));
+    filteredJobs = (!filterCountry || filterCountry === filterAll) ? filteredJobs : filteredJobs.filter((job) => job.country.toLowerCase().includes(filterCountry.toLowerCase()));
+
+    return filteredJobs.filter(job => job.headline?.toLowerCase().includes(filterHeadline.toLowerCase()));
+  }
 
   const filteredJobs = applyFilters(jobsArray.map(job => ({ ...job, SetFavoriteClickedEvent: SetFavoriteClickedEvent })));
   UpdateFilterTerms(filteredJobs);
