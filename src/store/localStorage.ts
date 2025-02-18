@@ -1,4 +1,4 @@
-import { JobType } from '@/lib/features/lists/jobsSlice';
+import type { JobType } from '@/types/types'
 
 const LOCAL_STORAGE_KEY = "u07-jobchaser-chas-henrik-nextjs : favorites";
 
@@ -24,4 +24,9 @@ export function removeLocalStorageFavorites(dataObj: JobType) {
     const favorites = readLocalStorageFavorites()
     const newFavorites = favorites.filter(job => job.id !== dataObj.id);
     writeLocalStorageFavorites(newFavorites);
+}
+
+export function updateLocalStorageFavorites(dataObj: JobType) {
+    removeLocalStorageFavorites(dataObj);
+    addLocalStorageFavorites(dataObj);
 }

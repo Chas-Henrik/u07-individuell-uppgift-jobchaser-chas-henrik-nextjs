@@ -1,30 +1,15 @@
 'use client'
 
+import type { JobType } from '@/types/types'
 import styles from './Job.module.css';
 import Image from 'next/image';
 import { useContext } from "react";
 import { ThemeContext } from "@/context/themeContext";
+import { toggleFavorite } from '@/lib/features/lists/jobsSlice';
+import { useAppDispatch } from '@/lib/hooks';
 
-
-export type JobProps = {
-    id: string;
-    favorite: boolean;
-    logo_url: string;
-    employer:  string;
-    headline: string;
-    position: string;
-    role: string;
-    posted: string;
-    expires: string;
-    contract: string;
-    city: string;
-    region: string;
-    country: string;
-    url: string;
-    SetFavoriteClickedEvent: (id: string, favorite: boolean) => void;
-};
-
-export function Job(data: JobProps): React.JSX.Element {
+export function Job(data: JobType): React.JSX.Element {
+    const jobsDispatch = useAppDispatch();
     const logotype = data.logo_url ? data.logo_url : "/not-available.svg";
     const themeContext = useContext(ThemeContext);
     if (!themeContext) {
@@ -39,16 +24,12 @@ export function Job(data: JobProps): React.JSX.Element {
     const favoriteIcon = (data.favorite) ? ((darkTheme) ? "/favorite-filled-dark.svg" : "/favorite-filled.svg") : ((darkTheme) ? "/favorite-dark.svg": "/favorite.svg");
     const favoriteTitle = data.favorite ? "Remove from Favorite" : "Add to Favorite";
 
-    const ClickEventHandler: React.MouseEventHandler<HTMLImageElement> = () => { 
-        data.SetFavoriteClickedEvent(data.id, !data.favorite);
-    };
-
     return (
         <article style={themeStyles} id={data.id} className={styles.jobContainer}>
             <img style={themeStyles} className={styles.jobImg} src={logotype} alt={`${data.employer} logo`}/>
             <article className={styles.jobHeaderInfo}>
                 <h2 className={styles.jobHeader}>{data.employer}</h2>
-                <Image className={styles.favoriteImg} src={favoriteIcon} width={24} height={24} onClick={ClickEventHandler} title={favoriteTitle} alt='favorite icon'/>
+                <Image id={data.id} className={styles.favoriteImg} src={favoriteIcon} width={24} height={24} onClick={(e) => {jobsDispatch(toggleFavorite({id: (e.target as HTMLImageElement).id}))}} title={favoriteTitle} alt='favorite icon'/>
             </article>
             <div />
             <article className={styles.jobInfo}>

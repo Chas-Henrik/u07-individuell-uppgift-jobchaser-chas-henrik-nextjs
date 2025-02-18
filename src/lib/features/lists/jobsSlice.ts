@@ -1,69 +1,36 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '@/lib/store'
 import { addLocalStorageFavorites, removeLocalStorageFavorites, readLocalStorageFavorites } from '@/store/localStorage';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import type { ApiJobType, JobType } from '@/types/types'
 
-export type ApiJobData = {
-    id: string;
-    logo_url: string;
-    employer: { name: string };
-    headline: string;
-    occupation_group: { label: string };
-    occupation: { label: string };
-    publication_date: string;
-    application_deadline: string;
-    employment_type: { label: string };
-    workplace_address: { city: string; region: string; country: string };
-    webpage_url: string;
-}
 
-export type ApiJobType = { 
-    total: { value: number }, 
-    hits: ApiJobData[] 
-}
+// https://jobsearch.api.jobtechdev.se/search?offset=${pageNum*pageSize}&limit=${pageSize}&remote=true
 
-export type JobType = {
-    id: string;
-    favorite: boolean;
-    logo_url: string;
-    employer:  string;
-    headline: string;
-    position: string;
-    role: string;
-    posted: string;
-    expires: string;
-    contract: string;
-    city: string;
-    region: string;
-    country: string;
-    url: string;
-}
+// Define a service using a base URL and expected endpoints
+export const jobTechDevAPI = createApi({
+    reducerPath: 'jobTechDevAPI',
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://jobsearch.api.jobtechdev.se/' }),
+    endpoints: (builder) => ({
+        getJobs: builder.query<ApiJobType, {pageNum:number; pageSize:number}>({
+            query: (args) => {
+                // Destructuring Object
+                const { pageNum, pageSize } = args;
+                return {
+                    url: `search?offset=${pageNum * pageSize}&limit=${pageSize}&remote=true`,
+                }
+            },
+        }),
+    }),
+})
 
-export const fetchJobs = createAsyncThunk<
-    ApiJobType,             // The resolved data type (what you return)
-    string,                 // The payload type you expect
-    { rejectValue: string } // Optionally, the type of 'rejectWithValue'
->(
-    'jobs/fetchJobs',
-    async (url, { rejectWithValue }) => {
-        try {
-            const response = await fetch(url);
-            if(!response.ok) {
-                throw new Error("HTTP error " + response.status);
-            }
-            return await response.json();
-        } catch (error) {
-            return rejectWithValue((error as Error).message);
-        }
-    }
-);
 
 // Define a type for the slice state
 export type JobsState = {
+    loadingComplete: boolean;
     jobsArr: JobType[];
     favArr: JobType[];
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: string | null;
 }
 
 export type FavoritePayload = {
@@ -72,11 +39,10 @@ export type FavoritePayload = {
 }
 
 // Define the initial state using that type
-const initialState: JobsState = { 
+const initialState: JobsState = {
+    loadingComplete: false,
     jobsArr: [], 
-    favArr: [],
-    status: 'idle',
-    error: null,
+    favArr: []
 }
 
 export const jobsSlice = createSlice({
@@ -84,6 +50,9 @@ export const jobsSlice = createSlice({
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
+        setLoadingComplete: (state, action: PayloadAction<boolean>) => {
+            state.loadingComplete = action.payload;
+        },
         setJobs: (state, action: PayloadAction<JobType[]>) => {
             if(action.payload !== undefined && action.payload !== null) {
                 state.jobsArr = action.payload !== undefined ? action.payload : [];
@@ -91,7 +60,7 @@ export const jobsSlice = createSlice({
         },
         appendJobs: (state, action: PayloadAction<JobType[] | undefined>) => {
             if(action.payload !== undefined && action.payload !== null) {
-                state.jobsArr = state.jobsArr.concat(action.payload);
+                state.jobsArr = [...(state.jobsArr), ...(action.payload)];
             }
         },
         setFavorite: (state, action: PayloadAction<FavoritePayload | undefined>) => {
@@ -100,17 +69,14 @@ export const jobsSlice = createSlice({
                 const favJob: (JobType | undefined) = state.favArr?.find(job => job.id === action.payload?.id);
                 if(job) {
                     job.favorite = action.payload.favorite;
-                }
-                if(favJob) {
-                    favJob.favorite = action.payload.favorite;
-                }
-                if(job) {
                     if (action.payload.favorite) {
                         addLocalStorageFavorites(job);
                     } else {
                         removeLocalStorageFavorites(job);
                     }
-                } else if(favJob) {
+                }
+                if(favJob) {
+                    favJob.favorite = action.payload.favorite;
                     if (action.payload.favorite) {
                         addLocalStorageFavorites(favJob);
                     } else {
@@ -119,29 +85,40 @@ export const jobsSlice = createSlice({
                 }
             }
         },
+        toggleFavorite: (state, action: PayloadAction<{id: string} | undefined>) => {
+            if(action.payload !== undefined && action.payload !== null) {
+                const job: (JobType | undefined) = state.jobsArr?.find(job => job.id === action.payload?.id);
+                const favJob: (JobType | undefined) = state.favArr?.find(job => job.id === action.payload?.id);
+                if(job) {
+                    job.favorite = !job.favorite;
+                    if(job.favorite) {
+                        addLocalStorageFavorites(job);
+                    } else {
+                        removeLocalStorageFavorites(job);
+                    }
+                }
+                if(favJob) {
+                    favJob.favorite = !favJob.favorite;
+                    if(favJob.favorite) {
+                        addLocalStorageFavorites(favJob);
+                    } else {
+                        removeLocalStorageFavorites(favJob);
+                    }
+                }
+            }
+        },
         fetchFavorites: (state) => {
-            state.favArr = readLocalStorageFavorites();
+            state.favArr = readLocalStorageFavorites() as JobType[];
         },
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchJobs.pending, (state) => {
-            state.status = 'loading';
-            })
-            .addCase(fetchJobs.fulfilled, (state, action) => {
-            state.status = 'succeeded';
-            })
-            .addCase(fetchJobs.rejected, (state, action) => {
-            state.status = 'failed';
-            state.error = action.error?.message ?? 'Something went wrong';
-            });
-        },
 })
 
-export const { setJobs, appendJobs, setFavorite, fetchFavorites } = jobsSlice.actions
+export const { setLoadingComplete, setJobs, appendJobs, setFavorite, toggleFavorite, fetchFavorites } = jobsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
+export const selectLoadingComplete = (state: RootState) => state.jobs.loadingComplete
 export const selectJobs = (state: RootState) => state.jobs.jobsArr
 export const selectFavorites = (state: RootState) => state.jobs.favArr
+export const { useGetJobsQuery } = jobTechDevAPI
 
 export default jobsSlice.reducer

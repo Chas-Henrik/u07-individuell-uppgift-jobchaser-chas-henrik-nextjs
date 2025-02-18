@@ -2,11 +2,10 @@
 
 import styles from './Favorites.module.css';
 import { useEffect, useContext } from "react";
-import { JobType } from '@/lib/features/lists/jobsSlice'; 
-import { JobProps } from '@/components/Job';
+import type { JobType } from '@/types/types'
 import JobList from '@/components/JobList';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
-import { setFavorite, fetchFavorites, selectFavorites } from '@/lib/features/lists/jobsSlice';
+import { fetchFavorites, selectFavorites } from '@/lib/features/lists/jobsSlice';
 
 import { ThemeContext } from "@/context/themeContext";
 
@@ -25,20 +24,14 @@ export default function Favorites() {
         color: darkTheme ? '#fff' : '#333',
         boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
     };
-
-    function SetFavoriteClickedEvent(id: string, favorite: boolean) {
-        jobsDispatch(setFavorite({ id: id, favorite: favorite }));
-    }
     
     useEffect(() => {
         jobsDispatch(fetchFavorites());
-    }, []);
-
-    const favJobs: JobProps[] = favoriteJobs.map(job => ({ ...job, SetFavoriteClickedEvent: SetFavoriteClickedEvent }));
+    }, [jobsDispatch]);
 
     return (
         <article style={themeStyles} className={styles.favoritesContainer}>
-            <JobList jobsArr={favJobs}/>
+            <JobList jobsArr={favoriteJobs}/>
         </article>
     )
 }
