@@ -43,16 +43,16 @@ if (!themeContext) {
     throw new Error("ThemeContext is undefined");
 }
 const { darkTheme } = themeContext;
-const themeStyles = darkTheme ? 'bg-stone-800 text-gray-200 ' : 'bg-white text-gray-700 ';
-const themeStylesDropDown = darkTheme ? 'bg-stone-800 text-gray-200 ' : 'bg-white text-gray-800 ';
+const themeStylesButton = darkTheme ? "bg-stone-800 hover:bg-stone-700 text-gray-200 hover:text-gray-100 " : "bg-white hover:bg-slate-50 text-gray-700 hover:text-gray-800 ";
+const themeStylesDropDown = darkTheme ? "bg-stone-800 text-gray-200 " : "bg-white text-gray-800 ";
 const themeStylesDiv = {
-    backgroundColor: darkTheme ? '#333' : '#fff',
-    color: darkTheme ? '#fff' : '#333',
-    boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
+    backgroundColor: darkTheme ? "#333" : "#fff",
+    color: darkTheme ? "#fff" : "#333",
+    boxShadow: darkTheme ? "var(--primary-box-shadow-dark-theme)" : "var(--primary-box-shadow-light-theme)"
 };
 
 return (
-<motion.div whileHover={{ scale: 1.2, boxShadow: darkTheme?'var(--primary-box-shadow-dark-theme-hover)':'var(--primary-box-shadow-light-theme-hover)' }} style={themeStylesDiv}>
+<motion.div whileHover={{ scale: 1.2, boxShadow: darkTheme?"var(--primary-box-shadow-dark-theme-hover)":"var(--primary-box-shadow-light-theme-hover)" }} style={themeStylesDiv}>
     <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
         <Button
@@ -60,7 +60,7 @@ return (
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className={themeStyles + "min-h-fit shadow-lg overflow-hidden text-wrap text-ellipsis w-[250px] justify-between"}
+            className={themeStylesButton + "min-h-fit shadow-lg overflow-hidden text-wrap text-ellipsis w-[250px] justify-between"}
         >
             {value
             ? comboBoxItems.find((item) => item.value === value)?.label

@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import "./globals.css";
 import Header from '@/components/Header'
 import { ThemeContext } from "@/context/themeContext";
+import StoreProvider from "./StoreProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,6 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeContext.Provider value={{darkTheme, toggleTheme}}>
+          <StoreProvider>
           <body
             style={themeStyles}
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -49,6 +51,7 @@ export default function RootLayout({
             <Header/>
             {children}
           </body>
+          </StoreProvider>
       </ThemeContext.Provider>
     </html>
   );
