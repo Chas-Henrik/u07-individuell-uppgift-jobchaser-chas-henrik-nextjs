@@ -22,8 +22,5 @@
         outline: none;
         border-radius: 0.5em;
         background-color: inherit !important;
-        textarea:hover { 
-            background-color: inherit  !important;
-        }
     }
 }
