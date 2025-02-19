@@ -2,28 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '@/lib/store'
 import { addLocalStorageFavorites, removeLocalStorageFavorites, readLocalStorageFavorites } from '@/store/localStorage';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import type { ApiJobType, JobType } from '@/types/types'
+import type { JobType } from '@/types/types'
 
-
-// https://jobsearch.api.jobtechdev.se/search?offset=${pageNum*pageSize}&limit=${pageSize}&remote=true
-
-// Define a service using a base URL and expected endpoints
-export const jobTechDevAPI = createApi({
-    reducerPath: 'jobTechDevAPI',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://jobsearch.api.jobtechdev.se/' }),
-    endpoints: (builder) => ({
-        getJobs: builder.query<ApiJobType, {pageNum:number; pageSize:number}>({
-            query: (args) => {
-                // Destructuring Object
-                const { pageNum, pageSize } = args;
-                return {
-                    url: `search?offset=${pageNum * pageSize}&limit=${pageSize}&remote=true`,
-                }
-            },
-        }),
-    }),
-})
 
 
 // Define a type for the slice state
@@ -119,6 +99,5 @@ export const { setLoadingComplete, setJobs, appendJobs, setFavorite, toggleFavor
 export const selectLoadingComplete = (state: RootState) => state.jobs.loadingComplete
 export const selectJobs = (state: RootState) => state.jobs.jobsArr
 export const selectFavorites = (state: RootState) => state.jobs.favArr
-export const { useGetJobsQuery } = jobTechDevAPI
 
 export default jobsSlice.reducer

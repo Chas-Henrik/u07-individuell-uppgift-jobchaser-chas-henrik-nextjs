@@ -5,15 +5,30 @@
 
 import styles from './Loader.module.css';
 import { useEffect, useState, useContext } from 'react';
-import type { ApiJobData, JobType } from '@/types/types'
+import useSWR from 'swr';
+import type { ApiJobType, ApiJobData, JobType } from '@/types/types'
 import { readLocalStorageFavorites} from '@/store/localStorage';
 import { SpinnerCircular } from 'spinners-react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
-import { useGetJobsQuery, appendJobs, selectJobs } from '@/lib/features/lists/jobsSlice'; 
+import { appendJobs, selectJobs } from '@/lib/features/lists/jobsSlice';
 import { ThemeContext } from "@/context/themeContext";
 
 export type LoaderProps = {
     LoadingCompleteEvent: () => void;
+}
+
+async function fetcher(url: string) {
+    try {
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error('An error occurred while fetching the data.');
+        }
+        const data: ApiJobType = await res.json();
+        return {data: data};
+    } catch (error) {
+        console.error(error);
+        return {error: error};
+    }
 }
 
 export function Loader(props: LoaderProps) {
@@ -22,6 +37,7 @@ export function Loader(props: LoaderProps) {
     const [pageNum, setPageNum] = useState<number>(0);
     const [totCount, setTotCount] = useState<number>(100);
     const [loadingComplete, setLoadingComplete] = useState<boolean>(false);
+    const pageSize = 100;
 
     // Redux Toolkit (jobsSlice)
     const jobsArray = useAppSelector(selectJobs);
@@ -45,17 +61,10 @@ export function Loader(props: LoaderProps) {
     }
 
     // Load jobs from API
-    const { data, error } = useGetJobsQuery({pageNum: pageNum, pageSize: loadingComplete? 0: 100}, { refetchOnMountOrArgChange: true });
+    const { data, error } = useSWR(`https://jobsearch.api.jobtechdev.se/search?offset=${pageNum * pageSize}&limit=${pageSize}&remote=true`, fetcher);
 
     // React Hooks
     useEffect(() => {
-        // console.log("pageNum", pageNum);
-        // console.log("totCount", totCount);
-        // console.log("error", error);
-        // console.log("isLoading", isLoading);
-        // console.log("jobsArray.length",jobsArray.length)
-        // console.log("data", data);
-        // console.log("loadingComplete",loadingComplete)
 
         function ParseData(data: ApiJobData, favorites: JobType[]): JobType {
             const job: JobType = {
@@ -83,8 +92,8 @@ export function Loader(props: LoaderProps) {
         }
         if (data && !loadingComplete) {
             const favoriteJobs = readLocalStorageFavorites();
-            const total = data?.total.value ?? 0;
-            const jobsDataArr = data?.hits.map((job: ApiJobData) => ParseData(job, favoriteJobs)) ?? [];
+            const total = data?.data?.total.value ?? 0;
+            const jobsDataArr = data?.data?.hits.map((job: ApiJobData) => ParseData(job, favoriteJobs)) ?? [];
             setTotCount(total);
             jobsDispatch(appendJobs(jobsDataArr) ?? []);
             if((pageNum + 1) * 100 >= total){
