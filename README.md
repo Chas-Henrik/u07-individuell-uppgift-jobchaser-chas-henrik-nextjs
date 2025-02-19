@@ -6,13 +6,18 @@ The design is a 'Mobile First' responsive design that also support Tablet's and 
 
 The 'Job Chaser App' fetches job postings from the 'JobTechDev API' (see [https://jobsearch.api.jobtechdev.se/](https://jobsearch.api.jobtechdev.se/)), and displays the fetched job postings in a Job List. 
 
-The app supports the following features:
+The application supports the following features:
 1. Dark/light-mode
 2. Filter jobs on: Position, Role, Contract Type, City, Region & Country
 3. Free text search on the Headline property.
 4. Mark/Un-mark job as favorite.
 5. Favorite job list (Favorite jobs are stored in Local Storage and are not removed until they are unmarked as Favorite by the user).
 6. Hover effects on all buttons (using Framer).
+
+The application uses the following 3:rd party libraries:
+1. Framer (for hover effects)
+2. Zod (for Form error handling)
+3. SWR (for data fetching)
 
 The site has been published on Vercel:  
 [https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/](https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/)
