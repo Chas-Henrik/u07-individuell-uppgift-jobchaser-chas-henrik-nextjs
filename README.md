@@ -149,8 +149,8 @@ Man slipper propagera dessa variabler m.h.a. props parametrar genom komponent tr
 ## Vecka 4
 
 ### Vad är Redux Toolkit?
-En centraliserad store där man har alla sina states.
+En centraliserad store där man har alla sina reducers & states.
 
 ### När, i vilka situationer vill man använda Redux Toolkit?
-Är en del 'overhead' att sätta upp Redux Toolkit, så man vill nog bara använda det i större applikationer när det är svårt att 'överblicka'/'hålla reda på' vilka states som finns, och hur dessa states påverkar applikationen.
+Är en del 'overhead' att sätta upp Redux Toolkit, så man vill nog bara använda det i större applikationer när det är svårt att 'överblicka'/'hålla reda på' vilka reducers & states som finns, och hur dessa states påverkar applikationen.
 
