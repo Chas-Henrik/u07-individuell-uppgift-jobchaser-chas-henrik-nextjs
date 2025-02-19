@@ -1,17 +1,17 @@
-import {JobProps} from '@/components/Job';
+import type { JobType } from '@/types/types'
 
 const LOCAL_STORAGE_KEY = "u07-jobchaser-chas-henrik-nextjs : favorites";
 
-export function readLocalStorageFavorites(): JobProps[] {
+export function readLocalStorageFavorites(): JobType[] {
     const lsData = localStorage.getItem(LOCAL_STORAGE_KEY);
     return lsData ? JSON.parse(lsData) : [];
 }
 
-export function writeLocalStorageFavorites(dataObj: JobProps[]) {
+export function writeLocalStorageFavorites(dataObj: JobType[]) {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataObj));
 }
 
-export function addLocalStorageFavorites(dataObj: JobProps) {
+export function addLocalStorageFavorites(dataObj: JobType) {
     const favorites = readLocalStorageFavorites()
     const isInFavorites = favorites.find(job => job.id === dataObj.id);
     if (!isInFavorites) {
@@ -20,8 +20,13 @@ export function addLocalStorageFavorites(dataObj: JobProps) {
     }
 }
     
-export function removeLocalStorageFavorites(dataObj: JobProps) {
+export function removeLocalStorageFavorites(dataObj: JobType) {
     const favorites = readLocalStorageFavorites()
     const newFavorites = favorites.filter(job => job.id !== dataObj.id);
     writeLocalStorageFavorites(newFavorites);
+}
+
+export function updateLocalStorageFavorites(dataObj: JobType) {
+    removeLocalStorageFavorites(dataObj);
+    addLocalStorageFavorites(dataObj);
 }

@@ -6,7 +6,7 @@ The design is a 'Mobile First' responsive design that also support Tablet's and 
 
 The 'Job Chaser App' fetches job postings from the 'JobTechDev API' (see [https://jobsearch.api.jobtechdev.se/](https://jobsearch.api.jobtechdev.se/)), and displays the fetched job postings in a Job List. 
 
-The app supports the following features:
+The application supports the following features:
 1. Dark/light-mode
 2. Filter jobs on: Position, Role, Contract Type, City, Region & Country
 3. Free text search on the Headline property.
@@ -14,8 +14,16 @@ The app supports the following features:
 5. Favorite job list (Favorite jobs are stored in Local Storage and are not removed until they are unmarked as Favorite by the user).
 6. Hover effects on all buttons (using Framer).
 
+The application uses the following 3:rd party libraries/components:
+1. Framer (for hover effects)
+2. Zod (for Form error handling)
+3. SWR (for data fetching)
+4. uuid (for generating unique list ID's)
+5. shadcn components (ComboBox & Switch)
+6. Tailwind (for styling shadcn components)
+
 The site has been published on Vercel:  
-[https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs-yunn.vercel.app/](https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs-yunn.vercel.app/)
+[https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/](https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/)
 
 ***
 *Known problems:*
@@ -113,6 +121,7 @@ Innehåller många bra funktioner och verktyg för att underlätta utveckling av
 
 Nackdelar:
 1. Dependency problem mellan olika versioner av mjukvaror.
+2. Kräver mer 'Know-How'.
 
 ### Vad menas med Routing? På vilket sätt löser NextJS Routing v.s "vanliga React"?
 En URL består av ett protokoll (t.ex. `https://`), en domän (t.ex. `chasacademy.se`) och en route (t.ex. `/studera-hos-oss`) och routing är navigeringen mellan olika routes.
@@ -140,6 +149,8 @@ Man slipper propagera dessa variabler m.h.a. props parametrar genom komponent tr
 ## Vecka 4
 
 ### Vad är Redux Toolkit?
+En centraliserad store där man har alla sina reducers & states.
 
 ### När, i vilka situationer vill man använda Redux Toolkit?
+Är en del 'overhead' att sätta upp Redux Toolkit, så man vill nog bara använda det i större applikationer när det är svårt att 'överblicka'/'hålla reda på' vilka reducers & states som finns, och hur dessa states påverkar applikationen.
 
