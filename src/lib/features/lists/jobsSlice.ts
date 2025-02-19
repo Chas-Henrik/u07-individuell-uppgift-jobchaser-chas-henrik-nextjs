@@ -40,7 +40,7 @@ export const jobsSlice = createSlice({
         },
         appendJobs: (state, action: PayloadAction<JobType[] | undefined>) => {
             if(action.payload !== undefined && action.payload !== null) {
-                state.jobsArr = [...(state.jobsArr), ...(action.payload)];
+                state.jobsArr.push(...action.payload);
             }
         },
         setFavorite: (state, action: PayloadAction<FavoritePayload | undefined>) => {
