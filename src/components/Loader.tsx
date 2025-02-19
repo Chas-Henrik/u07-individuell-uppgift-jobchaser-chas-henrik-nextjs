@@ -45,7 +45,7 @@ export function Loader(props: LoaderProps) {
     }
 
     // Load jobs from API
-    const { data, error, isLoading } = useGetJobsQuery({pageNum: pageNum, pageSize: loadingComplete? 0: 100}, { refetchOnMountOrArgChange: true });
+    const { data, error } = useGetJobsQuery({pageNum: pageNum, pageSize: loadingComplete? 0: 100}, { refetchOnMountOrArgChange: true });
 
     // React Hooks
     useEffect(() => {
