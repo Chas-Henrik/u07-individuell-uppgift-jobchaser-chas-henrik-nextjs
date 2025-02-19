@@ -14,10 +14,13 @@ The application supports the following features:
 5. Favorite job list (Favorite jobs are stored in Local Storage and are not removed until they are unmarked as Favorite by the user).
 6. Hover effects on all buttons (using Framer).
 
-The application uses the following 3:rd party libraries:
+The application uses the following 3:rd party libraries/components:
 1. Framer (for hover effects)
 2. Zod (for Form error handling)
 3. SWR (for data fetching)
+4. uuid (for generating unique list ID's)
+5. shadcn components (ComboBox & Switch)
+6. Tailwind (for styling shadcn components)
 
 The site has been published on Vercel:  
 [https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/](https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/)
