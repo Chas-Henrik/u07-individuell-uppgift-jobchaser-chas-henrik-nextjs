@@ -34,7 +34,7 @@
             width: 4rem;
             height: 4rem;
             cursor: pointer;
-            boxShadow: none;
+            box-shadow: none;
         }
     }
 }
