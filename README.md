@@ -37,6 +37,7 @@ The site is published on Vercel:
 *Known problems:*
   
 1. The Job List is only read once (at 'Jobs Page' Load/Re-load) of performance reasons, and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or expired jobs are removed). However, it is assumed that the job list from the 'JobTechDev API' is not updated very frequently, so this should not be any major issue and one can always reload to fetch the latest data.
+2. It sometimes happen that we get 'duplicate job ID's' from JobTechDev API (which generates an error when rendering the job list), and to avoid this problem, I generate my own unique list ID's using the 3:rd party uuid SW.
 
 *Notes:*
   
