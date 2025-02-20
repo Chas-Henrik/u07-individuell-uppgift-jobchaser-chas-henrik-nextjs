@@ -12,8 +12,10 @@ type JobListProps = {
 };
 
 function JobList({jobsArr}: JobListProps): React.JSX.Element {
-    const jobs: React.JSX.Element[] = jobsArr.map((job: JobType) => <li className={styles.jobListItem} key={uuidv4()}><Job {...job}/></li>);
-    const jobList = jobs.length > 0 ? jobs : <li className={styles.jobListItem} key={uuidv4()}><p className={styles.jobListError}>No Jobs</p></li>;
+    const jobList: React.JSX.Element[] = jobsArr.map((job: JobType) => <li className={styles.jobListItem} key={uuidv4()}><Job {...job}/></li>);
+    const header: string = jobList.length > 0 ? `${jobList.length} Jobs` : 'No Jobs';
+    const jobHeader = <li className={styles.jobListItem} key={uuidv4()}><p className={styles.jobListError}>{header}</p></li>;
+
     const themeContext = useContext(ThemeContext);
     if (!themeContext) {
         throw new Error("ThemeContext is undefined");
@@ -26,7 +28,8 @@ function JobList({jobsArr}: JobListProps): React.JSX.Element {
 
     return (
         <ul style={themeStyles} className={styles.jobList}>
-            {jobList}
+            {jobHeader}
+            {jobList.length > 0 && jobList}
         </ul>
     )
 }
