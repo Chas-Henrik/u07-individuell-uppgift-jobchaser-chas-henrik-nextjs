@@ -21,7 +21,7 @@ function JobList({jobsArr}: JobListProps): React.JSX.Element {
     const { darkTheme } = themeContext;
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
-        color: darkTheme ? '#fff' : '#333'
+        color: darkTheme ? '#ccc' : '#555'
     };
 
     return (

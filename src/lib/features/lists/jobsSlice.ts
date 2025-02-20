@@ -13,11 +13,6 @@ export type JobsState = {
     favArr: JobType[];
 }
 
-export type FavoritePayload = {
-    id: string;
-    favorite: boolean;
-}
-
 // Define the initial state using that type
 const initialState: JobsState = {
     loadingComplete: false,
@@ -43,32 +38,10 @@ export const jobsSlice = createSlice({
                 state.jobsArr.push(...action.payload);
             }
         },
-        setFavorite: (state, action: PayloadAction<FavoritePayload | undefined>) => {
-            if(action.payload !== undefined && action.payload !== null) {
-                const job: (JobType | undefined) = state.jobsArr?.find(job => job.id === action.payload?.id);
-                const favJob: (JobType | undefined) = state.favArr?.find(job => job.id === action.payload?.id);
-                if(job) {
-                    job.favorite = action.payload.favorite;
-                    if (action.payload.favorite) {
-                        addLocalStorageFavorites(job);
-                    } else {
-                        removeLocalStorageFavorites(job);
-                    }
-                }
-                if(favJob) {
-                    favJob.favorite = action.payload.favorite;
-                    if (action.payload.favorite) {
-                        addLocalStorageFavorites(favJob);
-                    } else {
-                        removeLocalStorageFavorites(favJob);
-                    }
-                }
-            }
-        },
         toggleFavorite: (state, action: PayloadAction<{id: string} | undefined>) => {
-            if(action.payload !== undefined && action.payload !== null) {
-                const job: (JobType | undefined) = state.jobsArr?.find(job => job.id === action.payload?.id);
-                const favJob: (JobType | undefined) = state.favArr?.find(job => job.id === action.payload?.id);
+            const favJobArr = [state.jobsArr?.find(job => job.id === action.payload?.id), 
+                                state.favArr?.find(job => job.id === action.payload?.id)];
+            favJobArr.forEach((job) => {
                 if(job) {
                     job.favorite = !job.favorite;
                     if(job.favorite) {
@@ -77,15 +50,7 @@ export const jobsSlice = createSlice({
                         removeLocalStorageFavorites(job);
                     }
                 }
-                if(favJob) {
-                    favJob.favorite = !favJob.favorite;
-                    if(favJob.favorite) {
-                        addLocalStorageFavorites(favJob);
-                    } else {
-                        removeLocalStorageFavorites(favJob);
-                    }
-                }
-            }
+            });
         },
         fetchFavorites: (state) => {
             state.favArr = readLocalStorageFavorites() as JobType[];
@@ -93,7 +58,7 @@ export const jobsSlice = createSlice({
     },
 })
 
-export const { setLoadingComplete, setJobs, appendJobs, setFavorite, toggleFavorite, fetchFavorites } = jobsSlice.actions
+export const { setLoadingComplete, setJobs, appendJobs, toggleFavorite, fetchFavorites } = jobsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectLoadingComplete = (state: RootState) => state.jobs.loadingComplete

@@ -18,7 +18,7 @@ export function Job(data: JobType): React.JSX.Element {
     const { darkTheme } = themeContext;
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#fff',
-        color: darkTheme ? '#fff' : '#333',
+        color: darkTheme ? '#ccc' : '#555',
         boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
     };
     const favoriteIcon = (data.favorite) ? ((darkTheme) ? "/favorite-filled-dark.svg" : "/favorite-filled.svg") : ((darkTheme) ? "/favorite-dark.svg": "/favorite.svg");
