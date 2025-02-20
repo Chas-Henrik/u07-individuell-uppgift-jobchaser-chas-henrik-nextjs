@@ -39,6 +39,7 @@ The site is published on Vercel:
   
 1. Favorite jobs are stored in Local Storage and are not removed until they are unmarked as Favorite by the user.
 2. It takes some time to download all the jobs from the database (~7 secs), but the filtering features in the app doesn't work properly unless they have all data available, so we have to do that.
+3. The 'filter list' in the Combo Boxes shows the available choices based on the currently applied filters, so the user will never end up with 'No jobs' in the filtered list, and the only way the job list would be empty is if there are no jobs in the fetched database.
 
 ***
 
