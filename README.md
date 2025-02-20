@@ -4,8 +4,9 @@ This is a single-page, 'Job Chaser App' built with Typescript, React & NextJS.
 
 The design is a 'Mobile First' responsive design that also support Tablet's and Desktop's. Breakpoints have been set at 750px for Tablet's & Small Desktop's, and 1100px for Medium & Large Desktop's.  
 
-The 'Job Chaser App' fetches job postings from the 'JobTechDev API' (see [https://jobsearch.api.jobtechdev.se/](https://jobsearch.api.jobtechdev.se/)), and displays the fetched job postings in a Job List. The app uses the 'remote filter' (`&remote=true`) and fetches all jobs that fulfills this condition an the jobs can also be filtered locally to narrow down the search results further.
-
+The 'Job Chaser App' fetches job postings from the 'JobTechDev API' (see [https://jobsearch.api.jobtechdev.se/](https://jobsearch.api.jobtechdev.se/)), and displays the fetched job postings in a Job List. The app uses the 'remote filter' (`&remote=true`) and fetches all jobs that have potential to be remote. The jobs can also be filtered locally to narrow down the search results further.
+  
+  
 The application supports the following features:
 1. Dark/light-mode
 2. Filter jobs on: Position, Role, Contract Type, City, Region & Country
@@ -15,6 +16,7 @@ The application supports the following features:
 6. Hover effects on all 'User Interaction Elements' (Buttons, Combo Boxes, Text Input & Switch).
 7. A User Registration form (currently not connected to any login service).
 8. A User Login form (currently not connected to any login service).
+  
 
 The application uses the following 3:rd party libraries/components:
 1. Framer (for 'User Interaction Elements' hover effects)
@@ -24,8 +26,9 @@ The application uses the following 3:rd party libraries/components:
 5. Shadcn components (ComboBox & Switch)
 6. Tailwind (for styling shadcn components)
 7. Spinners (for Loader component)
-
-Dark/light-mode has been implemented with 'useContext' and the filtering ComboBoxes, Search Input & Favorite Mark/Un-mark has been implemented using Redux Toolkit.
+  
+  
+Dark/light-mode has been implemented with 'useContext' and the filtering ComboBoxes, Search Input & Favorite Mark/Un-mark have been implemented using Redux Toolkit.
 
 The site is published on Vercel:  
 [https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/](https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/)
@@ -33,13 +36,13 @@ The site is published on Vercel:
 ***
 *Known problems:*
   
-1. The Job list is only read once (at 'Jobs Page' Load/Re-load) of performance reasons, and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or expired jobs are removed). However, it is assumed that the job list from the 'JobTechDev API' is not updated very frequently, so this should not be any major issue and one can always reload to fetch the latest data.
+1. The Job List is only read once (at 'Jobs Page' Load/Re-load) of performance reasons, and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or expired jobs are removed). However, it is assumed that the job list from the 'JobTechDev API' is not updated very frequently, so this should not be any major issue and one can always reload to fetch the latest data.
 
 *Notes:*
   
-1. Favorite jobs are stored in Local Storage and are not removed until they are unmarked as Favorite by the user.
-2. It takes some time to download all the jobs from the database (~7 secs), but the filtering features in the app doesn't work properly unless they have all data available, so we have to do that.
-3. The 'filter list' in the Combo Boxes shows the available choices based on the currently applied filters, so the user will never end up with 'No jobs' in the filtered list, and the only way the job list would be empty is if there are no jobs in the fetched database.
+1. Favorite jobs are stored in Local Storage and are not removed until they are un-marked as Favorite by the user.
+2. It takes some time to download all the jobs from the database (~7 secs), but the filtering features in the app will not work properly unless they have all data available, so this is a 'necessary evil'.
+3. The 'filter list' in the Combo Boxes lists the available choices based on the currently applied filters, which also means that the user will never end up with 'No jobs' in the filtered list, and the only way the job list could be empty is if there are no jobs in the fetched database.
 
 ***
 
