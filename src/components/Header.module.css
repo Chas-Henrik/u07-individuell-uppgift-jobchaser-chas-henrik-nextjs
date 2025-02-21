@@ -1,9 +1,10 @@
 .header {
+    padding: 1rem;
     position: sticky;
     top: 0;
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 10fr 13rem;
+    grid-template-columns: 1fr 10fr 12rem;
     justify-items: center;
     align-items: center;
     gap: 1rem;
@@ -20,7 +21,7 @@
 /* On screens that are 800px or more (Tablets & Desktops) */
 @media (min-width: 800px) {
     .header {
-        grid-template-columns: 13rem 10fr 13rem;
+        grid-template-columns: 12rem 10fr 12rem;
         > .div {
             width: 13rem;
             max-width: 13rem;
