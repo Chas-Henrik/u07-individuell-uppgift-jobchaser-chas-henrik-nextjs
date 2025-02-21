@@ -1,15 +1,18 @@
 .nav {
+    padding: 0.5rem 0;
+    margin-left: auto;
+    justify-self: center;
+    width: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1.5rem;
-    padding: 1rem;
+    gap: 1rem;
     > .liItem {
         list-style: none;
-        width: 5rem;
+        width: 4rem;
         height: fit-content;
-        padding: 0.5em 1em;
+        padding: 0.5em;
         text-align: center;
         cursor: pointer;
         border-radius: 0.5rem;
@@ -17,9 +20,11 @@
     }
 }
 
-/* On screens that are 1100px or more (Medium & Large Desktops) */
-/* @media (min-width: 1100px) {
+/* On screens that are 800px or more (Tablets & Desktops) */
+@media (min-width: 800px) {
     .nav {
-        justify-content: center;
+        margin-left: 0;
+        justify-self: center;
+        flex-wrap: nowrap;
     }
-} */
+}

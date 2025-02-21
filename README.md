@@ -2,7 +2,8 @@
 
 This is a single-page, 'Job Chaser App' built with Typescript, React & NextJS.
 
-The design is a 'Mobile First' responsive design that also support Tablet's and Desktop's. Breakpoints have been set at 750px for Tablet's & Small Desktop's, and 1100px for Medium & Large Desktop's.  
+The design is a 'Mobile First' responsive design that also support Tablet's and Desktop's. Breakpoints have been set at 650px for Tablet's & Small Desktop's, and 1100px for Medium & Large Desktop's.
+There content driven breakpoint has also been inserted at 800px to improve responsiveness for the main menu/navigation bar.
 
 The 'Job Chaser App' fetches job postings from the 'JobTechDev API' (see [https://jobsearch.api.jobtechdev.se/](https://jobsearch.api.jobtechdev.se/)), and displays the fetched job postings in a Job List. The app uses the 'remote filter' (`&remote=true`) and fetches all jobs that have potential to be remote. The jobs can also be filtered locally to narrow down the search results further.
   
