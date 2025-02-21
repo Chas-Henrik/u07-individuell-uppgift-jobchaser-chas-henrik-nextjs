@@ -1,7 +1,5 @@
 .switchBoxContainer {
     width: fit-content;
-    padding: 0.5rem 1rem;
-    padding-right: 2rem;
     display: flex;
     justify-content: flex-start;
     align-items: center;
