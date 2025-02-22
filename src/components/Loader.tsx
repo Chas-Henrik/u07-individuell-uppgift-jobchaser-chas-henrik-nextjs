@@ -9,8 +9,8 @@ import useSWR from 'swr';
 import type { ApiJobType, ApiJobData, JobType } from '@/types/types'
 import { readLocalStorageFavorites} from '@/store/localStorage';
 import { SpinnerCircular } from 'spinners-react';
-import { useAppSelector, useAppDispatch } from '@/lib/hooks'
-import { appendJobs, selectJobs } from '@/lib/features/lists/jobsSlice';
+import { useAppDispatch } from '@/lib/hooks'
+import { appendJobs } from '@/lib/features/lists/jobsSlice';
 import { ThemeContext } from "@/context/themeContext";
 
 export type LoaderProps = {
@@ -40,7 +40,6 @@ export function Loader(props: LoaderProps) {
     const pageSize = 100;
 
     // Redux Toolkit (jobsSlice)
-    const jobsArray = useAppSelector(selectJobs);
     const jobsDispatch = useAppDispatch();
 
     // Theme Context
@@ -55,10 +54,6 @@ export function Loader(props: LoaderProps) {
         color: darkTheme ? '#fff' : '#333',
         boxShadow: darkTheme ? 'var(--primary-box-shadow-dark-theme)' : 'var(--primary-box-shadow-light-theme)'
     };
-
-    if (jobsArray.length >= totCount) {
-        setLoadingComplete(true);
-    }
 
     // Load jobs from API
     const { data, error } = useSWR(`https://jobsearch.api.jobtechdev.se/search?offset=${pageNum * pageSize}&limit=${pageSize}&remote=true`, fetcher);
@@ -88,9 +83,7 @@ export function Loader(props: LoaderProps) {
 
         if(error){
             console.error(error);
-            return;
-        }
-        if (data && !loadingComplete) {
+        } else if (data && !loadingComplete) {
             const favoriteJobs = readLocalStorageFavorites();
             const total = data?.data?.total.value ?? 0;
             const jobsDataArr = data?.data?.hits.map((job: ApiJobData) => ParseData(job, favoriteJobs)) ?? [];
@@ -103,7 +96,6 @@ export function Loader(props: LoaderProps) {
             } else {
                 setPageNum((prevPageNum) => prevPageNum + 1);
             }
-            
         }
     }, [props, data, error, loadingComplete, jobsDispatch, pageNum, totCount]);
 
