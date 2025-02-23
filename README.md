@@ -45,7 +45,7 @@ The site has been published on Vercel:
   
 1. Favorite jobs are stored in Local Storage and are not removed until they are un-marked as Favorite by the user (regardless if the job expires).
 2. It takes some time to load all the jobs from the database (~7 secs), but the filtering features in the app will not work properly unless all jobs are available, so this is a 'necessary evil'.
-3. The 'filter list' in the Combo Boxes lists the available choices based on the currently applied filters, which means that the user will never end up with 'No jobs' in the filtered list (unless there are no jobs in the 'JobTechDev API' database).
+3. The 'filter list' in the Combo Boxes lists the available choices based on the currently applied filters. This means that the user can only end up with 'No jobs' in the filtered list by using the Free Text search, or if there are no jobs in the 'JobTechDev API' database.
 4. The img element in Job.tsx can not be replaced with the Image element since Image require a known width & height and the icons in the 'JobTechDev API' have different sizes, and we don't know them in advance.
 
 ***
