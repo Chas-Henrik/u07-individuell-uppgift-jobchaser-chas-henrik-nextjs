@@ -14,9 +14,10 @@ The application supports the following features:
 3. Free text Headline search.
 4. Mark/Un-mark job as favorite.
 5. Favorite job list.
-6. Hover effects on all 'User Interaction Elements' (Buttons, Combo Boxes, Text Input & Switch).
+6. Framer hover effects on all 'User Interaction Elements' (Buttons, Combo Boxes, Text Input & Switch).
 7. A User Registration form (currently not connected to any login service).
 8. A User Login form (currently not connected to any login service).
+9. Form Validation (using Zod)
   
 
 The application uses the following 3:rd party libraries/components:
@@ -31,14 +32,14 @@ The application uses the following 3:rd party libraries/components:
   
 Dark/light-mode has been implemented with 'useContext' and the filtering ComboBoxes, Search Input & Favorite Mark/Un-mark have been implemented with Redux Toolkit.
 
-The site is published on Vercel:  
+The site has been published on Vercel:  
 [https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/](https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/)
 
 ***
 *Known problems:*
   
 1. The Job List is only read once (at 'Jobs Page' Load/Re-load) from the 'JobTechDev API' of performance reasons, and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or expired jobs are removed). However, it is assumed that the job list in the 'JobTechDev API' is not updated very frequently, so this should not be any major issue, and one can always reload to fetch the latest data.
-2. The styling for Dark-mode could be improved, e.g. the background color for the search icon is not entirely correct (especially when hovered).
+2. The styling for Dark-mode can be improved, e.g. the background color for the search icon is not entirely correct (especially when hovered).
 
 *Notes:*
   
