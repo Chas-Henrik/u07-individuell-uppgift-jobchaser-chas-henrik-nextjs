@@ -6,11 +6,11 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.25rem;
     > .liItem {
         box-sizing: content-box;
         list-style: none;
-        width: 6rem;
+        width: 5.5rem;
         height: fit-content;
         padding: 0.25em;
         text-align: center;
