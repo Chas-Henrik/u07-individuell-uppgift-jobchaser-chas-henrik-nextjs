@@ -8,14 +8,15 @@
     flex-wrap: wrap;
     gap: 1rem;
     > .liItem {
+        box-sizing: content-box;
         list-style: none;
-        width: 4rem;
+        width: 6rem;
         height: fit-content;
-        padding: 0.5em;
+        padding: 0.25em;
         text-align: center;
         cursor: pointer;
-        border-radius: 0.5rem;
-        font-size: 0.8rem;
+        border-radius: 0.25rem;
+        font-size: 1.2rem;
     }
 }
 
@@ -23,7 +24,6 @@
 @media (min-width: 800px) {
     .nav {
         margin-left: 0;
-        justify-self: center;
         flex-wrap: nowrap;
     }
 }

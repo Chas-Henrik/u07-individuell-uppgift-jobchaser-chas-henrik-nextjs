@@ -18,8 +18,8 @@
     }
 }
 
-/* On screens that are 800px or more (Tablets & Desktops) */
-@media (min-width: 800px) {
+/* On screens that are 1100px or more (Tablets & Desktops) */
+@media (min-width: 1100px) {
     .header {
         grid-template-columns: 12rem 10fr 12rem;
         > .div {
