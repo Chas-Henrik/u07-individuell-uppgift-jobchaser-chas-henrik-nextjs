@@ -38,13 +38,13 @@ The site is published on Vercel:
 *Known problems:*
   
 1. The Job List is only read once (at 'Jobs Page' Load/Re-load) from the API of performance reasons, and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or expired jobs are removed). However, it is assumed that the job list from the 'JobTechDev API' is not updated very frequently, so this should not be any major issue, and one can always reload to fetch the latest data.
-2. The styling could still be improved for Dark-mode, e.g. the background color on the search icon is not entirely correct (especially if hovered over).
+2. The styling could still be improved for Dark-mode, e.g. the background color on the search icon is not entirely correct (especially when hovered).
 
 *Notes:*
   
 1. Favorite jobs are stored in Local Storage and are not removed until they are un-marked as Favorite by the user (regardless if the job expires).
 2. It takes some time to download all the jobs from the database (~7 secs), but the filtering features in the app will not work properly unless they have all data available, so this is a 'necessary evil'.
-3. The 'filter list' in the Combo Boxes lists the available choices based on the currently applied filters, which also means that the user will never end up with 'No jobs' in the filtered list, and the only way the job list could be empty is if there are no jobs in the fetched job database.
+3. The 'filter list' in the Combo Boxes lists the available choices based on the currently applied filters, which also means that the user will never end up with 'No jobs' in the filtered list (unless there are no jobs in the fetched job database).
 4. The img element in Job.tsx can not be replaced with Image element as Image require a known width & height, and we don't know the width & height of the JobTechDev API icons in advance.
 
 ***
