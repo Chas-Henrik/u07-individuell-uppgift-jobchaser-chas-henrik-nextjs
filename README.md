@@ -3,9 +3,9 @@
 This is a single-page, 'Job Chaser App' built with Typescript, React & NextJS.
 
 The design is a 'Mobile First' responsive design that also support Tablet's and Desktop's. Breakpoints have been set at 650px for Tablet's & Small Desktop's, and 1100px for Medium & Large Desktop's.
-There content driven breakpoint has also been inserted at 800px to improve responsiveness for the main menu/navigation bar.
+A content driven breakpoint has also been inserted at 800px to improve responsiveness for the main menu/navigation bar.
 
-The 'Job Chaser App' fetches job postings from the 'JobTechDev API' (see [https://jobsearch.api.jobtechdev.se/](https://jobsearch.api.jobtechdev.se/)), and displays the fetched job postings in a Job List. The app uses the 'remote filter' (`&remote=true`) and fetches all jobs that have potential to be remote. The jobs can also be filtered locally to narrow down the search results further.
+The 'Job Chaser App' fetches job postings from the 'JobTechDev API' (see [https://jobsearch.api.jobtechdev.se/](https://jobsearch.api.jobtechdev.se/)), and displays the fetched job postings in a Job List. The app uses the 'remote filter' (`&remote=true`) to fetch all jobs that have potential to be remote. The jobs can also be filtered locally to narrow down the search results further.
   
   
 The application supports the following features:
@@ -20,7 +20,7 @@ The application supports the following features:
   
 
 The application uses the following 3:rd party libraries/components:
-1. Framer (for 'User Interaction Elements' hover effects)
+1. Framer (for 'User Interaction' hover effects)
 2. Zod (for Form validation)
 3. SWR (for data fetching)
 4. Uuid (for generating unique list ID's)
@@ -29,7 +29,7 @@ The application uses the following 3:rd party libraries/components:
 7. Spinners (for Loader component)
   
   
-Dark/light-mode has been implemented with 'useContext' and the filtering ComboBoxes, Search Input & Favorite Mark/Un-mark have been implemented using Redux Toolkit.
+Dark/light-mode has been implemented with 'useContext' and the filtering ComboBoxes, Search Input & Favorite Mark/Un-mark have been implemented with Redux Toolkit.
 
 The site is published on Vercel:  
 [https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/](https://u07-individuell-uppgift-jobchaser-chas-henrik-nextjs.vercel.app/)
@@ -37,15 +37,15 @@ The site is published on Vercel:
 ***
 *Known problems:*
   
-1. The Job List is only read once (at 'Jobs Page' Load/Re-load) from the API of performance reasons, and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or expired jobs are removed). However, it is assumed that the job list from the 'JobTechDev API' is not updated very frequently, so this should not be any major issue, and one can always reload to fetch the latest data.
-2. The styling could still be improved for Dark-mode, e.g. the background color on the search icon is not entirely correct (especially when hovered).
+1. The Job List is only read once (at 'Jobs Page' Load/Re-load) from the 'JobTechDev API' of performance reasons, and no effort has been spent to keep the local content synchronized with the database after that. So the local data might not reflect what is currently in the data base at any point of time (e.g. if new jobs are added to the database or expired jobs are removed). However, it is assumed that the job list in the 'JobTechDev API' is not updated very frequently, so this should not be any major issue, and one can always reload to fetch the latest data.
+2. The styling for Dark-mode could be improved, e.g. the background color for the search icon is not entirely correct (especially when hovered).
 
 *Notes:*
   
 1. Favorite jobs are stored in Local Storage and are not removed until they are un-marked as Favorite by the user (regardless if the job expires).
-2. It takes some time to download all the jobs from the database (~7 secs), but the filtering features in the app will not work properly unless they have all data available, so this is a 'necessary evil'.
-3. The 'filter list' in the Combo Boxes lists the available choices based on the currently applied filters, which also means that the user will never end up with 'No jobs' in the filtered list (unless there are no jobs in the fetched job database).
-4. The img element in Job.tsx can not be replaced with Image element as Image require a known width & height, and we don't know the width & height of the JobTechDev API icons in advance.
+2. It takes some time to load all the jobs from the database (~7 secs), but the filtering features in the app will not work properly unless all jobs are available, so this is a 'necessary evil'.
+3. The 'filter list' in the Combo Boxes lists the available choices based on the currently applied filters, which means that the user will never end up with 'No jobs' in the filtered list (unless there are no jobs in the 'JobTechDev API' database).
+4. The img element in Job.tsx can not be replaced with the Image element since Image require a known width & height and the icons in the 'JobTechDev API' have different sizes, and we don't know them in advance.
 
 ***
 
