@@ -41,6 +41,11 @@ export default function RootLayout({
   };
 
   return (
+    <>
+    <head>
+      <meta name="description" content="Job Chaser application" />
+      <title>Job Chaser</title>
+    </head>
     <html lang="en">
       <ThemeContext.Provider value={{darkTheme, toggleTheme}}>
           <StoreProvider>
@@ -54,5 +59,6 @@ export default function RootLayout({
           </StoreProvider>
       </ThemeContext.Provider>
     </html>
+    </>
   );
 }

@@ -35,7 +35,6 @@ export function Loader(props: LoaderProps) {
     // Local state variables
     const [showSpinner, setShowSpinner] = useState<boolean>(true);
     const [pageNum, setPageNum] = useState<number>(0);
-    const [totCount, setTotCount] = useState<number>(100);
     const [loadingComplete, setLoadingComplete] = useState<boolean>(false);
     const pageSize = 100;
 
@@ -87,7 +86,6 @@ export function Loader(props: LoaderProps) {
             const favoriteJobs = readLocalStorageFavorites();
             const total = data?.data?.total.value ?? 0;
             const jobsDataArr = data?.data?.hits.map((job: ApiJobData) => ParseData(job, favoriteJobs)) ?? [];
-            setTotCount(total);
             jobsDispatch(appendJobs(jobsDataArr) ?? []);
             if((pageNum + 1) * 100 >= total){
                 setShowSpinner(false);
@@ -97,7 +95,7 @@ export function Loader(props: LoaderProps) {
                 setPageNum((prevPageNum) => prevPageNum + 1);
             }
         }
-    }, [props, data, error, loadingComplete, jobsDispatch, pageNum, totCount]);
+    }, [props, data, error, loadingComplete, jobsDispatch, pageNum]);
 
 
     return (
