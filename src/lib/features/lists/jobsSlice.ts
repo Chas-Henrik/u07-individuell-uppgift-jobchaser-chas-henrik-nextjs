@@ -41,16 +41,21 @@ export const jobsSlice = createSlice({
         toggleFavorite: (state, action: PayloadAction<{id: string} | undefined>) => {
             const favJobArr = [state.jobsArr?.find(job => job.id === action.payload?.id), 
                                 state.favArr?.find(job => job.id === action.payload?.id)];
+            // Update arrays
             favJobArr.forEach((job) => {
                 if(job) {
                     job.favorite = !job.favorite;
-                    if(job.favorite) {
-                        addLocalStorageFavorites(job);
-                    } else {
-                        removeLocalStorageFavorites(job);
-                    }
                 }
             });
+            // Update local storage
+            const favJob = favJobArr.find(job => job !== undefined);
+            if(favJob) {
+                if(favJob.favorite) {
+                    addLocalStorageFavorites(favJob);
+                } else {
+                    removeLocalStorageFavorites(favJob);
+                }
+            }
         },
         fetchFavorites: (state) => {
             state.favArr = readLocalStorageFavorites() as JobType[];
